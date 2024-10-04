@@ -12,6 +12,8 @@ PYGAME_MODE = True
 WIDTH_PIXELS = constants.LED_WIDTH * constants.LED_CHAIN_LENGTH
 HEIGHT_PIXELS = constants.LED_HEIGHT * constants.LED_CHAIN_COUNT
 
+FontCache = {}
+
 if(PYGAME_MODE):
     import pygame
     import led.bdf_reader as bdf_reader
@@ -49,7 +51,6 @@ class MatrixDraw():
             for col_pin in constants.RPI_KEYPAD_COLS:
                 GPIO.setup(col_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
-        self.fonts = {}
         self.keys_down = [False] * 16
         self.keys_down_last = [False] * 16
 
@@ -63,21 +64,21 @@ class MatrixDraw():
 
         self.aborted = False
 
-    def loadFont(self, filepath):
+    @staticmethod
+    def newColor(r: int, g: int, b: int):
+        if(PYGAME_MODE):
+            return pygame.Color(r, g, b)
+        else:
+            return graphics.Color(r, g, b)
+    
+    @staticmethod
+    def newFont(filepath):
         if(PYGAME_MODE):
             return bdf_reader.read_font(filepath)
-        
         else:
             font = graphics.Font()
             font.LoadFont(filepath)
             return font
-    
-    def newColor(self, r, g, b):
-        if(PYGAME_MODE):
-            return pygame.Color(r, g, b)
-    
-        else:
-            return graphics.Color(r, g, b)
 
     def rect(self, x, y, w, h, col):
         if(PYGAME_MODE):
@@ -189,8 +190,6 @@ class MatrixDraw():
     # Draws all the changes
     def flip(self):
         if(PYGAME_MODE):
-            #self.screen.blit(self.lcd_text_1, (0, HEIGHT_PIXELS * 4 + 0))
-            #self.screen.blit(self.lcd_text_2, (0, HEIGHT_PIXELS * 4 + LCD_MARGIN // 2))
             pygame.display.flip()
             self.clock.tick(60)
         else:
@@ -199,6 +198,33 @@ class MatrixDraw():
         self.detect_keypresses()
         self.clear()
 
+# Colours, fonts, etc
+
+Palette = {
+    "red":     MatrixDraw.newColor(255,   0,   0),
+    "orange":  MatrixDraw.newColor(255, 127,   0),
+    "yellow":  MatrixDraw.newColor(255, 255,   0),
+    "lime":    MatrixDraw.newColor(127, 255,   0),
+    "green":   MatrixDraw.newColor(  0, 255,   0),
+    "seafoam": MatrixDraw.newColor(  0, 255, 127),
+    "cyan":    MatrixDraw.newColor(  0, 255, 255),
+    "ocean":   MatrixDraw.newColor(  0, 127, 255),
+    "blue":    MatrixDraw.newColor(  0,   0, 255),
+    "purple":  MatrixDraw.newColor(127,   0, 255),
+    "magenta": MatrixDraw.newColor(255,   0, 255),
+    "pink":    MatrixDraw.newColor(255,   0, 127),
+
+    "white":   MatrixDraw.newColor(255, 255, 255),
+    "gray":    MatrixDraw.newColor(127, 127, 127),
+    "dgray":   MatrixDraw.newColor( 64,  64,  64),
+    "black":   MatrixDraw.newColor(  0,   0,   0)
+}
+
+Fonts = {
+    "tiny":  MatrixDraw.newFont("led/fonts/miniscule.bdf"),
+    "small": MatrixDraw.newFont("led/fonts/tom-thumb.bdf"),
+    "big":   MatrixDraw.newFont("led/fonts/5x8.bdf")
+}
 
 if(__name__ == "__main__"):
     def wait():
@@ -265,5 +291,3 @@ if(__name__ == "__main__"):
     artist.print("64, 16", 64, 16, artist.newColor(255, 255, 255), font2)
     artist.flip()
     wait()
-    
-    
