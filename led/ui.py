@@ -1,4 +1,4 @@
-from draw_lib import MatrixDraw
+from led.draw_lib import MatrixDraw
 import constants
 
 class UserInterface():

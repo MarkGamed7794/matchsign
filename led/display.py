@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import time
 from led.draw_lib import MatrixDraw, Palette, Fonts
-from ui import UserInterface
+from led.ui import UserInterface
 import data_process_2 as data_process
 import constants
 
@@ -10,32 +10,6 @@ DEBUG_MODE = constants.DEBUG_MODE
 def main(conn_recieve):
     draw = MatrixDraw()
     current_data = None
-    
-    fonts = {
-        "tiny":  draw.loadFont("led/fonts/miniscule.bdf"),
-        "small": draw.loadFont("led/fonts/tom-thumb.bdf"),
-        "big":   draw.loadFont("led/fonts/5x8.bdf")
-    }
-
-    palette = {
-        "red":     draw.newColor(255,   0,   0),
-        "orange":  draw.newColor(255, 127,   0),
-        "yellow":  draw.newColor(255, 255,   0),
-        "lime":    draw.newColor(127, 255,   0),
-        "green":   draw.newColor(  0, 255,   0),
-        "seafoam": draw.newColor(  0, 255, 127),
-        "cyan":    draw.newColor(  0, 255, 255),
-        "ocean":   draw.newColor(  0, 127, 255),
-        "blue":    draw.newColor(  0,   0, 255),
-        "purple":  draw.newColor(127,   0, 255),
-        "magenta": draw.newColor(255,   0, 255),
-        "pink":    draw.newColor(255,   0, 127),
-
-        "white":   draw.newColor(255, 255, 255),
-        "gray":    draw.newColor(127, 127, 127),
-        "dgray":   draw.newColor( 64,  64,  64),
-        "black":   draw.newColor(  0,   0,   0)
-    }
 
     selected_match = 0
 
