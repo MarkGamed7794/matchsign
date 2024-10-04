@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import time
-import sys
 from led.draw_lib import MatrixDraw
 import data_process_2 as data_process
 import constants

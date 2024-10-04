@@ -1,7 +1,6 @@
 # -- DATA REQUESTS -- #
 
-import yaml
-import dotenv
+import yaml, dotenv
 
 with open("configuration/constants.yaml", 'r') as file:
     constants = yaml.safe_load(file)

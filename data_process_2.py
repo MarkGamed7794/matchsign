@@ -1,7 +1,6 @@
 # Unified Team Layout datastructures
 
 from enum import Enum
-import json
 import time
 
 class DataFlavor(Enum):

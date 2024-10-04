@@ -1,11 +1,7 @@
-import multiprocessing
-import os
+import multiprocessing, os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # I shouldn't have to do this, and yet here we are
 
-import data_request
-import led.display
-
-import constants
+import data_request, led.display, constants
 
 def main():
     conn_recieve, conn_send = multiprocessing.Pipe(False)
