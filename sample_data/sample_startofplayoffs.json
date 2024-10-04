@@ -1,0 +1,316 @@
+{
+    "Schedule": [
+        {
+            "description": "Qualification 1",
+            "startTime": "2023-11-05T08:30:00",
+            "matchNumber": 1,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 1360,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 7659,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 2852,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 7558,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4907,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Match 3 (R1)",
+            "startTime": "2023-11-05T16:15:21.66",
+            "matchNumber": 3,
+            "field": "Primary",
+            "tournamentLevel": "Playoff",
+            "teams": [
+                {
+                    "teamNumber": 1325,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 1241,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 2609,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 1360,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 865,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 5",
+            "startTime": "2023-11-05T09:10:00",
+            "matchNumber": 5,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 1241,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 9999,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4907,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 2702,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4152,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 13",
+            "startTime": "2023-11-05T10:30:00",
+            "matchNumber": 13,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 1360,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4343,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 7520,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 8884,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 2708,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 16",
+            "startTime": "2023-11-05T11:00:00",
+            "matchNumber": 16,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 4308,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 9062,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4343,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 6135,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 781,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 5834,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 21",
+            "startTime": "2023-11-05T11:50:00",
+            "matchNumber": 21,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 7659,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 5834,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 6978,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 865,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 8884,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 24",
+            "startTime": "2023-11-05T13:20:00",
+            "matchNumber": 24,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 7623,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 8884,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 7659,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 9999,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 7480,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        },
+        {
+            "description": "Qualification 31",
+            "startTime": "2023-11-05T14:30:00",
+            "matchNumber": 31,
+            "field": "Primary",
+            "tournamentLevel": "Qualification",
+            "teams": [
+                {
+                    "teamNumber": 2013,
+                    "station": "Red1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 4308,
+                    "station": "Red2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 2609,
+                    "station": "Red3",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 5834,
+                    "station": "Blue1",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 5719,
+                    "station": "Blue2",
+                    "surrogate": false
+                },
+                {
+                    "teamNumber": 5596,
+                    "station": "Blue3",
+                    "surrogate": false
+                }
+            ]
+        }
+    ]
+}

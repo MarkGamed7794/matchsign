@@ -1,0 +1,54 @@
+requests:
+  disable_requests: false # If true, disables all outgoing API requests.
+  request_source: TBA # Either TBA or FRC.
+  tba_cache_filepath: "tba_cache.txt" # The file that the TBA ETag is stored in.
+  request_timeout: 300 # The amount of time between requests, in seconds.
+
+  response_cache:
+    use_cache: true # If true, uses the cached response instead of making a new one.
+    save_response: false # If true, saves responses to the cache.
+    cache_filepath: "request_output.txt" # Where the cached response is read from.
+
+  request_parameters:
+    retry_limit: 5 # The maximum amount of times to retry a failed request.
+    print_response_body: true # If true, prints the entire response body to the console.
+
+# Input is a 4x4 keypad. The top left key has ID 0, the one to its right ID 1,
+# and so on; e.g. third row, first column is ID 8.
+
+keymap:
+  button_select: 5 # Used for a general "OK" or "SELECT" option when navigating menus.
+  button_left:   4 # Next; scroll right.
+  button_right:  6 # Previous; scroll left.
+  button_up:     1 # Scroll up.
+  button_down:   9 # Scroll down.
+
+input:
+  rpi_keypad_rows: [33, 35, 37, 39] # The pins connected to each row of the keypad.
+  rpi_keypad_cols: [34, 36, 38, 40] # The pins connected to each column of the keypad.
+
+output:
+  pygame_mode: true # If true, renders output to a Pygame window instead of the LED displays.
+
+  led:
+    cols: 64 # The amount of columns per LED panel.
+    rows: 32 # The amount of rows per LED panel.
+    chain_length: 2 # The amount of panels in each chain.
+    chain_count: 1 # The amount of chains.
+  
+# In addition to these values, in order for HTTP requests to work,
+# you need to obtain API keys for the FRC and TBA APIs. Place them in
+# a .env file in the root of this project (i.e. the one main.py is in),
+# with the keys FRC_AUTH and TBA_AUTH respectively.
+
+# A sample .env file would be as follows:
+
+# FRC_AUTH=username:00000000-0000-0000-0000-000000000000
+# TBA_AUTH=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# You should, of course, replace these with your actual API keys.
+
+# Note that the key you get from the FRC API is not in its correct format:
+# you need to add your username to the beginning, and seperate your username
+# from the key with a colon ":". It should look something like in the
+# example above.

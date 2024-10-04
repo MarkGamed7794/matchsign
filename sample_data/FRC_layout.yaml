@@ -1,0 +1,20 @@
+Main:
+  Schedule: Match[]
+
+Team:
+  teamNumber: int
+  station: "Red1" / "Red2" / "Red3" / "Blue1" / "Blue2" / "Blue3"
+  surrogate: bool
+
+Match:
+  # Time
+  startTime: "####-##-##T##:##:##"
+
+  # Schedule
+  description: "Qualification 1" etc.
+  tournamentLevel: "Qualification" / ...?
+  matchNumber: int
+
+  # Match Information
+  field: "Primary" / ...?
+  teams: Team[]

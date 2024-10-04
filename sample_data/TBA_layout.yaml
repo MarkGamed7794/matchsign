@@ -1,0 +1,121 @@
+TeamKey: "frcXXXX"
+
+TeamLayout:
+    dq_team_keys: TeamKey[]
+    surrogate_team_keys: TeamKey[]
+    team_keys: TeamKey[]
+    score: int
+
+
+# SCORING #
+
+CommunityLayout:
+    B: ("None" / "Cone" / "Cube")[9]
+    M: ("None" / "Cone" / "Cube")[9]
+    T: ("None" / "Cone" / "Cube")[9]
+
+Link:
+    nodes: int[3]
+    row: "Top" / "Middle" / "Bottom"
+
+ScoreBreakdown:
+    # Tournament Information
+    rp: int
+
+    # Scoring
+    adjustPoints: int
+    totalPoints: int
+
+    # Auto
+    autoPoints: int
+    autoLeavePoints: int
+    autoLineRobot1: "No" / "Yes"
+    autoLineRobot2: "No" / "Yes"
+    autoLineRobot3: "No" / "Yes"
+
+    # Endgame
+    endGameHarmonyPoints: int
+    endGameNoteInTrapPoints: int
+    endGameOnStagePoints: int
+    endGameParkPoints: int
+    endGameRobot1: "None" / "Parked"
+    endGameRobot2: "None" / "Parked"
+    endGameRobot3: "None" / "Parked"
+    endGameSpotLightBonusPoints: int
+    endGameTotalStagePoints: int
+
+    # Ensemble
+    ensembleBonusAchieved: bool
+    ensembleBonusOnStageRobotsThreshold: int
+    ensembleBonusStagePointsThreshold: int
+
+    # Fouls
+    foulCount: int
+    foulPoints: int
+    g206Penalty: bool
+    g408Penalty: bool
+    g424Penalty: bool
+    techFoulCount: int
+
+    # Melody Bonus
+    melodyBonusAchieved: bool
+    melodyBonusThreshold: int
+    melodyBonusThresholdCoop: int
+    melodyBonusThresholdNonCoop: int
+
+    # Microphone
+    micCenterStage: bool
+    micStageLeft: bool
+    micstageRight: bool
+
+    # Notes
+    autoAmpNoteCount: int
+    autoAmpNotePoints: int
+    autoSpeakerNoteCount: int
+    autoSpeakerNotePoints: int
+    autoTotalNotePoints: int
+
+    # Coopertition
+    coopNotePlayed: bool
+    coopertitionBonusAchieved: bool
+    coopertitionCriteriaMet: bool
+
+    # Teleop
+    teleopAmpNoteCount: int
+    teleopAmpNotePoints: int
+    teleopPoints: int
+    teleopSpeakerNoteAmplifiedCount: int
+    teleopSpeakerNoteAmplifiedPoints: int
+    teleopSpeakerNoteCount: 5
+    teleopSpeakerNotePoints: int
+    teleopTotalNotePoints: int
+
+    # Traps
+    trapCenterStage: bool
+    trapStageLeft: bool
+    trapStageRight: bool
+
+
+# MATCHES #
+
+Match:
+    # Time
+    actual_time: int
+    post_result_time: int
+    predicted_time: int
+    time: int
+
+    # Schedule
+    comp_level: "f" / "sf" / "qf" / ...?
+    match_number: int
+    set_number: int
+
+    # Match Information
+    key: "2023xxxxx_A#m#"
+    event_key: "2023xxxxx"
+    alliances: {blue: TeamLayout, red: TeamLayout}
+    videos: string[]
+
+    # Results
+    score_breakdown: {blue: ScoreBreakdown, red: ScoreBreakdown}
+    winning_alliance: "blue" / "red"

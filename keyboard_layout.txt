@@ -1,0 +1,40 @@
+64px layout:
+
+Shifted:
+
+! @ # $ % ^ & * ( ) _ +
+Q W E R T Y U I O P { }
+ A S D F G H J K L : "
+~ Z X C V B N M < > ? |
+SHIFT SPACE DELETE   OK
+
+Unshifted:
+
+1 2 3 4 5 6 7 8 9 0 - =
+q w e r t y u i o p [ ]
+ a s d f g h j k l ; '
+` z x c v b n m , . / \
+SHIFT SPACE BKSP SUBMIT
+
+
+
+
+32px layout:
+
+Symbol:
+
+! @ # $ % ^ * ( ) - _ DELETE
+? ` ~ < > { } [ ] . , SUBMIT
+\ | + = ' " : ; SPACE  LOWER
+
+Shifted:
+
+A B C D E F G H I - _ DELETE
+J K L M N O P Q R . , SUBMIT
+S T U V W X Y Z SPACE SYMBOL
+
+Unshifted:
+
+a b c d e f g h i - _ DELETE
+j k l m n o p q r . , SUBMIT
+s t u v w x y z SPACE  UPPER

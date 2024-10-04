@@ -1,0 +1,69 @@
+16:15:08 [LIGHT] Refresh successful.
+16:15:08 [HTTP] Attempting to make request to FRC servers...
+16:15:09 [LIGHT] Refresh successful.
+16:15:10 [LIGHT] Refresh successful.
+16:15:11 [LIGHT] Refresh successful.
+16:15:12 [LIGHT] Refresh successful.
+16:15:13 [LIGHT] Refresh successful.
+16:15:14 [LIGHT] Refresh successful.
+16:15:15 [LIGHT] Refresh successful.
+16:15:16 [LIGHT] Refresh successful.
+16:15:17 [LIGHT] Refresh successful.
+16:15:18 [LIGHT] Refresh successful.
+16:15:19 [LIGHT] Refresh successful.
+16:15:20 [LIGHT] Refresh successful.
+16:15:21 [LIGHT] Refresh successful.
+16:15:22 [LIGHT] Refresh successful.
+16:15:23 [LIGHT] Refresh successful.
+Status code: 200
+Headers: <CIMultiDictProxy('Cache-Control': 'public, max-age=300', 'Content-Type': 'application/json; charset=utf-8', 'Last-Modified': 'Sun, 05 Nov 2023 21:00:27 GMT', 'Server': 'Kestrel', 'Date': 'Sun, 05 Nov 2023 21:15:24 GMT', 'Content-Length': '486')>
+Response: {"Schedule":[{"description":"Match 3 (R1)","startTime":"2023-11-05T16:15:21.66","matchNumber":3,"field":"Primary","tournamentLevel":"Playoff","teams":[{"teamNumber":1325,"station":"Red1","surrogate":false},{"teamNumber":1241,"station":"Red2","surrogate":false},{"teamNumber":4308,"station":"Red3","surrogate":false},{"teamNumber":2609,"station":"Blue1","surrogate":false},{"teamNumber":1360,"station":"Blue2","surrogate":false},{"teamNumber":865,"station":"Blue3","surrogate":false}]}]}
+16:15:24 [HTTP] Success!
+16:15:24 [MAIN] Request marked as complete, awaiting new data
+16:15:24 {"Schedule":[{"description":"Match 3 (R1)","startTime":"2023-11-05T16:15:21.66","matchNumber":3,"field":"Primary","tournamentLevel":"Playoff","teams":[{"teamNumber":1325,"station":"Red1","surrogate":false},{"teamNumber":1241,"station":"Red2","surrogate":false},{"teamNumber":4308,"station":"Red3","surrogate":false},{"teamNumber":2609,"station":"Blue1","surrogate":false},{"teamNumber":1360,"station":"Blue2","surrogate":false},{"teamNumber":865,"station":"Blue3","surrogate":false}]}]}
+[MAIN] Data accepted, restarting request task
+16:15:24 [LIGHT] Refresh successful.
+16:15:24 [HTTP] Request scheduled to be made in 20 seconds.
+16:15:25 [LIGHT] Refresh successful.
+16:15:26 [LIGHT] Refresh successful.
+16:15:27 [LIGHT] Refresh successful.
+16:15:28 [LIGHT] Refresh successful.
+16:15:29 [LIGHT] Refresh successful.
+16:15:30 [LIGHT] Refresh successful.
+16:15:31 [LIGHT] Refresh successful.
+16:15:32 [LIGHT] Refresh successful.
+16:15:33 [LIGHT] Refresh successful.
+16:15:34 [LIGHT] Refresh successful.
+16:15:35 [LIGHT] Refresh successful.
+16:15:37 [LIGHT] Refresh successful.
+16:15:38 [LIGHT] Refresh successful.
+16:15:39 [LIGHT] Refresh successful.
+16:15:40 [LIGHT] Refresh successful.
+16:15:41 [LIGHT] Refresh successful.
+16:15:42 [LIGHT] Refresh successful.
+16:15:43 [LIGHT] Refresh successful.
+16:15:44 [LIGHT] Refresh successful.
+16:15:44 [HTTP] Attempting to make request to FRC servers...
+16:15:45 [LIGHT] Refresh successful.
+16:15:46 [LIGHT] Refresh successful.
+16:15:47 [LIGHT] Refresh successful.
+16:15:48 [LIGHT] Refresh successful.
+16:15:49 [LIGHT] Refresh successful.
+16:15:50 [LIGHT] Refresh successful.
+16:15:51 [LIGHT] Refresh successful.
+16:15:52 [LIGHT] Refresh successful.
+16:15:53 [LIGHT] Refresh successful.
+16:15:54 [LIGHT] Refresh successful.
+16:15:55 [LIGHT] Refresh successful.
+16:15:56 [LIGHT] Refresh successful.
+Status code: 200
+Headers: <CIMultiDictProxy('Cache-Control': 'public, max-age=300', 'Content-Type': 'application/json; charset=utf-8', 'Last-Modified': 'Sun, 05 Nov 2023 21:00:27 GMT', 'Server': 'Kestrel', 'Date': 'Sun, 05 Nov 2023 21:15:56 GMT', 'Content-Length': '486')>
+Response: {"Schedule":[{"description":"Match 3 (R1)","startTime":"2023-11-05T16:15:21.66","matchNumber":3,"field":"Primary","tournamentLevel":"Playoff","teams":[{"teamNumber":1325,"station":"Red1","surrogate":false},{"teamNumber":1241,"station":"Red2","surrogate":false},{"teamNumber":4308,"station":"Red3","surrogate":false},{"teamNumber":2609,"station":"Blue1","surrogate":false},{"teamNumber":1360,"station":"Blue2","surrogate":false},{"teamNumber":865,"station":"Blue3","surrogate":false}]}]}
+16:15:56 [HTTP] Success!
+16:15:57 [MAIN] Request marked as complete, awaiting new data
+16:15:57 {"Schedule":[{"description":"Match 3 (R1)","startTime":"2023-11-05T16:15:21.66","matchNumber":3,"field":"Primary","tournamentLevel":"Playoff","teams":[{"teamNumber":1325,"station":"Red1","surrogate":false},{"teamNumber":1241,"station":"Red2","surrogate":false},{"teamNumber":4308,"station":"Red3","surrogate":false},{"teamNumber":2609,"station":"Blue1","surrogate":false},{"teamNumber":1360,"station":"Blue2","surrogate":false},{"teamNumber":865,"station":"Blue3","surrogate":false}]}]}
+[MAIN] Data accepted, restarting request task
+16:15:57 [LIGHT] Refresh successful.
+16:15:57 [HTTP] Request scheduled to be made in 20 seconds.
+16:15:58 [LIGHT] Refresh successful.
+16:15:59 [LIGHT] Refresh successful.

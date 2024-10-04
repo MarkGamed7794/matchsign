@@ -1,0 +1,890 @@
+[
+    {
+        "actual_time": 1709312236,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 34,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc8503",
+                    "frc7287",
+                    "frc216"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 60,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9641",
+                    "frc359",
+                    "frc9277"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm1",
+        "match_number": 1,
+        "post_result_time": 1709312529,
+        "predicted_time": 1709312400,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 4,
+                "autoLineRobot1": "No",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "Yes",
+                "autoPoints": 4,
+                "autoSpeakerNoteCount": 0,
+                "autoSpeakerNotePoints": 0,
+                "autoTotalNotePoints": 0,
+                "coopNotePlayed": true,
+                "coopertitionBonusAchieved": true,
+                "coopertitionCriteriaMet": true,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 2,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "Parked",
+                "endGameRobot3": "None",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 2,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 15,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": true,
+                "micStageRight": false,
+                "rp": 0,
+                "techFoulCount": 1,
+                "teleopAmpNoteCount": 3,
+                "teleopAmpNotePoints": 3,
+                "teleopPoints": 25,
+                "teleopSpeakerNoteAmplifiedCount": 2,
+                "teleopSpeakerNoteAmplifiedPoints": 10,
+                "teleopSpeakerNoteCount": 5,
+                "teleopSpeakerNotePoints": 10,
+                "teleopTotalNotePoints": 23,
+                "totalPoints": 34,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 2,
+                "autoLineRobot1": "No",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "No",
+                "autoPoints": 17,
+                "autoSpeakerNoteCount": 3,
+                "autoSpeakerNotePoints": 15,
+                "autoTotalNotePoints": 15,
+                "coopNotePlayed": true,
+                "coopertitionBonusAchieved": true,
+                "coopertitionCriteriaMet": true,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 9,
+                "endGameParkPoints": 0,
+                "endGameRobot1": "CenterStage",
+                "endGameRobot2": "StageLeft",
+                "endGameRobot3": "StageRight",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 9,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 15,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 2,
+                "techFoulCount": 1,
+                "teleopAmpNoteCount": 5,
+                "teleopAmpNotePoints": 5,
+                "teleopPoints": 38,
+                "teleopSpeakerNoteAmplifiedCount": 4,
+                "teleopSpeakerNoteAmplifiedPoints": 20,
+                "teleopSpeakerNoteCount": 2,
+                "teleopSpeakerNotePoints": 4,
+                "teleopTotalNotePoints": 29,
+                "totalPoints": 60,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            }
+        },
+        "set_number": 1,
+        "time": 1709312400,
+        "videos": [
+            {
+                "key": "5Io9PhoUVho",
+                "type": "youtube"
+            }
+        ],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1709320259,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 35,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6188",
+                    "frc6351",
+                    "frc9641"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 25,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9649",
+                    "frc244",
+                    "frc9550"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm14",
+        "match_number": 14,
+        "post_result_time": 1709320509,
+        "predicted_time": 1709320300,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 0,
+                "autoLineRobot1": "No",
+                "autoLineRobot2": "No",
+                "autoLineRobot3": "No",
+                "autoPoints": 5,
+                "autoSpeakerNoteCount": 1,
+                "autoSpeakerNotePoints": 5,
+                "autoTotalNotePoints": 5,
+                "coopNotePlayed": true,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": true,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 3,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "Parked",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 3,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 11,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 2,
+                "techFoulCount": 1,
+                "teleopAmpNoteCount": 5,
+                "teleopAmpNotePoints": 5,
+                "teleopPoints": 19,
+                "teleopSpeakerNoteAmplifiedCount": 1,
+                "teleopSpeakerNoteAmplifiedPoints": 5,
+                "teleopSpeakerNoteCount": 3,
+                "teleopSpeakerNotePoints": 6,
+                "teleopTotalNotePoints": 16,
+                "totalPoints": 35,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 4,
+                "autoLineRobot1": "Yes",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "No",
+                "autoPoints": 4,
+                "autoSpeakerNoteCount": 0,
+                "autoSpeakerNotePoints": 0,
+                "autoTotalNotePoints": 0,
+                "coopNotePlayed": false,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": false,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 2,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "None",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 2,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 3,
+                "foulPoints": 5,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 0,
+                "techFoulCount": 1,
+                "teleopAmpNoteCount": 0,
+                "teleopAmpNotePoints": 0,
+                "teleopPoints": 16,
+                "teleopSpeakerNoteAmplifiedCount": 0,
+                "teleopSpeakerNoteAmplifiedPoints": 0,
+                "teleopSpeakerNoteCount": 7,
+                "teleopSpeakerNotePoints": 14,
+                "teleopTotalNotePoints": 14,
+                "totalPoints": 25,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            }
+        },
+        "set_number": 1,
+        "time": 1709319420,
+        "videos": [
+            {
+                "key": "Enp8fMzNwr0",
+                "type": "youtube"
+            }
+        ],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1709323034,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 28,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7173",
+                    "frc7796",
+                    "frc9641"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 48,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6902",
+                    "frc4270",
+                    "frc9550"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm19",
+        "match_number": 19,
+        "post_result_time": 1709323223,
+        "predicted_time": 1709323121,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 4,
+                "autoLineRobot1": "Yes",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "No",
+                "autoPoints": 9,
+                "autoSpeakerNoteCount": 1,
+                "autoSpeakerNotePoints": 5,
+                "autoTotalNotePoints": 5,
+                "coopNotePlayed": false,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": false,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 2,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "None",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 2,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 2,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 0,
+                "techFoulCount": 0,
+                "teleopAmpNoteCount": 1,
+                "teleopAmpNotePoints": 1,
+                "teleopPoints": 17,
+                "teleopSpeakerNoteAmplifiedCount": 0,
+                "teleopSpeakerNoteAmplifiedPoints": 0,
+                "teleopSpeakerNoteCount": 7,
+                "teleopSpeakerNotePoints": 14,
+                "teleopTotalNotePoints": 15,
+                "totalPoints": 28,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 4,
+                "autoLineRobot1": "Yes",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "No",
+                "autoPoints": 14,
+                "autoSpeakerNoteCount": 2,
+                "autoSpeakerNotePoints": 10,
+                "autoTotalNotePoints": 10,
+                "coopNotePlayed": false,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": false,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 5,
+                "endGameOnStagePoints": 3,
+                "endGameParkPoints": 1,
+                "endGameRobot1": "None",
+                "endGameRobot2": "StageLeft",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 9,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 1,
+                "foulPoints": 0,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 2,
+                "techFoulCount": 0,
+                "teleopAmpNoteCount": 4,
+                "teleopAmpNotePoints": 4,
+                "teleopPoints": 34,
+                "teleopSpeakerNoteAmplifiedCount": 3,
+                "teleopSpeakerNoteAmplifiedPoints": 15,
+                "teleopSpeakerNoteCount": 3,
+                "teleopSpeakerNotePoints": 6,
+                "teleopTotalNotePoints": 25,
+                "totalPoints": 48,
+                "trapCenterStage": false,
+                "trapStageLeft": true,
+                "trapStageRight": false
+            }
+        },
+        "set_number": 1,
+        "time": 1709322120,
+        "videos": [
+            {
+                "key": "0aqYXY4K1ag",
+                "type": "youtube"
+            }
+        ],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4421",
+                    "frc7688",
+                    "frc4253"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7190",
+                    "frc9641",
+                    "frc9449"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm29",
+        "match_number": 29,
+        "post_result_time": null,
+        "predicted_time": 1709330820,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709331720,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6390",
+                    "frc9641",
+                    "frc7688"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9277",
+                    "frc9292",
+                    "frc216"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm35",
+        "match_number": 35,
+        "post_result_time": null,
+        "predicted_time": 1709334060,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709334960,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4253",
+                    "frc5461",
+                    "frc7332"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7287",
+                    "frc6364",
+                    "frc9641"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm42",
+        "match_number": 42,
+        "post_result_time": null,
+        "predicted_time": 1709337840,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709338740,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9641",
+                    "frc288",
+                    "frc4253"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6390",
+                    "frc1452",
+                    "frc7173"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm47",
+        "match_number": 47,
+        "post_result_time": null,
+        "predicted_time": 1709340540,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709341440,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc288",
+                    "frc9649",
+                    "frc4627"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1452",
+                    "frc9550",
+                    "frc9641"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm50",
+        "match_number": 50,
+        "post_result_time": null,
+        "predicted_time": 1709342160,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709343060,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7287",
+                    "frc6390",
+                    "frc7135"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9641",
+                    "frc1622",
+                    "frc6902"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm56",
+        "match_number": 56,
+        "post_result_time": null,
+        "predicted_time": 1709400960,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709400960,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9641",
+                    "frc9292",
+                    "frc4270"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6188",
+                    "frc8338",
+                    "frc7796"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm61",
+        "match_number": 61,
+        "post_result_time": null,
+        "predicted_time": 1709403660,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709403660,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1709316292,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 75,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6364",
+                    "frc359",
+                    "frc9449"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 20,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9649",
+                    "frc9641",
+                    "frc5461"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm7",
+        "match_number": 7,
+        "post_result_time": 1709316470,
+        "predicted_time": 1709316296,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 2,
+                "autoLineRobot1": "No",
+                "autoLineRobot2": "Yes",
+                "autoLineRobot3": "No",
+                "autoPoints": 32,
+                "autoSpeakerNoteCount": 6,
+                "autoSpeakerNotePoints": 30,
+                "autoTotalNotePoints": 30,
+                "coopNotePlayed": true,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": true,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 3,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "Parked",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 3,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": true,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": false,
+                "micStageRight": false,
+                "rp": 3,
+                "techFoulCount": 0,
+                "teleopAmpNoteCount": 5,
+                "teleopAmpNotePoints": 5,
+                "teleopPoints": 38,
+                "teleopSpeakerNoteAmplifiedCount": 4,
+                "teleopSpeakerNoteAmplifiedPoints": 20,
+                "teleopSpeakerNoteCount": 5,
+                "teleopSpeakerNotePoints": 10,
+                "teleopTotalNotePoints": 35,
+                "totalPoints": 75,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoAmpNoteCount": 0,
+                "autoAmpNotePoints": 0,
+                "autoLeavePoints": 4,
+                "autoLineRobot1": "Yes",
+                "autoLineRobot2": "No",
+                "autoLineRobot3": "Yes",
+                "autoPoints": 9,
+                "autoSpeakerNoteCount": 1,
+                "autoSpeakerNotePoints": 5,
+                "autoTotalNotePoints": 5,
+                "coopNotePlayed": false,
+                "coopertitionBonusAchieved": false,
+                "coopertitionCriteriaMet": false,
+                "endGameHarmonyPoints": 0,
+                "endGameNoteInTrapPoints": 0,
+                "endGameOnStagePoints": 0,
+                "endGameParkPoints": 3,
+                "endGameRobot1": "Parked",
+                "endGameRobot2": "Parked",
+                "endGameRobot3": "Parked",
+                "endGameSpotLightBonusPoints": 0,
+                "endGameTotalStagePoints": 3,
+                "ensembleBonusAchieved": false,
+                "ensembleBonusOnStageRobotsThreshold": 2,
+                "ensembleBonusStagePointsThreshold": 10,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "g206Penalty": false,
+                "g408Penalty": false,
+                "g424Penalty": false,
+                "melodyBonusAchieved": false,
+                "melodyBonusThreshold": 18,
+                "melodyBonusThresholdCoop": 15,
+                "melodyBonusThresholdNonCoop": 18,
+                "micCenterStage": false,
+                "micStageLeft": true,
+                "micStageRight": false,
+                "rp": 0,
+                "techFoulCount": 1,
+                "teleopAmpNoteCount": 0,
+                "teleopAmpNotePoints": 0,
+                "teleopPoints": 11,
+                "teleopSpeakerNoteAmplifiedCount": 0,
+                "teleopSpeakerNoteAmplifiedPoints": 0,
+                "teleopSpeakerNoteCount": 4,
+                "teleopSpeakerNotePoints": 8,
+                "teleopTotalNotePoints": 8,
+                "totalPoints": 20,
+                "trapCenterStage": false,
+                "trapStageLeft": false,
+                "trapStageRight": false
+            }
+        },
+        "set_number": 1,
+        "time": 1709315640,
+        "videos": [
+            {
+                "key": "fHnSQ43T5wI",
+                "type": "youtube"
+            }
+        ],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7190",
+                    "frc216",
+                    "frc5516"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc9719",
+                    "frc9641",
+                    "frc8338"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2024bcvi",
+        "key": "2024bcvi_qm72",
+        "match_number": 72,
+        "post_result_time": null,
+        "predicted_time": 1709409600,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1709409600,
+        "videos": [],
+        "winning_alliance": ""
+    }
+]
