@@ -154,11 +154,27 @@ class Match():
         if(self.tournament_level in tournament_level_names):
             return tournament_level_names[self.tournament_level]
         return "[invalid TL]"
-        
     
-    def get_match_name(self, short = False):
+    def get_match_number_extra(self):
+        if(self.set_number and self.match_number):
+            if(self.tournament_level == TournamentLevel.QUALIFICATION):
+                return ""
+            elif(self.tournament_level.value < TournamentLevel.FINAL.value):
+                if(self.match_number > 1):
+                    return f"PLAY {self.match_number}"
+                else:
+                    return ""
+            elif(self.tournament_level == TournamentLevel.FINAL):
+                return f"ROUND {self.match_number}"
+        
+        return ""
+    
+    def get_match_name(self, short = False, include_extra = True):
         if(self.set_number and self.tournament_level.value > TournamentLevel.QUALIFICATION.value):
-            return f"{self.get_tournament_level_name(short)}{"" if short else " "}{self.set_number}-{self.match_number}"
+            out = f"{self.get_tournament_level_name(short)}{"" if short else " "}{self.set_number}"
+            if(include_extra and not (self.tournament_level.value < TournamentLevel.FINAL.value and self.match_number == 1)):
+                out += f"-{self.match_number}"
+            return out
         elif(self.match_number):
             return f"{self.get_tournament_level_name(short)}{"" if short else " "}{self.match_number}"
         else:

@@ -67,12 +67,12 @@ def main(conn_recieve):
 
 
         # time, match no, etc.
-        draw.print("MATCH", 28, 4, Palette["gray"], Fonts["tiny"])
-        draw.print(current_match.get_match_name(short=True), 29, 12, Palette["white"], Fonts["big"])
+        draw.print(current_match.get_match_name(include_extra=False), 64, 12, Palette["white"], Fonts["small"], align="c")
+        draw.print(current_match.get_match_number_extra(), 64, 18, Palette["white"], Fonts["tiny"], align="c")
         
-        draw.print("EST. START", 99, 4, Palette["gray"], Fonts["tiny"], align="r")
-        draw.print(f"{(time.strftime('%I:%M', current_match.planned_start_time)).lower()}", 90, 12, Palette["white"], Fonts["big"], align="r")
-        draw.print(f"{(time.strftime('%p', current_match.planned_start_time)).upper()}", 98, 13, Palette["white"], Fonts["tiny"], align="r")
+        draw.print("EST.", 29, 28, Palette["gray"], Fonts["tiny"], align="l")
+        draw.print(f"{(time.strftime('%I:%M', current_match.planned_start_time)).lower()}", 91, 29, Palette["white"], Fonts["big"], align="r")
+        draw.print(f"{(time.strftime('%p', current_match.planned_start_time)).upper()}", 99, 29, Palette["white"], Fonts["tiny"], align="r")
         
 
     while not draw.aborted:
