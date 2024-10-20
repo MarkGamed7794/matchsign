@@ -9,8 +9,8 @@ if __name__ == "__main__":
 import constants
 
 PYGAME_MODE = True
-WIDTH_PIXELS = constants.LED_WIDTH * constants.LED_CHAIN_LENGTH
-HEIGHT_PIXELS = constants.LED_HEIGHT * constants.LED_CHAIN_COUNT
+WIDTH_PIXELS = 128
+HEIGHT_PIXELS = 64
 
 FontCache = {}
 
@@ -25,14 +25,15 @@ class MatrixDraw():
     def __init__(self, matrix=None):
         if(PYGAME_MODE):
             pygame.init()
-            self.screen = pygame.display.set_mode((WIDTH_PIXELS * 4, HEIGHT_PIXELS * 4))
+            self.screen = pygame.display.set_mode((WIDTH_PIXELS * 8, HEIGHT_PIXELS * 8))
             self.clock = pygame.time.Clock()
         else:
             # Configuration for the matrix
             options = RGBMatrixOptions()
-            options.rows = constants.LED_HEIGHT
-            options.cols = constants.LED_WIDTH
-            options.chain_length = constants.LED_CHAIN_LENGTH
+            options.rows = 32
+            options.cols = 64
+            options.chain_length = 4
+            options.pixel_mapper_config = "U-mapper" # Turns the 256x32 screen into a 128x64 one
             options.parallel = 1
             options.hardware_mapping = 'regular'
             options.gpio_slowdown = 4
@@ -82,7 +83,7 @@ class MatrixDraw():
 
     def rect(self, x, y, w, h, col):
         if(PYGAME_MODE):
-            pygame.draw.rect(self.screen, col, pygame.Rect(x * 4, y * 4, w * 4, h * 4))
+            pygame.draw.rect(self.screen, col, pygame.Rect(x * 8, y * 8, w * 8, h * 8))
         
         else:
             r, g, b = col.red, col.green, col.blue
