@@ -171,12 +171,12 @@ class Match():
     
     def get_match_name(self, short = False, include_extra = True):
         if(self.set_number and self.tournament_level.value > TournamentLevel.QUALIFICATION.value):
-            out = f"{self.get_tournament_level_name(short)}{"" if short else " "}{self.set_number}"
+            out = f"{self.get_tournament_level_name(short)}{'' if short else ' '}{self.set_number}"
             if(include_extra and not (self.tournament_level.value < TournamentLevel.FINAL.value and self.match_number == 1)):
                 out += f"-{self.match_number}"
             return out
         elif(self.match_number):
-            return f"{self.get_tournament_level_name(short)}{"" if short else " "}{self.match_number}"
+            return f"{self.get_tournament_level_name(short)}{'' if short else ' '}{self.match_number}"
         else:
             return f"[invalid match]"
         
