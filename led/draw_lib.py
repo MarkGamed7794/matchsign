@@ -151,7 +151,7 @@ class MatrixDraw():
             return sum(font["widths"][char] for char in text) - 1
 
         else:
-            return sum(font.CharacterWidth(char) for char in text) - 1
+            return sum(font.CharacterWidth(ord(char)) for char in text) - 1
 
     def clear(self):
         if(PYGAME_MODE):
