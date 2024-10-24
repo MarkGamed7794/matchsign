@@ -97,9 +97,9 @@ class MatrixDraw():
         
         else:
             r, g, b = col.red, col.green, col.blue
-            for y in range(y, y+h):
-                for x in range(x, x+w):
-                    self.alt_buffer.SetPixel(x, y, r, g, b)
+            for dy in range(y, y+h):
+                for dx in range(x, x+w):
+                    self.alt_buffer.SetPixel(dx, dy, r, g, b)
 
     def setPixel(self, x, y, col):
         if(self.scissor != None):
