@@ -64,6 +64,7 @@ class MatrixDraw():
         # C D E F
 
         self.aborted = False
+        self.scissor = None # If this is a 4-tuple (left, top, right, bottom), all drawing operations will be confined to that area
 
     @staticmethod
     def newColor(r: int, g: int, b: int):
@@ -83,7 +84,16 @@ class MatrixDraw():
 
     def rect(self, x, y, w, h, col):
         if(PYGAME_MODE):
-            pygame.draw.rect(self.screen, col, pygame.Rect(x * 8, y * 8, w * 8, h * 8))
+            if(self.scissor != None):
+                x1, y1 = max(x, self.scissor[0]), max(y, self.scissor[1])
+                pygame.draw.rect(self.screen, col, pygame.Rect(
+                    x1 * 8,
+                    y1 * 8,
+                    (min(x + w, self.scissor[2] + 1) - x1) * 8,
+                    (min(y + h, self.scissor[3] + 1) - y1) * 8
+                ))
+            else:
+                pygame.draw.rect(self.screen, col, pygame.Rect(x * 8, y * 8, w * 8, h * 8))
         
         else:
             r, g, b = col.red, col.green, col.blue
@@ -92,11 +102,22 @@ class MatrixDraw():
                     self.alt_buffer.SetPixel(x, y, r, g, b)
 
     def setPixel(self, x, y, col):
+        if(self.scissor != None):
+            # Don't do anything if the pixel falls outside the scissor region
+            if(not (self.scissor[0] <= x <= self.scissor[2] and self.scissor[1] <= y <= self.scissor[3])):
+                return
+        
+
         if(PYGAME_MODE):
             self.rect(x, y, 1, 1, col)
-        
         else:
             self.alt_buffer.SetPixel(x, y, col.red, col.green, col.blue)
+
+    def setScissor(self, left, top, right, bottom):
+        self.scissor = (left, top, right, bottom)
+
+    def disableScissor(self):
+        self.scissor = None
 
     def print(self, text, x, y, col, font, align = "l"):
         if(align == "l"): align_offset = 0
@@ -218,7 +239,9 @@ Palette = {
     "white":   MatrixDraw.newColor(255, 255, 255),
     "gray":    MatrixDraw.newColor(127, 127, 127),
     "dgray":   MatrixDraw.newColor( 64,  64,  64),
-    "black":   MatrixDraw.newColor(  0,   0,   0)
+    "black":   MatrixDraw.newColor(  0,   0,   0),
+
+    "dyellow": MatrixDraw.newColor( 80,  80,   0)
 }
 
 Fonts = {

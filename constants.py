@@ -9,6 +9,8 @@ with open("configuration/request_params.yaml", 'r') as file:
 
 DEBUG_MODE = False
 
+TEAM_NUMBER = constants["team_number"]
+
 DISABLE_REQUESTS = constants["requests"]["disable_requests"]
 REQUEST_SOURCE = constants["requests"]["request_source"]
 TBA_CACHE_FILEPATH = constants["requests"]["tba_cache_filepath"]
