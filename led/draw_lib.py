@@ -7,8 +7,8 @@ if __name__ == "__main__":
     sys.path.insert(0, parentdir)
 
 import constants
+from constants import PYGAME_MODE
 
-PYGAME_MODE = True
 WIDTH_PIXELS = 128
 HEIGHT_PIXELS = 64
 
