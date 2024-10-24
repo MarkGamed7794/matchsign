@@ -8,7 +8,6 @@ if __name__ == "__main__":
 
 import constants
 
-PYGAME_MODE = True
 WIDTH_PIXELS = 128
 HEIGHT_PIXELS = 64
 
