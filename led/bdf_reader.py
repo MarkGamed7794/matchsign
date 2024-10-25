@@ -1,6 +1,6 @@
 # Converts a BDF to a binary matrix.
 
-def read_font(filename):
+def read_font(filename: str) -> dict:
     characters = {
         "width": 0,
         "widths": {},

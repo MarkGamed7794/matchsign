@@ -33,7 +33,7 @@ class Alliance():
     def __init__(self):
         self.teams = [Team(), Team(), Team()]
 
-    def inherit(self, data, data_flavor):
+    def inherit(self, data: dict, data_flavor: DataFlavor):
         if(data_flavor == DataFlavor.FRC):
             # TODO: this
             pass
@@ -83,7 +83,7 @@ class Match():
     def __lt__ (self, other):
         return self.planned_start_time < other.planned_start_time
     
-    def inherit(self, data, flavor: DataFlavor):
+    def inherit(self, data: dict, flavor: DataFlavor):
         if(flavor == DataFlavor.FRC):
             # TODO: Pretty sure this returns UTC, and it needs to be converted to local time.
             self.planned_start_time = time.strptime(str.split(data["startTime"], ".")[0], "%Y-%m-%dT%H:%M:%S")

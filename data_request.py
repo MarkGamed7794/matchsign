@@ -1,5 +1,4 @@
 import requests, base64, json, time, os
-
 import data_process_2 as data_process
 import constants
 
@@ -25,7 +24,7 @@ TBA_HEADERS = {
 }
 
 
-def make_request(source):
+def make_request(source: str):
     # FRC path: https://frc-api.firstinspires.org/v3.0/{season}/schedule/{eventCode}?tournamentLevel={tournamentLevel}&teamNumber={teamNumber}&start={start}&end={end}
     # TBA path: https://www.thebluealliance.com/api/v3/team/{team_key}/event/{event_key}/matches
     if source == "FRC":

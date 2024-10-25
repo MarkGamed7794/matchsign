@@ -8,14 +8,14 @@ import constants
 DEBUG_MODE = constants.DEBUG_MODE
 
 def main(conn_recieve):
-    draw = MatrixDraw()
-    current_data = None
+    draw: MatrixDraw = MatrixDraw()
+    current_data: list[data_process.Match] = None
 
-    displayed_match = 0
+    displayed_match: int = 0
 
     # These are seperate variables solely for convenience; the latter is really only for visuals.
-    list_scroll = 0 # The amount of full entries scrolled down.
-    list_scroll_frac = 0 # Between 0 and 1, represents how much of the way the list is to being scrolled to the next entry.
+    list_scroll: int = 0 # The amount of full entries scrolled down.
+    list_scroll_frac: float = 0 # Between 0 and 1, represents how much of the way the list is to being scrolled to the next entry.
 
 
     def debug_menu():
@@ -168,8 +168,6 @@ def main(conn_recieve):
                     current_tb = current_tb.tb_next
                 
                 draw.print(traceback_msg, 1, 16, Palette["white"], Fonts["small"])
-
-
                 draw.flip()
         
         if(conn_recieve.poll()):

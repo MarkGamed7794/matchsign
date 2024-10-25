@@ -2,12 +2,16 @@ from led.draw_lib import MatrixDraw
 import constants
 
 class UserInterface():
+    draw:    MatrixDraw
+    palette: dict[str, MatrixDraw.Color]
+    fonts:   dict[str, MatrixDraw.Font]
+
     def __init__(self, draw: MatrixDraw, palette: dict, fonts: dict):
         self.draw = draw
         self.palette = palette
         self.fonts = fonts
 
-    def MenuSelect(self, header: str, options: list[str]):
+    def MenuSelect(self, header: str, options: list[str]) -> int:
         # fade in animation
         for box_position in range(self.draw.height, 0, -2):
             self.draw.rect(0, box_position, self.draw.width, self.draw.height - box_position, self.palette["black"])
@@ -29,17 +33,17 @@ class UserInterface():
 
         return selected_option
     
-    def TextEntryPrimitive(self, prompt: str, charset: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "):
+    def TextEntryPrimitive(self, prompt: str, charset: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ") -> str:
         # fade in animation
         for box_position in range(self.draw.height, 0, -2):
             self.draw.rect(0, box_position, self.draw.width, self.draw.height - box_position, self.palette["black"])
             self.draw.print(prompt, 1, box_position+3, self.palette["white"], self.fonts["small"])
             self.draw.flip()
 
-        cursor_pos = 0
-        typed = ""
-        framecount = 0
-        repeat_timer = 0
+        cursor_pos: int = 0
+        typed: str = ""
+        framecount: int = 0
+        repeat_timer: int = 0
 
         SPACING = 4
         MAX_OFFSET = ((self.draw.width // SPACING) - 1) // 2
@@ -77,17 +81,17 @@ class UserInterface():
             framecount = ((framecount + 1) % 60)
             self.draw.flip()
 
-    def NumberEntry(self, prompt: str):
+        return typed
+
+    def NumberEntry(self, prompt: str) -> int|None:
         # fade in animation
         for box_position in range(self.draw.height, 0, -2):
             self.draw.rect(0, box_position, self.draw.width, self.draw.height - box_position, self.palette["black"])
             self.draw.print(prompt, 1, box_position+3, self.palette["white"], self.fonts["small"])
             self.draw.flip()
 
-        cursor_pos = 0
-        typed = ""
-        framecount = 0
-        repeat_timer = 0
+        typed: str = ""
+        framecount: int = 0
 
         KEYBOARD = [13, 8, 9, 10, 4, 5, 6, 0, 1, 2]
 
@@ -105,3 +109,8 @@ class UserInterface():
 
             framecount = ((framecount + 1) % 60)
             self.draw.flip()
+
+        try:
+            return int(typed)
+        except:
+            return None

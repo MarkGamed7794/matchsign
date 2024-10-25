@@ -9,6 +9,9 @@ if __name__ == "__main__":
 import constants
 from constants import PYGAME_MODE
 
+type Color = graphics.color
+type Font = graphics.font
+
 WIDTH_PIXELS = 128
 HEIGHT_PIXELS = 64
 
@@ -67,14 +70,14 @@ class MatrixDraw():
         self.scissor = None # If this is a 4-tuple (left, top, right, bottom), all drawing operations will be confined to that area
 
     @staticmethod
-    def newColor(r: int, g: int, b: int):
+    def newColor(r: int, g: int, b: int) -> Color:
         if(PYGAME_MODE):
             return pygame.Color(r, g, b)
         else:
             return graphics.Color(r, g, b)
     
     @staticmethod
-    def newFont(filepath):
+    def newFont(filepath: str) -> Font:
         if(PYGAME_MODE):
             return bdf_reader.read_font(filepath)
         else:
@@ -82,7 +85,7 @@ class MatrixDraw():
             font.LoadFont(filepath)
             return font
 
-    def rect(self, x, y, w, h, col):
+    def rect(self, x: int, y: int, w: int, h: int, col: Color):
         if(PYGAME_MODE):
             if(self.scissor != None):
                 x1, y1 = max(x, self.scissor[0]), max(y, self.scissor[1])
@@ -101,12 +104,11 @@ class MatrixDraw():
                 for dx in range(x, x+w):
                     self.alt_buffer.SetPixel(dx, dy, r, g, b)
 
-    def setPixel(self, x, y, col):
+    def setPixel(self, x: int, y: int, col: Color):
         if(self.scissor != None):
             # Don't do anything if the pixel falls outside the scissor region
             if(not (self.scissor[0] <= x <= self.scissor[2] and self.scissor[1] <= y <= self.scissor[3])):
                 return
-        
 
         if(PYGAME_MODE):
             self.rect(x, y, 1, 1, col)
@@ -119,13 +121,13 @@ class MatrixDraw():
     def disableScissor(self):
         self.scissor = None
 
-    def print(self, text, x, y, col, font, align = "l"):
+    def print(self, text: str, x: int, y: int, col, font, align = "l"):
         if(align == "l"): align_offset = 0
         if(align == "c"): align_offset = self.width_of_text(text, font) // 2
         if(align == "r"): align_offset = self.width_of_text(text, font)
         if(PYGAME_MODE):
             draw_x = x - align_offset
-            draw_y = y - font["baseline"]
+            draw_y = y - font["baseline"] - 1
             for char in text:
                 if(char == "\n"):
                     draw_x = x - align_offset
@@ -144,7 +146,7 @@ class MatrixDraw():
             # TODO: handle newlines, as the built-in routine doesn't support them
             graphics.DrawText(self.alt_buffer, font, x - align_offset, y, col, text)
 
-    def width_of_text(self, text, font):
+    def width_of_text(self, text: str, font: Font) -> int:
         # only works on text without newlines
 
         if(PYGAME_MODE):
@@ -173,22 +175,22 @@ class MatrixDraw():
             self.keys_down = [
                 True if keys[code] else False
                 for code in [
-                    pygame.K_KP7,
-                    pygame.K_KP8,
-                    pygame.K_KP9,
-                    pygame.K_KP_DIVIDE,
-                    pygame.K_KP4,
-                    pygame.K_KP5,
-                    pygame.K_KP6,
-                    pygame.K_KP_MULTIPLY,
-                    pygame.K_KP1,
-                    pygame.K_KP2,
-                    pygame.K_KP3,
-                    pygame.K_KP_MINUS,
-                    pygame.K_KP_PERIOD,
-                    pygame.K_KP0,
-                    pygame.K_KP_ENTER,
-                    pygame.K_KP_PLUS,
+                    pygame.K_KP7,         # 0
+                    pygame.K_KP8,         # 1
+                    pygame.K_KP9,         # 2
+                    pygame.K_KP_DIVIDE,   # 3
+                    pygame.K_KP4,         # 4
+                    pygame.K_KP5,         # 5
+                    pygame.K_KP6,         # 6
+                    pygame.K_KP_MULTIPLY, # 7
+                    pygame.K_KP1,         # 8
+                    pygame.K_KP2,         # 9
+                    pygame.K_KP3,         # A
+                    pygame.K_KP_MINUS,    # B
+                    pygame.K_KP_PERIOD,   # C
+                    pygame.K_KP0,         # D
+                    pygame.K_KP_ENTER,    # E
+                    pygame.K_KP_PLUS,     # F
                 ]
             ]
         else:
@@ -203,10 +205,10 @@ class MatrixDraw():
 
             #raise NotImplementedError("TODO: Determine exactly how rpi GPIO works for the keypad")
         
-    def key_just_pressed(self, id: int):
+    def key_just_pressed(self, id: int) -> bool:
         return self.keys_down[id] and not self.keys_down_last[id]
     
-    def is_key_pressed(self, id: int):
+    def is_key_pressed(self, id: int) -> bool:
         return self.keys_down[id]
     
     # Draws all the changes
