@@ -9,8 +9,6 @@ if __name__ == "__main__":
 import constants
 from constants import PYGAME_MODE
 
-type Color = graphics.color
-type Font = graphics.font
 
 WIDTH_PIXELS = 128
 HEIGHT_PIXELS = 64
@@ -23,6 +21,9 @@ if(PYGAME_MODE):
 else:
     from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics #type: ignore
     import RPi.GPIO as GPIO #type: ignore
+
+type Color = graphics.color
+type Font = graphics.font
 
 class MatrixDraw():
     def __init__(self, matrix=None):
@@ -111,10 +112,8 @@ class MatrixDraw():
                 pygame.draw.rect(self.screen, col, pygame.Rect(x * 8, y * 8, w * 8, h * 8))
         
         else:
-            r, g, b = col.red, col.green, col.blue
             for dy in range(y, y+h):
-                for dx in range(x, x+w):
-                    self.alt_buffer.SetPixel(dx, dy, r, g, b)
+                graphics.DrawLine(x, dy, x, x+w, col)
 
     def setPixel(self, x: int, y: int, col: Color):
         """
