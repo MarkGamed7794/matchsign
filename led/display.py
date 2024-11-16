@@ -74,6 +74,12 @@ def main(conn_recieve):
             debug_menu()
 
     def draw_main_area():
+        """
+        Draw the main, upper panel.
+        
+        This includes the team numbers and detailed information about the currently selected match.
+        """
+
         nonlocal displayed_match
 
         if(not 0 <= displayed_match < len(current_data)):

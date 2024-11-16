@@ -49,7 +49,7 @@ class MatrixDraw():
 
             # input
             GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BCM)
+            GPIO.setmode(GPIO.BOARD)
             for row_pin in constants.RPI_KEYPAD_ROWS:
                 GPIO.setup(row_pin, GPIO.OUT)
             for col_pin in constants.RPI_KEYPAD_COLS:
@@ -71,6 +71,10 @@ class MatrixDraw():
 
     @staticmethod
     def newColor(r: int, g: int, b: int) -> Color:
+        """
+        Creates and returns a new Color.
+        """
+
         if(PYGAME_MODE):
             return pygame.Color(r, g, b)
         else:
@@ -78,6 +82,10 @@ class MatrixDraw():
     
     @staticmethod
     def newFont(filepath: str) -> Font:
+        """
+        Creates and returns a new Font.
+        """
+
         if(PYGAME_MODE):
             return bdf_reader.read_font(filepath)
         else:
@@ -86,6 +94,10 @@ class MatrixDraw():
             return font
 
     def rect(self, x: int, y: int, w: int, h: int, col: Color):
+        """
+        Draws a rectangle at a specified position, with a specified size and colour.
+        """
+
         if(PYGAME_MODE):
             if(self.scissor != None):
                 x1, y1 = max(x, self.scissor[0]), max(y, self.scissor[1])
@@ -105,6 +117,10 @@ class MatrixDraw():
                     self.alt_buffer.SetPixel(dx, dy, r, g, b)
 
     def setPixel(self, x: int, y: int, col: Color):
+        """
+        Sets a pixel at a specified location to a given colour.
+        """
+
         if(self.scissor != None):
             # Don't do anything if the pixel falls outside the scissor region
             if(not (self.scissor[0] <= x <= self.scissor[2] and self.scissor[1] <= y <= self.scissor[3])):
@@ -116,12 +132,35 @@ class MatrixDraw():
             self.alt_buffer.SetPixel(x, y, col.red, col.green, col.blue)
 
     def setScissor(self, left, top, right, bottom):
+        """
+        Sets the current scissor region to a given rectangle (left, top, right, bottom).
+
+        If the scissor is currently active, all drawing operations will be confined to
+        that specific region -- nothing will ever be drawn outside of it.
+
+        The only exception is MatrixDraw.clear(), which will always clear the entire screen.
+        """
+
         self.scissor = (left, top, right, bottom)
 
     def disableScissor(self):
+        """
+        Disables the current scissor. See MatrixDraw.setScissor() for details.
+        """
+
         self.scissor = None
 
-    def print(self, text: str, x: int, y: int, col, font, align = "l"):
+    def print(self, text: str, x: int, y: int, color, font, align = "l"):
+        """
+        Prints a specified string to the screen.
+
+        The alignment parameter can take one of three possible values:
+
+        - `l`: The given X position is the start of the text.
+        - `c`: The given X position is the horizontal center of the text.
+        - `r`: The given X position is the end of the text.
+        """
+
         if(align == "l"): align_offset = 0
         if(align == "c"): align_offset = self.width_of_text(text, font) // 2
         if(align == "r"): align_offset = self.width_of_text(text, font)
@@ -138,15 +177,22 @@ class MatrixDraw():
                 for dy, row in enumerate(font[char]):
                     for dx, pixel in enumerate(row):
                         if(pixel == 1):
-                            self.rect(draw_x + dx, draw_y + dy, 1, 1, col)
+                            self.rect(draw_x + dx, draw_y + dy, 1, 1, color)
 
                 draw_x += font["widths"][char]
         
         else:
             # TODO: handle newlines, as the built-in routine doesn't support them
-            graphics.DrawText(self.alt_buffer, font, x - align_offset, y, col, text)
+            graphics.DrawText(self.alt_buffer, font, x - align_offset, y, color, text)
 
     def width_of_text(self, text: str, font: Font) -> int:
+        """
+        Returns the width of the specified string in a given font, such
+        that if you were to print it, it would take up exactly that many
+        pixels of horizontal space.
+
+        This does not work on text with newlines.
+        """
         # only works on text without newlines
 
         if(PYGAME_MODE):
@@ -156,6 +202,10 @@ class MatrixDraw():
             return sum(font.CharacterWidth(ord(char)) for char in text) - 1
 
     def clear(self):
+        """
+        Clears the entire screen to black.
+        """
+        
         if(PYGAME_MODE):
             self.screen.fill("black")
         else:
@@ -164,6 +214,10 @@ class MatrixDraw():
 
     # --- I/O --- #
     def detect_keypresses(self):
+        """
+        Detects and updates all currently held down keys. This is
+        automatically called every time the screen updates.
+        """
         if(PYGAME_MODE):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -206,13 +260,22 @@ class MatrixDraw():
             #raise NotImplementedError("TODO: Determine exactly how rpi GPIO works for the keypad")
         
     def key_just_pressed(self, id: int) -> bool:
+        """
+        For a given key ID, returns True if the key was just pressed this frame.
+        """
         return self.keys_down[id] and not self.keys_down_last[id]
     
     def is_key_pressed(self, id: int) -> bool:
+        """
+        For a given key ID, returns True if the key is currently held down.
+        """
         return self.keys_down[id]
     
     # Draws all the changes
     def flip(self):
+        """
+        Pushes the drawn screen to the display, and waits until the next frame (60 FPS).
+        """
         if(PYGAME_MODE):
             pygame.display.flip()
             self.clock.tick(60)

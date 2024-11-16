@@ -1,0 +1,38 @@
+The Hub75 connectors that come with the panels have colour-coded wires:
+-	The brown wire on one end (not the one somewhere in the middle) corresponds to pin 1 (R1).
+-	The red wire next to it corresponds to pin 2 (G1)
+-	The orange wire next to it is B1, and so on.
+-	Only one GND needs to be connected, you can pick whichever wire you like most and connect it to whichever ground pin you like the most.
+
+That being said, these are the connections to the Pi:
+
+
+       1 2
+       [][]
+       [][]
+       [][] GND (6)
+STROBE [][]
+       [][]
+ CLOCK [][] OE (12)
+    G1 [][]
+     A [][] B (16)
+       [][] C (18)
+    B2 [][]
+    G2 [][] D (22)
+    R1 [][] R2 (24)
+       [][] B1 (26)
+       [][]
+gpio-1 [][]
+gpio-2 [][] gpio-3 (32)
+gpio-4 [][]
+gpio-5 [][] gpio-6 (36)
+gpio-7 [][] gpio-8 (38)
+       [][]
+         40
+
+All pins except gpio-1 through gpio-8 are used by the LED panels.
+
+gpio-1 through gpio-8 are hooked up directly to the keypad; whilst any GPIO pins can technically be used, these eight are the most convenient.
+
+gpio-1..4 are, by default, the four row lines (top to bottom);
+similarly, gpio-5..8 are the four column lines (left to right).
