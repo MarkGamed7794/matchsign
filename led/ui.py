@@ -61,7 +61,7 @@ class UserInterface():
                     self.fonts["small"]
                 )
             self.draw.print("^", CENTER, 26, self.palette["white"], self.fonts["small"])
-            self.draw.print("[2] INSERT   [8] DELETE   [5] OK", 1, 30, self.palette["white"], self.fonts["small"])
+            self.draw.print("[5] INSERT   [1] DELETE   [F] OK", 1, 30, self.palette["white"], self.fonts["small"])
             
 
             cursor_direction = (-1 if self.draw.is_key_pressed(constants.BUTTON_LEFT) else 0) + (1 if self.draw.is_key_pressed(constants.BUTTON_RIGHT) else 0)
@@ -71,17 +71,15 @@ class UserInterface():
                     cursor_pos = (cursor_pos + cursor_direction) % CHAR_COUNT
             else:
                 repeat_timer = 0
-            if(self.draw.key_just_pressed(constants.BUTTON_UP)):
-                typed += charset[cursor_pos]
-            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):
-                typed = typed[:-1]
             if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
+                typed += charset[cursor_pos]
+            if(self.draw.key_just_pressed(constants.BUTTON_UP)):
+                typed = typed[:-1]
+            if(self.draw.key_just_pressed(15)):
                 return typed
 
             framecount = ((framecount + 1) % 60)
             self.draw.flip()
-
-        return typed
 
     def NumberEntry(self, prompt: str) -> int|None:
         # fade in animation
@@ -93,19 +91,17 @@ class UserInterface():
         typed: str = ""
         framecount: int = 0
 
-        KEYBOARD = [13, 8, 9, 10, 4, 5, 6, 0, 1, 2]
-
         while True:
             self.draw.print(prompt, 1, 5, self.palette["white"], self.fonts["small"])
             self.draw.print(typed + ("" if framecount <= 30 else "|"), 1, 16, self.palette["white"], self.fonts["small"])
-            self.draw.print("    [#] DELETE        [A] OK    ", 1, 30, self.palette["white"], self.fonts["small"])
+            self.draw.print("    [A] DELETE        [F] OK    ", 1, 30, self.palette["white"], self.fonts["small"])
             
-            for n, key in enumerate(KEYBOARD):
-                if(self.draw.key_just_pressed(key)): typed += str(n)
-            if(self.draw.key_just_pressed(14)):
+            for key in range(10):
+                if(self.draw.key_just_pressed(key)): typed += str(key)
+            if(self.draw.key_just_pressed(10)):
                 typed = typed[:-1]
-            if(self.draw.key_just_pressed(3)):
-                return typed
+            if(self.draw.key_just_pressed(15)):
+                break
 
             framecount = ((framecount + 1) % 60)
             self.draw.flip()
