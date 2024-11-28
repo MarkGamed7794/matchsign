@@ -34,11 +34,12 @@ class MatrixDraw():
             options.rows = 32
             options.cols = 64
             options.chain_length = 4
-            options.pixel_mapper_config = "U-mapper" # Turns the 256x32 screen into a 128x64 one
+            options.pixel_mapper_config = "U-mapper" # Turns the 256x32 "screen" into a 128x64 one, mapping the panels in a U shape
             options.parallel = 1
             options.hardware_mapping = 'regular'
             options.gpio_slowdown = 4
             options.disable_hardware_pulsing = True
+            options.limit_refresh_rate_hz = 60
 
             matrix = RGBMatrix(options = options)
 
@@ -234,22 +235,22 @@ class MatrixDraw():
             self.keys_down = [
                 True if keys[code] else False
                 for code in [
-                    pygame.K_KP7,         # 0
-                    pygame.K_KP8,         # 1
-                    pygame.K_KP9,         # 2
-                    pygame.K_KP_DIVIDE,   # 3
-                    pygame.K_KP4,         # 4
-                    pygame.K_KP5,         # 5
-                    pygame.K_KP6,         # 6
-                    pygame.K_KP_MULTIPLY, # 7
-                    pygame.K_KP1,         # 8
-                    pygame.K_KP2,         # 9
-                    pygame.K_KP3,         # A
-                    pygame.K_KP_MINUS,    # B
-                    pygame.K_KP_PERIOD,   # C
-                    pygame.K_KP0,         # D
-                    pygame.K_KP_ENTER,    # E
-                    pygame.K_KP_PLUS,     # F
+                    pygame.K_1,         # 0
+                    pygame.K_2,         # 1
+                    pygame.K_3,         # 2
+                    pygame.K_4,   # 3
+                    pygame.K_q,         # 4
+                    pygame.K_w,         # 5
+                    pygame.K_e,         # 6
+                    pygame.K_r, # 7
+                    pygame.K_a,         # 8
+                    pygame.K_s,         # 9
+                    pygame.K_d,         # A
+                    pygame.K_f,    # B
+                    pygame.K_z,   # C
+                    pygame.K_x,         # D
+                    pygame.K_c,    # E
+                    pygame.K_v,     # F
                 ]
             ]
         else:
