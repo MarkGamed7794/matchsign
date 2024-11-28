@@ -26,8 +26,8 @@ keymap:
   button_down:   9 # Scroll down.
 
 input:
-  rpi_keypad_rows: [35, 36, 37, 38] # The pins connected to each row of the keypad.
-  rpi_keypad_cols: [29, 31, 32, 33] # The pins connected to each column of the keypad.
+  rpi_keypad_rows: [38, 37, 36, 35] # The pins connected to each row of the keypad.
+  rpi_keypad_cols: [33, 32, 31, 29] # The pins connected to each column of the keypad.
 
 output:
   pygame_mode: true # If true, renders output to a Pygame window instead of the LED displays.
