@@ -80,6 +80,8 @@ def main(conn_recieve):
         This includes the team numbers and detailed information about the currently selected match.
         """
 
+        draw.rect(0, 0, 128, 32, Palette["black"])
+
         nonlocal displayed_match
 
         if(not 0 <= displayed_match < len(current_data)):
@@ -88,13 +90,13 @@ def main(conn_recieve):
 
         # team numbers
         for i, team in enumerate(current_match.red_alliance.teams):
-            draw.rect(0, i * 11, 25 + i, 10, Palette["red"])
+            draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
             col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
             font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
             draw.print(str(team.team_number), 24 + i, 7 + i * 11, col, font, align="r")
         
         for i, team in enumerate(current_match.blue_alliance.teams):
-            draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["blue"])
+            draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
             col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
             font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
             draw.print(str(team.team_number), 104 - i, 7 + i * 11, col, font)
@@ -140,13 +142,11 @@ def main(conn_recieve):
 
     def draw_match_list():
         y_off = math.floor(list_scroll_frac * 7)
-        draw.setScissor(0, 34, 127, 63)
         for position, match in enumerate(current_data[list_scroll:list_scroll+5]):
             list_idx = position + list_scroll
             color = Palette["dgray"] if list_idx % 2 == 0 else Palette["black"] # default alternating list colour
             if(list_idx == displayed_match): color = Palette["dyellow"] # dark yellow if match is shown on upper half
             draw_match_entry(match, 34 - y_off + position * 7, color)
-        draw.disableScissor()
         
         
 
@@ -165,14 +165,14 @@ def main(conn_recieve):
                     draw.print("No data yet.", 64, 47, Palette["white"], Fonts["small"], align="c")
                     draw.print("Attempting request...", 64, 53, Palette["white"], Fonts["small"], align="c")
                 else:
+                    draw_match_list() # Draw this first so that it gets cut off by the main area
                     draw_main_area()
-                    draw_match_list()
 
             draw.flip()
             update()
             
         except Exception as e:
-            draw.disableScissor()
+            print(str(e)) # just in case
             while True:
                 draw.clear()
                 draw.print(f"ERROR", 1, 8, Palette["red"], Fonts["small"])

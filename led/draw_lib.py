@@ -66,7 +66,6 @@ class MatrixDraw():
         # C D E F
 
         self.aborted = False
-        self.scissor = None # If this is a 4-tuple (left, top, right, bottom), all drawing operations will be confined to that area
 
     @staticmethod
     def newColor(r: int, g: int, b: int):
@@ -99,9 +98,6 @@ class MatrixDraw():
 
         x1, x2 = x, x+w
         y1, y2 = y, y+h
-        if(self.scissor != None):
-            x1, x2 = max(x, self.scissor[0]), min(x+w, self.scissor[2] + 1)
-            y1, y2 = max(y, self.scissor[1]), min(y+h, self.scissor[3] + 1)
 
         if(PYGAME_MODE):
             pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1) * 8, (y2-y1) * 8))
@@ -110,7 +106,6 @@ class MatrixDraw():
                 graphics.DrawLine(self.alt_buffer, x1, dy, x2, dy, col)
 
     def line(self, x1: int, y1: int, x2: int, y2: int, col):
-        # TODO: Make this work with the scissor
 
         if(PYGAME_MODE):
             # TODO
@@ -127,34 +122,10 @@ class MatrixDraw():
         Sets a pixel at a specified location to a given colour.
         """
 
-        if(self.scissor != None):
-            # Don't do anything if the pixel falls outside the scissor region
-            if(not (self.scissor[0] <= x <= self.scissor[2] and self.scissor[1] <= y <= self.scissor[3])):
-                return
-
         if(PYGAME_MODE):
             self.rect(x, y, 1, 1, col)
         else:
             self.alt_buffer.SetPixel(x, y, col.red, col.green, col.blue)
-
-    def setScissor(self, left, top, right, bottom):
-        """
-        Sets the current scissor region to a given rectangle (left, top, right, bottom).
-
-        If the scissor is currently active, all drawing operations will be confined to
-        that specific region -- nothing will ever be drawn outside of it.
-
-        The only exception is MatrixDraw.clear(), which will always clear the entire screen.
-        """
-
-        self.scissor = (left, top, right, bottom)
-
-    def disableScissor(self):
-        """
-        Disables the current scissor. See MatrixDraw.setScissor() for details.
-        """
-
-        self.scissor = None
 
     def print(self, text: str, x: int, y: int, color, font, align = "l"):
         """
@@ -307,9 +278,14 @@ Palette = {
     "magenta": MatrixDraw.newColor(255,   0, 255),
     "pink":    MatrixDraw.newColor(255,   0, 127),
 
+    # The other colours are very bright on the actual display;
+    # these are for darker versions meant to have text drawn on them
+    "bgred":   MatrixDraw.newColor( 48,   0,   0),
+    "bgblue":  MatrixDraw.newColor(  0,   0,  48),
+
     "white":   MatrixDraw.newColor(255, 255, 255),
     "gray":    MatrixDraw.newColor(127, 127, 127),
-    "dgray":   MatrixDraw.newColor( 64,  64,  64),
+    "dgray":   MatrixDraw.newColor( 32,  32,  32),
     "black":   MatrixDraw.newColor(  0,   0,   0),
 
     "dyellow": MatrixDraw.newColor( 80,  80,   0)
