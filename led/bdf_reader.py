@@ -53,12 +53,14 @@ def read_font(filename: str) -> dict:
 
             if(instruction == "DWIDTH"):
                 current_char["advance"] = int(arguments[0])
+                continue
 
             if(instruction == "BBX"):
                 current_char["bounding_box"][0] = int(arguments[0])
                 current_char["bounding_box"][1] = int(arguments[1])
                 current_char["bounding_box"][2] = int(arguments[2])
                 current_char["bounding_box"][3] = int(arguments[3])
+                continue
 
             if(instruction == "BITMAP"):
                 current_char["bitmap"] = []

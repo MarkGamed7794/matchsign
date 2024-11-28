@@ -99,21 +99,30 @@ class MatrixDraw():
         Draws a rectangle at a specified position, with a specified size and colour.
         """
 
+        x1, x2 = x, x+w
+        y1, y2 = y, y+h
+        if(self.scissor != None):
+            x1, x2 = max(x, self.scissor[0]), min(x+w, self.scissor[2] + 1)
+            y1, y2 = max(y, self.scissor[1]), min(y+h, self.scissor[3] + 1)
+
         if(PYGAME_MODE):
-            if(self.scissor != None):
-                x1, y1 = max(x, self.scissor[0]), max(y, self.scissor[1])
-                pygame.draw.rect(self.screen, col, pygame.Rect(
-                    x1 * 8,
-                    y1 * 8,
-                    (min(x + w, self.scissor[2] + 1) - x1) * 8,
-                    (min(y + h, self.scissor[3] + 1) - y1) * 8
-                ))
-            else:
-                pygame.draw.rect(self.screen, col, pygame.Rect(x * 8, y * 8, w * 8, h * 8))
-        
+            pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1) * 8, (y2-y1) * 8))
         else:
-            for dy in range(y, y+h):
-                graphics.DrawLine(x, dy, x, x+w, col)
+            for dy in range(y1, y2):
+                graphics.DrawLine(x1, dy, x2, dy, col)
+
+    def line(self, x1: int, y1: int, x2: int, y2: int, col: Color):
+        # TODO: Make this work with the scissor
+
+        if(PYGAME_MODE):
+            # TODO
+            if(x1 == x2):
+                pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, 8, (y2-y1+1) * 8))
+            elif(y1 == y2):
+                pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1+1) * 8, 8))
+            
+        else:
+            graphics.DrawLine(x1, y1, x2, y2, col)
 
     def setPixel(self, x: int, y: int, col: Color):
         """
@@ -165,7 +174,7 @@ class MatrixDraw():
         if(align == "r"): align_offset = self.width_of_text(text, font)
         if(PYGAME_MODE):
             draw_x = x - align_offset
-            draw_y = y - font["baseline"] - 1
+            draw_y = y - font["baseline"]
             for char in text:
                 if(char == "\n"):
                     draw_x = x - align_offset
@@ -311,7 +320,8 @@ Palette = {
 Fonts = {
     "tiny":  MatrixDraw.newFont("led/fonts/miniscule.bdf"),
     "small": MatrixDraw.newFont("led/fonts/tom-thumb.bdf"),
-    "big":   MatrixDraw.newFont("led/fonts/5x8.bdf")
+    "big":   MatrixDraw.newFont("led/fonts/5x8.bdf"),
+    "bigc":  MatrixDraw.newFont("led/fonts/4x8.bdf")
 }
 
 if(__name__ == "__main__"):

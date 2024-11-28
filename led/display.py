@@ -89,23 +89,33 @@ def main(conn_recieve):
         # team numbers
         for i, team in enumerate(current_match.red_alliance.teams):
             draw.rect(0, i * 11, 25 + i, 10, Palette["red"])
-            draw.print(str(team.team_number), 1 + i, 7 + i * 11, Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"], Fonts["big"])
+            col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
+            font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
+            draw.print(str(team.team_number), 24 + i, 7 + i * 11, col, font, align="r")
         
         for i, team in enumerate(current_match.blue_alliance.teams):
             draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["blue"])
-            draw.print(str(team.team_number), 104 - i, 7 + i * 11, Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"], Fonts["big"])
+            col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
+            font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
+            draw.print(str(team.team_number), 104 - i, 7 + i * 11, col, font)
 
 
         # time, match no, etc.
-        draw.print(current_match.get_match_name(include_extra=False), 64, 12, Palette["white"], Fonts["small"], align="c")
-        draw.print(current_match.get_match_number_extra(), 64, 18, Palette["white"], Fonts["tiny"], align="c")
+        draw.print(current_match.get_match_name(include_extra=False), 64, 14, Palette["white"], Fonts["small"], align="c")
+        draw.print(current_match.get_match_number_extra(), 64, 19, Palette["white"], Fonts["tiny"], align="c")
         
         draw.print("EST.", 29, 28, Palette["gray"], Fonts["tiny"], align="l")
         draw.print(f"{(time.strftime('%I:%M', current_match.planned_start_time)).lower()}", 91, 29, Palette["white"], Fonts["big"], align="r")
         draw.print(f"{(time.strftime('%p', current_match.planned_start_time)).upper()}", 99, 29, Palette["white"], Fonts["tiny"], align="r")
 
+        # top banner
+        banner_width = 25 # Distance from center to each side
+        for y in range(7):
+            draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["gray"])
+        draw.print("NEXT MATCH", 64, 5, Palette["white"], Fonts["small"], align="c")
+
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
-        draw.rect(0, y, draw.width, y+7, bg_color)
+        draw.rect(0, y, draw.width, 7, bg_color)
         
         # Team positions
 
