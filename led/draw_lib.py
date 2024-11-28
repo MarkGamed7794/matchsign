@@ -39,7 +39,7 @@ class MatrixDraw():
             options.hardware_mapping = 'regular'
             options.gpio_slowdown = 4
             options.disable_hardware_pulsing = True
-            options.pwm_lsb_nanoseconds = 300
+            options.pwm_lsb_nanoseconds = 200
 
             matrix = RGBMatrix(options = options)
 
