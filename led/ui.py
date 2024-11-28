@@ -1,10 +1,10 @@
-from led.draw_lib import MatrixDraw, Color, Font
+from led.draw_lib import MatrixDraw
 import constants
 
 class UserInterface():
     draw:    MatrixDraw
-    palette: dict[str, Color]
-    fonts:   dict[str, Font]
+    palette: dict
+    fonts:   dict
 
     def __init__(self, draw: MatrixDraw, palette: dict, fonts: dict):
         self.draw = draw
