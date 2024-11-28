@@ -106,7 +106,7 @@ class MatrixDraw():
             pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1) * 8, (y2-y1) * 8))
         else:
             for dy in range(y1, y2):
-                graphics.DrawLine(x1, dy, x2, dy, col)
+                graphics.DrawLine(self.alt_buffer, x1, dy, x2, dy, col)
 
     def line(self, x1: int, y1: int, x2: int, y2: int, col):
         # TODO: Make this work with the scissor
@@ -119,7 +119,7 @@ class MatrixDraw():
                 pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1+1) * 8, 8))
             
         else:
-            graphics.DrawLine(x1, y1, x2, y2, col)
+            graphics.DrawLine(self.alt_buffer, x1, y1, x2, y2, col)
 
     def setPixel(self, x: int, y: int, col):
         """
