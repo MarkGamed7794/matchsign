@@ -46,11 +46,23 @@ def main(conn_recieve):
 
         if(current_data != None):
 
+            scroll_adjusted = False
             # Select matches with left/right
-            if(draw.key_just_pressed(4)):
+            if(draw.key_just_pressed(4) and displayed_match > 0):
                 displayed_match -= 1
-            if(draw.key_just_pressed(6)):
+                scroll_adjusted = True
+            if(draw.key_just_pressed(6) and displayed_match < len(current_data) - 1):
                 displayed_match += 1
+                scroll_adjusted = True
+
+            if(scroll_adjusted):
+                # If a new match is selected and it's offscreen, scroll the list so that it is
+                if(list_scroll > displayed_match):
+                    list_scroll = displayed_match
+                    list_scroll_frac = 0
+                if(list_scroll + 3 < displayed_match):
+                    list_scroll = displayed_match - 3
+                    list_scroll_frac = 0
 
             # Scroll list with up/down
             if(draw.keys_down[1]):
@@ -113,7 +125,7 @@ def main(conn_recieve):
         # top banner
         banner_width = 25 # Distance from center to each side
         for y in range(7):
-            draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["gray"])
+            draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["dgray"])
         draw.print("NEXT MATCH", 64, 5, Palette["white"], Fonts["small"], align="c")
 
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
