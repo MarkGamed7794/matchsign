@@ -284,12 +284,12 @@ Palette = {
 
     # The other colours are very bright on the actual display;
     # these are for darker versions meant to have text drawn on them
-    "bgred":   MatrixDraw.newColor( 48,   0,   0),
-    "bgblue":  MatrixDraw.newColor(  0,   0,  48),
+    "bgred":   MatrixDraw.newColor( 96,   0,   0),
+    "bgblue":  MatrixDraw.newColor(  0,   0,  96),
 
     "white":   MatrixDraw.newColor(255, 255, 255),
     "gray":    MatrixDraw.newColor(127, 127, 127),
-    "dgray":   MatrixDraw.newColor( 32,  32,  32),
+    "dgray":   MatrixDraw.newColor( 48,  48,  48),
     "black":   MatrixDraw.newColor(  0,   0,   0),
 
     "dyellow": MatrixDraw.newColor( 80,  80,   0)
