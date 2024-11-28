@@ -22,9 +22,6 @@ else:
     from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics #type: ignore
     import RPi.GPIO as GPIO #type: ignore
 
-type Color = graphics.color
-type Font = graphics.font
-
 class MatrixDraw():
     def __init__(self, matrix=None):
         if(PYGAME_MODE):
@@ -71,7 +68,7 @@ class MatrixDraw():
         self.scissor = None # If this is a 4-tuple (left, top, right, bottom), all drawing operations will be confined to that area
 
     @staticmethod
-    def newColor(r: int, g: int, b: int) -> Color:
+    def newColor(r: int, g: int, b: int):
         """
         Creates and returns a new Color.
         """
@@ -82,7 +79,7 @@ class MatrixDraw():
             return graphics.Color(r, g, b)
     
     @staticmethod
-    def newFont(filepath: str) -> Font:
+    def newFont(filepath: str):
         """
         Creates and returns a new Font.
         """
@@ -94,7 +91,7 @@ class MatrixDraw():
             font.LoadFont(filepath)
             return font
 
-    def rect(self, x: int, y: int, w: int, h: int, col: Color):
+    def rect(self, x: int, y: int, w: int, h: int, col):
         """
         Draws a rectangle at a specified position, with a specified size and colour.
         """
@@ -111,7 +108,7 @@ class MatrixDraw():
             for dy in range(y1, y2):
                 graphics.DrawLine(x1, dy, x2, dy, col)
 
-    def line(self, x1: int, y1: int, x2: int, y2: int, col: Color):
+    def line(self, x1: int, y1: int, x2: int, y2: int, col):
         # TODO: Make this work with the scissor
 
         if(PYGAME_MODE):
@@ -124,7 +121,7 @@ class MatrixDraw():
         else:
             graphics.DrawLine(x1, y1, x2, y2, col)
 
-    def setPixel(self, x: int, y: int, col: Color):
+    def setPixel(self, x: int, y: int, col):
         """
         Sets a pixel at a specified location to a given colour.
         """
@@ -193,7 +190,7 @@ class MatrixDraw():
             # TODO: handle newlines, as the built-in routine doesn't support them
             graphics.DrawText(self.alt_buffer, font, x - align_offset, y, color, text)
 
-    def width_of_text(self, text: str, font: Font) -> int:
+    def width_of_text(self, text: str, font) -> int:
         """
         Returns the width of the specified string in a given font, such
         that if you were to print it, it would take up exactly that many
