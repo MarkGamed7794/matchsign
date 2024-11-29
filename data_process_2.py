@@ -29,6 +29,7 @@ class Team():
 class Alliance():
     teams: list[Team]
     color: TeamColor
+    is_unknown: bool = False
 
     def __init__(self):
         self.teams = [Team(), Team(), Team()]
@@ -179,14 +180,21 @@ class Match():
                 self.match_number = int(match_number)
                 self.set_number = 1
             else:
-                self.match_number = int(match_number)
+                self.set_number = int(match_number)
                 if(data["label"].endswith("Replay") == "Replay"):
                     self.match_number = 2
                 else:
                     self.match_number = 1
 
-            self.red_alliance.inherit(data["redTeams"], DataFlavor.NEXUS)
-            self.blue_alliance.inherit(data["blueTeams"], DataFlavor.NEXUS)
+            if("redTeams" in data):
+                self.red_alliance.inherit(data["redTeams"], DataFlavor.NEXUS)
+            else:
+                self.red_alliance.is_unknown = True
+            
+            if("blueTeams" in data):
+                self.blue_alliance.inherit(data["blueTeams"], DataFlavor.NEXUS)
+            else:
+                self.blue_alliance.is_unknown = True
         
         return self
     
