@@ -25,7 +25,8 @@ def main(conn_recieve):
         action = ui.MenuSelect(
             "What would you like to do?",
             [
-                "Modify Data Request"
+                "Modify Data Request",
+                "Modify Display Settings"
             ]
         )
 
@@ -41,6 +42,18 @@ def main(conn_recieve):
             )
             if(modification == 0):
                 ui.NumberEntry("Enter new team #:")
+
+        elif(action == 1):
+
+            modification = ui.MenuSelect(
+                "Modify what?",
+                [
+                    "Panel Brightness"
+                ]
+            )
+
+            if(modification == 0):
+                draw.setBrightness(ui.NumberChange("Set new brightness:", initial_value=draw.getBrightness()))
 
     def update():
         nonlocal displayed_match, list_scroll, list_scroll_frac

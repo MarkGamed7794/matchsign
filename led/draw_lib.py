@@ -40,6 +40,9 @@ class MatrixDraw():
             options.gpio_slowdown = 4
             options.disable_hardware_pulsing = True
             options.pwm_lsb_nanoseconds = 200
+            options.brightness = 80
+
+            self.brightness = 80
 
             matrix = RGBMatrix(options = options)
 
@@ -90,6 +93,15 @@ class MatrixDraw():
             font = graphics.Font()
             font.LoadFont(filepath)
             return font
+        
+    def getBrightness(self) -> int:
+        if(PYGAME_MODE): return 100
+        return self.matrix.brightness
+    
+    def setBrightness(self, value) -> int:
+        if(not PYGAME_MODE):
+            self.matrix.brightness = value
+            self.alt_buffer.brightness = value
 
     def rect(self, x: int, y: int, w: int, h: int, col):
         """
@@ -191,7 +203,6 @@ class MatrixDraw():
             self.screen.fill("black")
         else:
             self.alt_buffer.Clear()
-
 
     # --- I/O --- #
     def detect_keypresses(self):

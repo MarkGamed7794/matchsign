@@ -54,6 +54,7 @@ RPI_KEYPAD_ROWS = constants["input"]["rpi_keypad_rows"]
 RPI_KEYPAD_COLS = constants["input"]["rpi_keypad_cols"]
 
 BUTTON_SELECT = constants["keymap"]["button_select"]
+BUTTON_CANCEL = constants["keymap"]["button_cancel"]
 BUTTON_LEFT   = constants["keymap"]["button_left"]
 BUTTON_RIGHT  = constants["keymap"]["button_right"]
 BUTTON_UP     = constants["keymap"]["button_up"]
