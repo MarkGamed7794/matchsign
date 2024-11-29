@@ -161,7 +161,7 @@ def main(conn_recieve):
         else:
             draw.print("STARTED", 30, 27, Palette["gray"], Fonts["tiny"], align="l")
             draw.print(time.strftime('%I:%M', current_match.predicted_start_time), 90, 30, Palette["white"], Fonts["big"], align="r")
-            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 27, Palette["gray"], Fonts["miniscule"], align="r")
+            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 27, Palette["gray"], Fonts["tiny"], align="r")
             
 
         # top banner
