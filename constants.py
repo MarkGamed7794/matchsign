@@ -23,8 +23,9 @@ REQUEST_RETRY_LIMIT = constants["requests"]["request_parameters"]["retry_limit"]
 SHOW_RESPONSE_BODY = constants["requests"]["request_parameters"]["print_response_body"]
 
 env_config = dotenv.dotenv_values()
-FRC_AUTH = env_config["FRC_AUTH"]
-TBA_AUTH = env_config["TBA_AUTH"]
+FRC_AUTH = env_config["FRC_AUTH"] if "FRC_AUTH" in env_config else ""
+TBA_AUTH = env_config["TBA_AUTH"] if "TBA_AUTH" in env_config else ""
+NEXUS_AUTH = env_config["NEXUS_AUTH"] if "NEXUS_AUTH" in env_config else ""
 
 REQUEST_PARAMS = { # The parameters for each request.
     "season": request_params["frc"]["season"],
@@ -35,6 +36,8 @@ REQUEST_PARAMS = { # The parameters for each request.
     
     "team_key_tba": request_params["tba"]["team_key"],
     "event_key_tba": request_params["tba"]["event_key"],
+
+    "event_key_nexus": request_params["nexus"]["event_key"]
 }
 
 

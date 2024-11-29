@@ -1,19 +1,19 @@
 requests:
   disable_requests: false # If true, disables all outgoing API requests.
-  request_source: TBA # Either TBA or FRC.
+  request_source: NEXUS # Either TBA, FRC or NEXUS.
   tba_cache_filepath: "tba_cache.txt" # The file that the TBA ETag is stored in.
-  request_timeout: 300 # The amount of time between requests, in seconds.
+  request_timeout: 20 # The amount of time between requests, in seconds.
 
   response_cache:
-    use_cache: true # If true, uses the cached response instead of making a new one.
-    save_response: false # If true, saves responses to the cache.
+    use_cache: false # If true, uses the cached response instead of making a new one.
+    save_response: true # If true, saves responses to the cache.
     cache_filepath: "request_output.txt" # Where the cached response is read from.
 
   request_parameters:
     retry_limit: 5 # The maximum amount of times to retry a failed request.
     print_response_body: true # If true, prints the entire response body to the console.
 
-team_number: 4308 # The team number to highlight and filter by. Should ideally be your team.
+team_number: 1800 # The team number to highlight and filter by. Should ideally be your team.
 
 # Input is a 4x4 keypad. The top left key has ID 0, the one to its right ID 1,
 # and so on; e.g. third row, first column is ID 8.
@@ -41,12 +41,13 @@ output:
 # In addition to these values, in order for HTTP requests to work,
 # you need to obtain API keys for the FRC and TBA APIs. Place them in
 # a .env file in the root of this project (i.e. the one main.py is in),
-# with the keys FRC_AUTH and TBA_AUTH respectively.
+# with the keys FRC_AUTH, TBA_AUTH and NEXUS_AUTH respectively.
 
 # A sample .env file would be as follows:
 
 # FRC_AUTH=username:00000000-0000-0000-0000-000000000000
 # TBA_AUTH=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# NEXUS_AUTH=xxxxxx-xxxxxxxxxxxxxxxxxxxx
 
 # You should, of course, replace these with your actual API keys.
 

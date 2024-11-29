@@ -9,7 +9,8 @@ DEBUG_MODE = constants.DEBUG_MODE
 
 def main(conn_recieve):
     draw: MatrixDraw = MatrixDraw()
-    current_data: list[data_process.Match] = None
+    match_data: list[data_process.Match] = None
+    current_data: dict = None
 
     displayed_match: int = 0
 
@@ -44,14 +45,14 @@ def main(conn_recieve):
     def update():
         nonlocal displayed_match, list_scroll, list_scroll_frac
 
-        if(current_data != None):
+        if(match_data != None):
 
             scroll_adjusted = False
             # Select matches with left/right
             if(draw.key_just_pressed(4) and displayed_match > 0):
                 displayed_match -= 1
                 scroll_adjusted = True
-            if(draw.key_just_pressed(6) and displayed_match < len(current_data) - 1):
+            if(draw.key_just_pressed(6) and displayed_match < len(match_data) - 1):
                 displayed_match += 1
                 scroll_adjusted = True
 
@@ -77,13 +78,24 @@ def main(conn_recieve):
             if(list_scroll < 0):
                 list_scroll = 0
                 list_scroll_frac = 0
-            if(list_scroll >= len(current_data) - 4 and list_scroll_frac > 0):
-                list_scroll = len(current_data) - 4
+            if(list_scroll >= len(match_data) - 4 and list_scroll_frac > 0):
+                list_scroll = len(match_data) - 4
                 list_scroll_frac = 0
         
 
         if(draw.key_just_pressed(0)):
             debug_menu()
+
+    def format_timediff(sec):
+        hours = int(abs(sec)/3600) % 60
+        minutes = int(abs(sec)/60) % 60
+        seconds = int(abs(sec)) % 60
+        if(abs(sec) > 3600):
+            return f"{"-" if sec < 0 else ""}{hours}H{"0" if minutes < 10 else ""}{minutes}M"
+        else: 
+            return f"{"-" if sec < 0 else ""}{minutes}:{"0" if seconds < 10 else ""}{seconds}"
+        
+    # GRAPHICS #
 
     def draw_main_area():
         """
@@ -95,10 +107,16 @@ def main(conn_recieve):
         draw.rect(0, 0, 128, 32, Palette["black"])
 
         nonlocal displayed_match
+        
 
-        if(not 0 <= displayed_match < len(current_data)):
+        if(len(match_data) == 0):
+            draw.print("Waiting for event to start...", 64, 30, Palette["white"], Fonts["small"], align="c")
+            draw.print(f"as of {time.strftime("%I:%M %p", current_data['last_update'])} ({format_timediff(time.time() - time.mktime(current_data['last_update']))} ago)", 64, 38, Palette["gray"], Fonts["small"], align="c")
             return
-        current_match = current_data[displayed_match]
+        if(not 0 <= displayed_match < len(match_data)):
+            return
+
+        current_match = match_data[displayed_match]
 
         # team numbers
         for i, team in enumerate(current_match.red_alliance.teams):
@@ -118,15 +136,32 @@ def main(conn_recieve):
         draw.print(current_match.get_match_name(include_extra=False), 64, 14, Palette["white"], Fonts["small"], align="c")
         draw.print(current_match.get_match_number_extra(), 64, 19, Palette["white"], Fonts["tiny"], align="c")
         
-        draw.print("EST.", 29, 28, Palette["gray"], Fonts["tiny"], align="l")
-        draw.print(f"{(time.strftime('%I:%M', current_match.planned_start_time)).lower()}", 91, 29, Palette["white"], Fonts["big"], align="r")
-        draw.print(f"{(time.strftime('%p', current_match.planned_start_time)).upper()}", 99, 29, Palette["white"], Fonts["tiny"], align="r")
+        est_time = current_match.planned_start_time
+        est_label = "EST."
+        if(current_match.status == "Queueing soon"):
+            est_time = current_match.predicted_queue_time
+            est_label = "QUEUE"
+        elif(current_match.status == "Now queuing"):
+            est_time = current_match.predicted_deck_time
+            est_label = "ON DECK"
+        elif(current_match.status == "On deck"):
+            est_time = current_match.predicted_field_time
+            est_label = "ON FIELD"
+        elif(current_match.status == "On field"):
+            est_time = current_match.predicted_start_time
+            est_label = "START"
+
+        status_timer = format_timediff(time.mktime(est_time) - time.time())
+        
+        draw.print(est_label, 29, 26, Palette["gray"], Fonts["tiny"], align="l")
+        draw.print((time.strftime('%I:%M %p', est_time)).upper(), 29, 31, Palette["gray"], Fonts["tiny"], align="l")
+        draw.print(status_timer, 99, 29, Palette["white"], Fonts["big"], align="r")
 
         # top banner
-        banner_width = 25 # Distance from center to each side
+        banner_width = 30 # Distance from center to each side
         for y in range(7):
             draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["dgray"])
-        draw.print("NEXT MATCH", 64, 5, Palette["white"], Fonts["small"], align="c")
+        draw.print(current_match.status.upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
 
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
         draw.rect(0, y, draw.width, 7, bg_color)
@@ -141,26 +176,23 @@ def main(conn_recieve):
             if(team.team_number == constants.TEAM_NUMBER): draw.rect(112 + i * 5, 1 + y, 5, 5, Palette["white"])
             draw.rect(113 + i * 5, 2 + y, 3, 3, Palette["blue"])
 
-        # Alliance numbers, if present
-        # TODO: Data doesn't seem to provide alliance numbers. Is this intentional?
-
         # Match number
         draw.print(match.get_match_name(short=True), 18, y + 5, Palette["white"], Fonts["small"])
 
-        # Time, if match is yet to be played
-        draw.print(f"{(time.strftime('%I:%M %p', match.planned_start_time))}", 64, y + 5, Palette["white"], Fonts["small"], align='c')
+        # Time, if match is yet to be queued
+        shown_time = match.status
+        if(match.status == "Queuing soon"):
+            shown_time = f"{(time.strftime('%I:%M %p', match.predicted_queue_time))}"
 
-        
+        draw.print(shown_time, 64, y + 5, Palette["white"], Fonts["small"], align='c')
 
     def draw_match_list():
         y_off = math.floor(list_scroll_frac * 7)
-        for position, match in enumerate(current_data[list_scroll:list_scroll+5]):
+        for position, match in enumerate(match_data[list_scroll:list_scroll+5]):
             list_idx = position + list_scroll
             color = Palette["dgray"] if list_idx % 2 == 0 else Palette["black"] # default alternating list colour
             if(list_idx == displayed_match): color = Palette["dyellow"] # dark yellow if match is shown on upper half
             draw_match_entry(match, 34 - y_off + position * 7, color)
-        
-        
 
     while not draw.aborted:
         try:
@@ -174,8 +206,7 @@ def main(conn_recieve):
                 
             else:
                 if(current_data == None):
-                    draw.print("No data yet.", 64, 47, Palette["white"], Fonts["small"], align="c")
-                    draw.print("Attempting request...", 64, 53, Palette["white"], Fonts["small"], align="c")
+                    draw.print("Attempting request...", 64, 32, Palette["white"], Fonts["small"], align="c")
                 else:
                     draw_match_list() # Draw this first so that it gets cut off by the main area
                     draw_main_area()
@@ -200,6 +231,7 @@ def main(conn_recieve):
         
         if(conn_recieve.poll()):
             current_data = conn_recieve.recv()
+            match_data = current_data["matches"]
 
 if __name__ == "__main__":
     main(None)

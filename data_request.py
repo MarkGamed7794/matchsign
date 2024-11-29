@@ -6,6 +6,13 @@ import constants
 FRC_HEADERS = {
     "Authorization": "Basic " + base64.b64encode(constants.FRC_AUTH.encode("ascii")).decode("ascii")
 }
+TBA_LAST_ETAG_VALUE = None
+TBA_HEADERS = {
+    "X-TBA-Auth-Key": constants.TBA_AUTH
+}
+NEXUS_HEADERS = {
+    "Nexus-Api-Key": constants.NEXUS_AUTH
+}
 
 FRC_REQUEST_PARAMS = {
     "tournament_level": constants.REQUEST_PARAMS["tournament_level"],
@@ -17,12 +24,9 @@ TBA_REQUEST_PARAMS = {
     "team_key": constants.REQUEST_PARAMS["team_key_tba"],
     "event_key": constants.REQUEST_PARAMS["event_key_tba"]
 }
-
-TBA_LAST_ETAG_VALUE = None
-TBA_HEADERS = {
-    "X-TBA-Auth-Key": constants.TBA_AUTH
+NEXUS_REQUEST_PARAMS = {
+    "event_key": constants.REQUEST_PARAMS["event_key_nexus"]
 }
-
 
 def make_request(source: str):
     # FRC path: https://frc-api.firstinspires.org/v3.0/{season}/schedule/{eventCode}?tournamentLevel={tournamentLevel}&teamNumber={teamNumber}&start={start}&end={end}
@@ -88,6 +92,33 @@ def make_request(source: str):
             print("[HTTP] Raw data:")
             print(resp.text)
             return None, resp.status_code
+        
+    elif source == "NEXUS":
+
+        print("[HTTP] Attempting to make request to Nexus servers...")
+        print("[HTTP] Request Headers:", NEXUS_HEADERS)
+        resp = requests.get(f"https://frc.nexus/api/v1/event/{NEXUS_REQUEST_PARAMS['event_key']}", headers=NEXUS_HEADERS, params=NEXUS_REQUEST_PARAMS)
+        print("[HTTP] Status code:", resp.status_code)
+        print("[HTTP] Response Headers:", resp.headers)
+        if(constants.SHOW_RESPONSE_BODY):
+            print("[HTTP] Response Body:")
+            print(resp.text)
+        else:
+            print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
+
+        try:
+            if(constants.SAVE_RESPONSE):
+                with open("request_output.txt", "w") as file:
+                    file.write(resp.text)
+                print("[HTTP] Data saved successfully to request_output.txt.")
+
+            return data_process.get_matches(json.loads(resp.text), "NEXUS"), resp.status_code
+        except json.decoder.JSONDecodeError as e:
+            print(f"[HTTP] [ERROR] Error! Failed to decode JSON response, with error: {e}")
+            print("[HTTP] Raw data:")
+            print(resp.text)
+            return None, resp.status_code
+
     else:
         print(f"[HTTP] [CRITICAL] Illegal source {source}")
 

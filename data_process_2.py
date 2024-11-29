@@ -6,9 +6,9 @@ import time
 class DataFlavor(Enum):
     FRC = 0
     TBA = 1
+    NEXUS = 2
 
-# ------------------ SCORING ------------------ #
-
+# ------------------ UTILITY ------------------ #
 
 # ------------------ TEAMS AND ALLIANCES ------------------ #
 
@@ -41,7 +41,10 @@ class Alliance():
             for team_n in range(3):
                 # TODO: All the key matching and stuff
                 self.teams[team_n].team_number = int(data["team_keys"][team_n][3:])
-                pass
+        elif(data_flavor == DataFlavor.NEXUS):
+            if(data == None): return
+            for team_n in range(3):
+                self.teams[team_n].team_number = int(data[team_n])
             
 
 # ------------------ MATCH ------------------ #
@@ -56,10 +59,17 @@ class TournamentLevel(Enum):
     FINAL = 7
 
 class Match():
+    # Nexus exclusive properties
+    predicted_queue_time: time.struct_time
+    predicted_deck_time:  time.struct_time
+    predicted_field_time: time.struct_time
+    status: str
+
     planned_start_time:   time.struct_time
     predicted_start_time: time.struct_time
     actual_start_time:    time.struct_time
     result_posted_time:   time.struct_time
+
 
     tournament_level:  TournamentLevel
     set_number:        int
@@ -138,6 +148,38 @@ class Match():
             )
 
             # TODO: score breakdown (?)
+        elif(flavor == DataFlavor.NEXUS):
+            # Nexus returns timestamps in milliseconds, not seconds
+            self.predicted_queue_time = time.localtime(data["times"]["estimatedQueueTime"] / 1000)
+            self.predicted_deck_time  = time.localtime(data["times"]["estimatedOnDeckTime"] / 1000)
+            self.predicted_field_time = time.localtime(data["times"]["estimatedOnFieldTime"] / 1000)
+            self.predicted_start_time = time.localtime(data["times"]["estimatedStartTime"] / 1000)
+            self.planned_start_time = self.predicted_start_time
+            self.status = data["status"]
+
+            # Nexus only returns a human-readable match name. So...
+            [match_level, match_number] = data["label"].split(" ")
+
+            if(match_level == "Practice"):      self.tournament_level = TournamentLevel.PRACTICE
+            if(match_level == "Qualification"): self.tournament_level = TournamentLevel.QUALIFICATION
+            if(match_level == "Playoff"):       self.tournament_level = TournamentLevel.SEMIFINAL
+            if(match_level == "Final"):         self.tournament_level = TournamentLevel.FINAL
+            
+            if(self.tournament_level == TournamentLevel.FINAL):
+                self.set_number = 1
+                self.match_number = int(match_number)
+            elif(self.tournament_level == TournamentLevel.QUALIFICATION):
+                self.match_number = int(match_number)
+                self.set_number = 1
+            else:
+                self.match_number = int(match_number)
+                if(data["label"].endswith("Replay") == "Replay"):
+                    self.match_number = 2
+                else:
+                    self.match_number = 1
+
+            self.red_alliance.inherit(data["redTeams"], DataFlavor.NEXUS)
+            self.blue_alliance.inherit(data["blueTeams"], DataFlavor.NEXUS)
         
         return self
     
@@ -181,17 +223,30 @@ class Match():
             return f"[invalid match]"
         
 
-def get_matches(data, flavor: str):
+def get_matches(data, flavor: str) -> dict:
     # TODO: Properly use inheritance
     if(flavor == "TBA"):
         # TBA flavor
         matches = [Match().inherit(match_json, DataFlavor.TBA) for match_json in data]
+        matches.sort()
+        return {
+            "matches": matches
+        }
     elif(flavor == "FRC"):
         # FRC flavor
         matches = [Match().inherit(match_json, DataFlavor.FRC) for match_json in data["Schedule"]]
+        matches.sort()
+        return {
+            "matches": matches,
+        }
+    elif(flavor == "NEXUS"):
+        matches = [Match().inherit(match_json, DataFlavor.NEXUS) for match_json in data["matches"]]
+        matches.sort()
+        return {
+            "matches": matches,
+            "announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
+            "last_update": time.localtime(data["dataAsOfTime"] / 1000)
+        }
     else:
         raise ValueError(f"Illegal data flavor {flavor}")
-    
-    matches.sort()
-    return matches
             
