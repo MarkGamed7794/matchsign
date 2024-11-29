@@ -15,6 +15,7 @@ DISABLE_REQUESTS = constants["requests"]["disable_requests"]
 REQUEST_SOURCE = constants["requests"]["request_source"]
 TBA_CACHE_FILEPATH = constants["requests"]["tba_cache_filepath"]
 REQUEST_TIMEOUT = constants["requests"]["request_timeout"]
+TBA_ADDITIONAL_DATA = constants["requests"]["tba_additional_data"]
 
 USE_CACHED_DATA = constants["requests"]["response_cache"]["use_cache"]
 SAVE_RESPONSE = constants["requests"]["response_cache"]["save_response"]

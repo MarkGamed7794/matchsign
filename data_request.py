@@ -122,11 +122,11 @@ def make_request(source: str):
     else:
         print(f"[HTTP] [CRITICAL] Illegal source {source}")
 
-def attempt_request():    
+def attempt_request(source: str):    
     attempts = 0
     while attempts < constants.REQUEST_RETRY_LIMIT:
         try:
-            result = make_request(constants.REQUEST_SOURCE)
+            result = make_request(source)
             print("[HTTP] Success!")
             return result
         except requests.ConnectionError:
@@ -155,7 +155,7 @@ def main(conn_send):
     try:
         while True:
             print("[HTTP] Attempting request...")
-            data, code = attempt_request()
+            data, code = attempt_request(constants.REQUEST_SOURCE)
             print("[HTTP] Request successful.")
 
             if(code == 304): # Not Modified
@@ -163,8 +163,24 @@ def main(conn_send):
             if(code == 400): # Bad Request
                 print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
             elif(code == 200): # OK
-                print("[HTTP] Request OK! Data sent to draw process.")
+                
+                if(constants.TBA_ADDITIONAL_DATA):
+                    print("[HTTP] Querying TBA for additional match results...")
+                    tba_data, code = attempt_request("TBA")
+                    if(code == 304): # Not Modified
+                        print("[HTTP] Data was not modified since the last request, and thus has not been sent to the display.")
+                    if(code == 400): # Bad Request
+                        print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
+                    elif(code == 200):
+                        print("[HTTP] Successful! Attempting to merge data...")
+                        data = data_process.merge(tba_data, data)
+                        print("[HTTP] Success!")
+                else:
+                    print("[HTTP] Request OK! Data sent to draw process.")
+                
                 conn_send.send(data)
+
+
 
             print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request...")
             time.sleep(constants.REQUEST_TIMEOUT)

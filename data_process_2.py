@@ -60,28 +60,28 @@ class TournamentLevel(Enum):
 
 class Match():
     # Nexus exclusive properties
-    predicted_queue_time: time.struct_time
-    predicted_deck_time:  time.struct_time
-    predicted_field_time: time.struct_time
-    status: str
+    predicted_queue_time: time.struct_time = None
+    predicted_deck_time:  time.struct_time = None
+    predicted_field_time: time.struct_time = None
+    status: str = None
 
-    planned_start_time:   time.struct_time
-    predicted_start_time: time.struct_time
-    actual_start_time:    time.struct_time
-    result_posted_time:   time.struct_time
+    planned_start_time:   time.struct_time = None
+    predicted_start_time: time.struct_time = None
+    actual_start_time:    time.struct_time = None
+    result_posted_time:   time.struct_time = None
 
 
-    tournament_level:  TournamentLevel
-    set_number:        int
-    match_number:      int
-    played_number:     int
+    tournament_level:  TournamentLevel = None
+    set_number:        int = None
+    match_number:      int = None
+    played_number:     int = None
 
-    field: str
+    field: str = None
 
-    red_alliance:  Alliance
-    blue_alliance: Alliance
+    red_alliance:  Alliance = None
+    blue_alliance: Alliance = None
 
-    winning_alliance: TeamColor
+    winning_alliance: TeamColor = None
 
     def __init__(self):
         self.red_alliance = Alliance()
@@ -157,6 +157,13 @@ class Match():
             self.planned_start_time = self.predicted_start_time
             self.status = data["status"]
 
+            # Extra status values, since Nexus stops at "On field"
+            if("estimatedStartTime" in data["times"]):
+                if(time.time() > (data["times"]["estimatedStartTime"] / 1000)):
+                    self.status = "Playing"
+                elif(time.time() > (data["times"]["estimatedStartTime"] / 1000) + 3 * 60): # 3 minutes after
+                    self.status = "Finished"
+
             # Nexus only returns a human-readable match name. So...
             [match_level, match_number] = data["label"].split(" ")
 
@@ -181,6 +188,25 @@ class Match():
             self.red_alliance.inherit(data["redTeams"], DataFlavor.NEXUS)
             self.blue_alliance.inherit(data["blueTeams"], DataFlavor.NEXUS)
         
+        return self
+    
+    def inherit_from(self, other):
+        if(other.predicted_queue_time): self.predicted_queue_time = other.predicted_queue_time
+        if(other.predicted_deck_time): self.predicted_deck_time = other.predicted_deck_time
+        if(other.predicted_field_time): self.predicted_field_time = other.predicted_field_time
+        if(other.status): self.status = other.status
+        if(other.planned_start_time): self.planned_start_time = other.planned_start_time
+        if(other.predicted_start_time): self.predicted_start_time = other.predicted_start_time
+        if(other.actual_start_time): self.actual_start_time = other.actual_start_time
+        if(other.result_posted_time): self.result_posted_time = other.result_posted_time
+        if(other.tournament_level): self.tournament_level = other.tournament_level
+        if(other.set_number): self.set_number = other.set_number
+        if(other.match_number): self.match_number = other.match_number
+        if(other.played_number): self.played_number = other.played_number
+        if(other.field): self.field = other.field
+        if(other.red_alliance): self.red_alliance = other.red_alliance
+        if(other.blue_alliance): self.blue_alliance = other.blue_alliance
+        if(other.winning_alliance): self.winning_alliance = other.winning_alliance
         return self
     
     def get_tournament_level_name(self, short = False):
@@ -222,6 +248,9 @@ class Match():
         else:
             return f"[invalid match]"
         
+    def get_status(self):
+        return self.status or ""
+        
 
 def get_matches(data, flavor: str) -> dict:
     # TODO: Properly use inheritance
@@ -249,4 +278,35 @@ def get_matches(data, flavor: str) -> dict:
         }
     else:
         raise ValueError(f"Illegal data flavor {flavor}")
-            
+
+# Attempts to merge two sources. If data exists in both, source is prioritized.
+def merge(base, source):
+
+    # Matches:
+    unused_matches = base["matches"]
+    matches = []
+    for source_match in base["matches"]:
+        # Find the match with the same level and data, if it exists
+        base_candidate = None
+        for base_match in source["matches"]:
+            if(
+                source_match.tournament_level == base_match.tournament_level and
+                source_match.match_number == base_match.match_number and
+                source_match.set_number == base_match.set_number
+            ):
+                base_candidate = source_match
+
+        if(base_candidate == None):
+            # No underlying match, just insert it directly
+            matches.append(Match().inherit_from(source_match))
+        else:
+            matches.append(Match().inherit_from(base_match).inherit_from(source_match))
+            unused_matches.remove(base_candidate)
+    
+    print(matches)
+    matches.sort()
+    return {
+        "matches": matches,
+        "announcments": base.get("announcements", None) or source.get("announcements", None),
+        "last_update": base.get("last_update", None) or base.get("last_update", None)
+    }

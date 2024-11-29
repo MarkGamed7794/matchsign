@@ -3,6 +3,7 @@ requests:
   request_source: NEXUS # Either TBA, FRC or NEXUS.
   tba_cache_filepath: "tba_cache.txt" # The file that the TBA ETag is stored in.
   request_timeout: 20 # The amount of time between requests, in seconds.
+  tba_additional_data: true # If true, tries to query TBA as well for match resuts. Experimental.
 
   response_cache:
     use_cache: false # If true, uses the cached response instead of making a new one.

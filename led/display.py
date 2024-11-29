@@ -87,13 +87,13 @@ def main(conn_recieve):
             debug_menu()
 
     def format_timediff(sec):
-        hours = int(abs(sec)/3600) % 60
+        hours = int(abs(sec)/3600)
         minutes = int(abs(sec)/60) % 60
         seconds = int(abs(sec)) % 60
         if(abs(sec) > 3600):
-            return f"{"-" if sec < 0 else ""}{hours}H{"0" if minutes < 10 else ""}{minutes}M"
+            return f"{'-' if sec < 0 else ''}{hours}H{'0' if minutes < 10 else ''}{minutes}M"
         else: 
-            return f"{"-" if sec < 0 else ""}{minutes}:{"0" if seconds < 10 else ""}{seconds}"
+            return f"{'-' if sec < 0 else ''}{minutes}:{'0' if seconds < 10 else ''}{seconds}"
         
     # GRAPHICS #
 
@@ -136,32 +136,39 @@ def main(conn_recieve):
         draw.print(current_match.get_match_name(include_extra=False), 64, 14, Palette["white"], Fonts["small"], align="c")
         draw.print(current_match.get_match_number_extra(), 64, 19, Palette["white"], Fonts["tiny"], align="c")
         
-        est_time = current_match.planned_start_time
-        est_label = "EST."
-        if(current_match.status == "Queuing soon"):
-            est_time = current_match.predicted_queue_time
-            est_label = "QUEUE"
-        elif(current_match.status == "Now queuing"):
-            est_time = current_match.predicted_deck_time
-            est_label = "ON DECK"
-        elif(current_match.status == "On deck"):
-            est_time = current_match.predicted_field_time
-            est_label = "ON FIELD"
-        elif(current_match.status == "On field"):
-            est_time = current_match.predicted_start_time
-            est_label = "START"
+        status = current_match.get_status()
+        if(status not in ["Playing", "Finished"]):
+            est_time = current_match.planned_start_time
+            est_label = "EST."
+            if(status == "Queuing soon"):
+                est_time = current_match.predicted_queue_time
+                est_label = "QUEUE"
+            elif(status == "Now queuing"):
+                est_time = current_match.predicted_deck_time
+                est_label = "ON DECK"
+            elif(status == "On deck"):
+                est_time = current_match.predicted_field_time
+                est_label = "ON FIELD"
+            elif(status == "On field"):
+                est_time = current_match.predicted_start_time
+                est_label = "START"
 
-        status_timer = format_timediff(time.mktime(est_time) - time.time())
-        
-        draw.print(est_label, 30, 27, Palette["gray"], Fonts["tiny"], align="l")
-        draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
-        draw.print(status_timer, 98, 30, Palette["white"], Fonts["big"], align="r")
+            status_timer = format_timediff(time.mktime(est_time) - time.time())
+            
+            draw.print(est_label, 30, 27, Palette["gray"], Fonts["tiny"], align="l")
+            draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
+            draw.print(status_timer, 98, 30, Palette["white"], Fonts["big"], align="r")
+        else:
+            draw.print("STARTED", 30, 27, Palette["gray"], Fonts["tiny"], align="l")
+            draw.print(time.strftime('%I:%M', current_match.predicted_start_time), 90, 30, Palette["white"], Fonts["big"], align="r")
+            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 27, Palette["gray"], Fonts["miniscule"], align="r")
+            
 
         # top banner
         banner_width = 30 # Distance from center to each side
         for y in range(7):
             draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["dgray"])
-        draw.print(current_match.status.upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
+        draw.print(current_match.get_status().upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
 
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
         draw.rect(0, y, draw.width, 7, bg_color)
@@ -180,8 +187,8 @@ def main(conn_recieve):
         draw.print(match.get_match_name(short=True), 18, y + 5, Palette["white"], Fonts["small"])
 
         # Time, if match is yet to be queued
-        shown_time = match.status
-        if(match.status == "Queuing soon"):
+        shown_time = match.get_status() or "MATCH"
+        if(match.get_status() == "Queuing soon"):
             shown_time = f"{(time.strftime('%I:%M %p', match.predicted_queue_time))}"
 
         draw.print(shown_time, 64, y + 5, Palette["white"], Fonts["small"], align='c')

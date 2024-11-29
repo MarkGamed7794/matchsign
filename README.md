@@ -9,3 +9,5 @@ It's also not written very well; this is a Python project to get data from an AP
 In addition to the dependencies in `requirements.txt`, you also need https://github.com/hzeller/rpi-rgb-led-matrix -- this is, after all, designed to be run on a Raspberry Pi.
 
 Depending on which services you use, you also need API keys for the FRC Events API, The Blue Alliance, or FRC Nexus, which can be acquired at their specific websites. See the bottom of `configuration/constants.yaml` for details.
+
+Nexus data provided by https://frc.nexus/.
