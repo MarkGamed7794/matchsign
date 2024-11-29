@@ -111,7 +111,7 @@ def main(conn_recieve):
 
         if(len(match_data) == 0):
             draw.print("Waiting for event to start...", 64, 30, Palette["white"], Fonts["small"], align="c")
-            draw.print(f"as of {time.strftime("%I:%M %p", current_data['last_update'])} ({format_timediff(time.time() - time.mktime(current_data['last_update']))} ago)", 64, 38, Palette["gray"], Fonts["small"], align="c")
+            draw.print(f"as of {time.strftime('%I:%M %p', current_data['last_update'])} ({format_timediff(time.time() - time.mktime(current_data['last_update']))} ago)", 64, 38, Palette["gray"], Fonts["small"], align="c")
             return
         if(not 0 <= displayed_match < len(match_data)):
             return
