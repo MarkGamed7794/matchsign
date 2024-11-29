@@ -103,7 +103,7 @@ class MatrixDraw():
             pygame.draw.rect(self.screen, col, pygame.Rect(x1 * 8, y1 * 8, (x2-x1) * 8, (y2-y1) * 8))
         else:
             for dy in range(y1, y2):
-                graphics.DrawLine(self.alt_buffer, x1, dy, x2, dy, col)
+                graphics.DrawLine(self.alt_buffer, x1, dy, x2-1, dy, col)
 
     def line(self, x1: int, y1: int, x2: int, y2: int, col):
 
