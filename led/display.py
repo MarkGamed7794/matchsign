@@ -104,7 +104,7 @@ def main(conn_recieve):
         This includes the team numbers and detailed information about the currently selected match.
         """
 
-        draw.rect(0, 0, 128, 32, Palette["black"])
+        draw.rect(0, 0, 128, 34, Palette["black"])
 
         nonlocal displayed_match
         
@@ -138,7 +138,7 @@ def main(conn_recieve):
         
         est_time = current_match.planned_start_time
         est_label = "EST."
-        if(current_match.status == "Queueing soon"):
+        if(current_match.status == "Queuing soon"):
             est_time = current_match.predicted_queue_time
             est_label = "QUEUE"
         elif(current_match.status == "Now queuing"):
@@ -153,9 +153,9 @@ def main(conn_recieve):
 
         status_timer = format_timediff(time.mktime(est_time) - time.time())
         
-        draw.print(est_label, 29, 26, Palette["gray"], Fonts["tiny"], align="l")
-        draw.print((time.strftime('%I:%M %p', est_time)).upper(), 29, 31, Palette["gray"], Fonts["tiny"], align="l")
-        draw.print(status_timer, 99, 29, Palette["white"], Fonts["big"], align="r")
+        draw.print(est_label, 30, 27, Palette["gray"], Fonts["tiny"], align="l")
+        draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
+        draw.print(status_timer, 98, 30, Palette["white"], Fonts["big"], align="r")
 
         # top banner
         banner_width = 30 # Distance from center to each side

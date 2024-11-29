@@ -207,12 +207,12 @@ class Match():
                 else:
                     return ""
             elif(self.tournament_level == TournamentLevel.FINAL):
-                return f"ROUND {self.match_number}"
+                return ""
         
         return ""
     
     def get_match_name(self, short = False, include_extra = True):
-        if(self.set_number and self.tournament_level.value > TournamentLevel.QUALIFICATION.value):
+        if(self.set_number and (TournamentLevel.FINAL.value > self.tournament_level.value > TournamentLevel.QUALIFICATION.value)):
             out = f"{self.get_tournament_level_name(short)}{'' if short else ' '}{self.set_number}"
             if(include_extra and not (self.tournament_level.value < TournamentLevel.FINAL.value and self.match_number == 1)):
                 out += f"-{self.match_number}"
