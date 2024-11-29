@@ -20,11 +20,12 @@ team_number: 1800 # The team number to highlight and filter by. Should ideally b
 # and so on; e.g. third row, first column is ID 8.
 
 keymap:
-  button_select: 5 # Used for a general "OK" or "SELECT" option when navigating menus.
-  button_left:   4 # Next; scroll right.
-  button_right:  6 # Previous; scroll left.
-  button_up:     1 # Scroll up.
-  button_down:   9 # Scroll down.
+  button_select: 10 # Used for a general "OK" or "SELECT" option when navigating menus.
+  button_cancel: 11 # Used for a general "BACK" option.
+  button_left:   12 # Next; scroll right.
+  button_right:  15 # Previous; scroll left.
+  button_up:     13 # Scroll up.
+  button_down:   14 # Scroll down.
 
 input:
   rpi_keypad_rows: [38, 37, 36, 35] # The pins connected to each row of the keypad.

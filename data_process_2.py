@@ -159,10 +159,10 @@ class Match():
 
             # Extra status values, since Nexus stops at "On field"
             if("estimatedStartTime" in data["times"]):
-                if(time.time() > (data["times"]["estimatedStartTime"] / 1000)):
-                    self.status = "Playing"
-                elif(time.time() > (data["times"]["estimatedStartTime"] / 1000) + 3 * 60): # 3 minutes after
+                if(time.time() > (data["times"]["estimatedStartTime"] / 1000) + 3 * 60): # 3 minutes after
                     self.status = "Finished"
+                elif(time.time() > (data["times"]["estimatedStartTime"] / 1000)):
+                    self.status = "Playing"
 
             # Nexus only returns a human-readable match name. So...
             [match_level, match_number] = data["label"].split(" ")

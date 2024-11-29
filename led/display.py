@@ -49,10 +49,10 @@ def main(conn_recieve):
 
             scroll_adjusted = False
             # Select matches with left/right
-            if(draw.key_just_pressed(4) and displayed_match > 0):
+            if(draw.key_just_pressed(constants.BUTTON_LEFT) and displayed_match > 0):
                 displayed_match -= 1
                 scroll_adjusted = True
-            if(draw.key_just_pressed(6) and displayed_match < len(match_data) - 1):
+            if(draw.key_just_pressed(constants.BUTTON_RIGHT) and displayed_match < len(match_data) - 1):
                 displayed_match += 1
                 scroll_adjusted = True
 
@@ -66,9 +66,9 @@ def main(conn_recieve):
                     list_scroll_frac = 0
 
             # Scroll list with up/down
-            if(draw.keys_down[1]):
+            if(draw.keys_down[constants.BUTTON_DOWN]):
                 list_scroll_frac -= 1/10
-            if(draw.keys_down[9]):
+            if(draw.keys_down[constants.BUTTON_UP]):
                 list_scroll_frac += 1/10
 
             # Clamp scroll between list boundaries
@@ -159,9 +159,9 @@ def main(conn_recieve):
             draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
             draw.print(status_timer, 98, 30, Palette["white"], Fonts["big"], align="r")
         else:
-            draw.print("STARTED", 30, 27, Palette["gray"], Fonts["tiny"], align="l")
+            draw.print("STARTED", 30, 29, Palette["gray"], Fonts["tiny"], align="l")
             draw.print(time.strftime('%I:%M', current_match.predicted_start_time), 90, 30, Palette["white"], Fonts["big"], align="r")
-            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 27, Palette["gray"], Fonts["tiny"], align="r")
+            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 30, Palette["gray"], Fonts["tiny"], align="r")
             
 
         # top banner

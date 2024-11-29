@@ -61,7 +61,7 @@ class UserInterface():
                     self.fonts["small"]
                 )
             self.draw.print("^", CENTER, 26, self.palette["white"], self.fonts["small"])
-            self.draw.print("[5] INSERT   [1] DELETE   [F] OK", 1, 30, self.palette["white"], self.fonts["small"])
+            self.draw.print("[^] INSERT   [v] DELETE   [A] OK", 1, 30, self.palette["white"], self.fonts["small"])
             
 
             cursor_direction = (-1 if self.draw.is_key_pressed(constants.BUTTON_LEFT) else 0) + (1 if self.draw.is_key_pressed(constants.BUTTON_RIGHT) else 0)
@@ -71,9 +71,9 @@ class UserInterface():
                     cursor_pos = (cursor_pos + cursor_direction) % CHAR_COUNT
             else:
                 repeat_timer = 0
-            if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
-                typed += charset[cursor_pos]
             if(self.draw.key_just_pressed(constants.BUTTON_UP)):
+                typed += charset[cursor_pos]
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):
                 typed = typed[:-1]
             if(self.draw.key_just_pressed(15)):
                 return typed
