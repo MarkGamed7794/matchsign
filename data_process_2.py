@@ -240,7 +240,7 @@ class Match():
     
     def get_match_number_extra(self):
         if(self.set_number and self.match_number):
-            if(self.tournament_level == TournamentLevel.QUALIFICATION):
+            if(self.tournament_level == TournamentLevel.QUALIFICATION or self.tournament_level == TournamentLevel.PRACTICE):
                 return ""
             elif(self.tournament_level.value < TournamentLevel.FINAL.value):
                 if(self.match_number > 1):
