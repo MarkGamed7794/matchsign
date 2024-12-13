@@ -1,3 +1,5 @@
 __pycache__/*
 led/__pycache__/*
+request_output.txt
+request_output_testing.txt
 .env
