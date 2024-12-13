@@ -176,7 +176,7 @@ class Match():
             if(self.tournament_level == TournamentLevel.FINAL):
                 self.set_number = 1
                 self.match_number = int(match_number)
-            elif(self.tournament_level == TournamentLevel.QUALIFICATION):
+            elif(self.tournament_level == TournamentLevel.QUALIFICATION or self.tournament_level == TournamentLevel.PRACTICE):
                 self.match_number = int(match_number)
                 self.set_number = 1
             else:
@@ -262,30 +262,37 @@ class Match():
 
 def get_matches(data, flavor: str) -> dict:
     # TODO: Properly use inheritance
-    if(flavor == "TBA"):
-        # TBA flavor
-        matches = [Match().inherit(match_json, DataFlavor.TBA) for match_json in data]
-        matches.sort()
+    try:
+        if(flavor == "TBA"):
+            # TBA flavor
+            matches = [Match().inherit(match_json, DataFlavor.TBA) for match_json in data]
+            matches.sort()
+            return {
+                "matches": matches
+            }
+        elif(flavor == "FRC"):
+            # FRC flavor
+            matches = [Match().inherit(match_json, DataFlavor.FRC) for match_json in data["Schedule"]]
+            matches.sort()
+            return {
+                "matches": matches,
+            }
+        elif(flavor == "NEXUS"):
+            matches = [Match().inherit(match_json, DataFlavor.NEXUS) for match_json in data["matches"]]
+            matches.sort()
+            return {
+                "matches": matches,
+                "announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
+                "last_update": time.localtime(data["dataAsOfTime"] / 1000)
+            }
+        else:
+            raise ValueError(f"Illegal data flavor {flavor}")
+    except Exception as e:
+        print("Something went wrong when trying to parse the data. Exception to follow:")
+        print(e.with_traceback())
         return {
-            "matches": matches
+            matches: []
         }
-    elif(flavor == "FRC"):
-        # FRC flavor
-        matches = [Match().inherit(match_json, DataFlavor.FRC) for match_json in data["Schedule"]]
-        matches.sort()
-        return {
-            "matches": matches,
-        }
-    elif(flavor == "NEXUS"):
-        matches = [Match().inherit(match_json, DataFlavor.NEXUS) for match_json in data["matches"]]
-        matches.sort()
-        return {
-            "matches": matches,
-            "announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
-            "last_update": time.localtime(data["dataAsOfTime"] / 1000)
-        }
-    else:
-        raise ValueError(f"Illegal data flavor {flavor}")
 
 # Attempts to merge two sources. If data exists in both, source is prioritized.
 def merge(base, source):
@@ -315,6 +322,6 @@ def merge(base, source):
     matches.sort()
     return {
         "matches": matches,
-        "announcments": base.get("announcements", None) or source.get("announcements", None),
+        "announcements": base.get("announcements", None) or source.get("announcements", None),
         "last_update": base.get("last_update", None) or base.get("last_update", None)
     }
