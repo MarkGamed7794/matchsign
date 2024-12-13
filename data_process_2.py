@@ -2,6 +2,7 @@
 
 from enum import Enum
 import time
+import constants
 
 class DataFlavor(Enum):
     FRC = 0
@@ -9,6 +10,13 @@ class DataFlavor(Enum):
     NEXUS = 2
 
 # ------------------ UTILITY ------------------ #
+
+# This is a bitfield.
+class FilterType(Enum):
+    SHOW_ALL = 0
+    HIDE_PAST = 1
+    HIDE_NOT_PLAYING = 2
+    HIDE_PAST_OR_NOT_PLAYING = 3
 
 # ------------------ TEAMS AND ALLIANCES ------------------ #
 
@@ -24,7 +32,6 @@ class Team():
     disqualified: bool
     station:      int
     surrogate:    bool
-
 
 class Alliance():
     teams: list[Team]
@@ -258,6 +265,19 @@ class Match():
         
     def get_status(self):
         return self.status or ""
+    
+    def matches_filter(self, filter_type):
+        bitfield = filter_type
+        if(bitfield & FilterType.HIDE_PAST.value and (time.mktime(self.predicted_start_time) + 3 * 60 < time.time())):
+            return False
+        if(bitfield & FilterType.HIDE_NOT_PLAYING.value):
+            has_team = False
+            for team in self.red_alliance.teams:
+                if(team.team_number == constants.TEAM_NUMBER): has_team = True
+            for team in self.blue_alliance.teams:
+                if(team.team_number == constants.TEAM_NUMBER): has_team = True
+            if(not has_team): return False
+        return True
         
 
 def get_matches(data, flavor: str) -> dict:

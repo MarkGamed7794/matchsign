@@ -18,6 +18,15 @@ def main(conn_recieve):
     list_scroll: int = 0 # The amount of full entries scrolled down.
     list_scroll_frac: float = 0 # Between 0 and 1, represents how much of the way the list is to being scrolled to the next entry.
 
+    # Filtering and its respective popup.
+    filter_popup_text: str = ""
+    filter_popup_timer: int = 0
+
+    filter_mode: int = 0 # Which filtering mode to use.
+    # 0: Show all matches
+    # 1: Show all matches that haven't happened yet
+    # 2: Show all matching in which the current team is playing
+    # 3: Show all matches that haven't happened yet in which the current team is playing
 
     def debug_menu():
         ui = UserInterface(draw, Palette, Fonts)
@@ -94,6 +103,24 @@ def main(conn_recieve):
             if(list_scroll >= len(match_data) - 4 and list_scroll_frac > 0):
                 list_scroll = len(match_data) - 4
                 list_scroll_frac = 0
+
+            # Use 1 to cycle through filters
+            nonlocal filter_mode, filter_popup_timer, filter_popup_text
+            if(draw.key_just_pressed(1)):
+                filter_mode = (filter_mode + 1) % 4
+                displayed_match = 0
+                list_scroll = 0
+                list_scroll_frac = 0
+                match filter_mode:
+                    case 0:
+                        filter_popup_text = "Showing all matches"
+                    case 1:
+                        filter_popup_text = "Showing future matches"
+                    case 2:
+                        filter_popup_text = f"Showing {constants.TEAM_NUMBER}'s matches"
+                    case 3:
+                        filter_popup_text = f"Showing {constants.TEAM_NUMBER}'s future matches"
+                filter_popup_timer = 120
         
 
         if(draw.key_just_pressed(0)):
@@ -120,7 +147,6 @@ def main(conn_recieve):
         draw.rect(0, 0, 128, 34, Palette["black"])
 
         nonlocal displayed_match
-        
 
         if(len(match_data) == 0):
             draw.print("Waiting for event to start...", 64, 30, Palette["white"], Fonts["small"], align="c")
@@ -193,6 +219,14 @@ def main(conn_recieve):
             draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["dgray"])
         draw.print(current_match.get_status().upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
 
+        # filter popup
+        nonlocal filter_popup_timer
+        if(filter_popup_timer > 0):
+            y = min(filter_popup_timer, 8) - 8
+            draw.rect(0, y, 128, 8, Palette["black"])
+            draw.print(filter_popup_text, 1, y + 5, Palette["white"], Fonts["small"])
+            filter_popup_timer -= 1
+
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
         draw.rect(0, y, draw.width, 7, bg_color)
         
@@ -245,6 +279,8 @@ def main(conn_recieve):
                 if(current_data == None):
                     draw.print("Attempting request...", 64, 32, Palette["white"], Fonts["small"], align="c")
                 else:
+                    match_data = [match for match in current_data["matches"] if match.matches_filter(filter_mode)]
+                    
                     draw_match_list() # Draw this first so that it gets cut off by the main area
                     draw_main_area()
 
@@ -268,7 +304,6 @@ def main(conn_recieve):
         
         if(conn_recieve.poll()):
             current_data = conn_recieve.recv()
-            match_data = current_data["matches"]
 
 if __name__ == "__main__":
     main(None)

@@ -6,6 +6,7 @@ if __name__ == "__main__":
     parentdir = os.path.dirname(currentdir)
     sys.path.insert(0, parentdir)
 
+import time
 import constants
 from constants import PYGAME_MODE
 
@@ -272,7 +273,9 @@ class MatrixDraw():
             pygame.display.flip()
             self.clock.tick(60)
         else:
+            wait_time = time.monotonic() + 1/60
             self.alt_buffer = self.matrix.SwapOnVSync(self.alt_buffer)
+            time.sleep(wait_time - time.monotonic())
 
         self.detect_keypresses()
         self.clear()
