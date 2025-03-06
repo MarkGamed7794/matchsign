@@ -160,12 +160,12 @@ def main(conn_recieve):
         # team numbers
         if(current_match.red_alliance.is_unknown):
             for i in range(3):
-                draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
+                draw.rect(0, i * 11, 25 + i, 10, Palette["dgray"])
                 draw.print("----", 24 + i, 7 + i * 11, Palette["gray"], Fonts["big"], align="r")
         else:
             for i, team in enumerate(current_match.red_alliance.teams):
                 if(team.is_unknown):
-                    draw.rect(0, i * 11, 25 + i, 10, Palette["gray"])
+                    draw.rect(0, i * 11, 25 + i, 10, Palette["dgray"])
                     draw.print("----", 24 + i, 7 + i * 11, Palette["white"], Fonts["big"], align="r")
                 else:
                     draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
@@ -175,12 +175,12 @@ def main(conn_recieve):
         
         if(current_match.blue_alliance.is_unknown):
             for i in range(3):
-                draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
+                draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["dgray"])
                 draw.print("----", 104 - i, 7 + i * 11, Palette["gray"], Fonts["big"])
         else:
             for i, team in enumerate(current_match.blue_alliance.teams):
                 if(team.is_unknown):
-                    draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["gray"])
+                    draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["dgray"])
                     draw.print("----", 104 - i, 7 + i * 11, Palette["white"], Fonts["big"])
                 else:
                     draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
