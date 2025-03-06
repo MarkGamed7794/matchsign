@@ -131,3 +131,14 @@ class UserInterface():
             return int(typed)
         except:
             return None
+        
+    def Notification(self, prompt: str) -> None:
+        self.FadeIn(prompt)
+
+        while True:
+            self.draw.print("             [A] OK            ", 1, 63, self.palette["white"], self.fonts["small"])
+            if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
+                break
+            self.draw.flip()
+
+        return None

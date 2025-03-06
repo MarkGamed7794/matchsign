@@ -50,7 +50,11 @@ def main(conn_recieve):
                 ]
             )
             if(modification == 0):
-                ui.NumberEntry("Enter new team #:")
+                entered = ui.NumberEntry("Enter new team #:")
+                if(entered <= 0 or entered == None):
+                    ui.Notification("Illegal team number.")
+                else:
+                    constants.TEAM_NUMBER = entered
 
         elif(action == 1):
 

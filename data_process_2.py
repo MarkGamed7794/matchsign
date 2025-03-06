@@ -51,7 +51,6 @@ class Alliance():
                 # TODO: All the key matching and stuff
                 self.teams[team_n].team_number = int(data["team_keys"][team_n][3:])
         elif(data_flavor == DataFlavor.NEXUS):
-            print(data)
             if(data == None): return
             for team_n in range(3):
                 if(data[team_n] == None):
