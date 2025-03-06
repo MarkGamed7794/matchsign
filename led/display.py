@@ -164,10 +164,14 @@ def main(conn_recieve):
                 draw.print("----", 24 + i, 7 + i * 11, Palette["gray"], Fonts["big"], align="r")
         else:
             for i, team in enumerate(current_match.red_alliance.teams):
-                draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
-                col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
-                font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
-                draw.print(str(team.team_number), 24 + i, 7 + i * 11, col, font, align="r")
+                if(team.is_unknown):
+                    draw.rect(0, i * 11, 25 + i, 10, Palette["gray"])
+                    draw.print("----", 24 + i, 7 + i * 11, Palette["white"], Fonts["big"], align="r")
+                else:
+                    draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
+                    col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
+                    font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
+                    draw.print(str(team.team_number), 24 + i, 7 + i * 11, col, font, align="r")
         
         if(current_match.blue_alliance.is_unknown):
             for i in range(3):
@@ -175,10 +179,14 @@ def main(conn_recieve):
                 draw.print("----", 104 - i, 7 + i * 11, Palette["gray"], Fonts["big"])
         else:
             for i, team in enumerate(current_match.blue_alliance.teams):
-                draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
-                col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
-                font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
-                draw.print(str(team.team_number), 104 - i, 7 + i * 11, col, font)
+                if(team.is_unknown):
+                    draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["gray"])
+                    draw.print("----", 104 - i, 7 + i * 11, Palette["white"], Fonts["big"])
+                else:
+                    draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
+                    col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
+                    font = Fonts["big"] if team.team_number <= 9999 else Fonts["bigc"]
+                    draw.print(str(team.team_number), 104 - i, 7 + i * 11, col, font)
 
 
         # time, match no, etc.

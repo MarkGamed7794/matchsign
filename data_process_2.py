@@ -32,6 +32,7 @@ class Team():
     disqualified: bool
     station:      int
     surrogate:    bool
+    is_unknown:   bool = False
 
 class Alliance():
     teams: list[Team]
@@ -50,9 +51,14 @@ class Alliance():
                 # TODO: All the key matching and stuff
                 self.teams[team_n].team_number = int(data["team_keys"][team_n][3:])
         elif(data_flavor == DataFlavor.NEXUS):
+            print(data)
             if(data == None): return
             for team_n in range(3):
-                self.teams[team_n].team_number = int(data[team_n])
+                if(data[team_n] == None):
+                    self.teams[team_n].is_unknown = True
+                    self.teams[team_n].team_number = -1
+                else:
+                    self.teams[team_n].team_number = int(data[team_n])
             
 
 # ------------------ MATCH ------------------ #
@@ -309,7 +315,7 @@ def get_matches(data, flavor: str) -> dict:
             raise ValueError(f"Illegal data flavor {flavor}")
     except Exception as e:
         print("Something went wrong when trying to parse the data. Exception to follow:")
-        print(e.with_traceback())
+        print(e)
         return {
             matches: []
         }
