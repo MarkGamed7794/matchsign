@@ -166,7 +166,7 @@ def main(conn_recieve):
             for i, team in enumerate(current_match.red_alliance.teams):
                 if(team.is_unknown):
                     draw.rect(0, i * 11, 25 + i, 10, Palette["dgray"])
-                    draw.print("----", 24 + i, 7 + i * 11, Palette["white"], Fonts["big"], align="r")
+                    draw.print("----", 24 + i, 7 + i * 11, Palette["gray"], Fonts["big"], align="r")
                 else:
                     draw.rect(0, i * 11, 25 + i, 10, Palette["bgred"])
                     col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
@@ -181,7 +181,7 @@ def main(conn_recieve):
             for i, team in enumerate(current_match.blue_alliance.teams):
                 if(team.is_unknown):
                     draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["dgray"])
-                    draw.print("----", 104 - i, 7 + i * 11, Palette["white"], Fonts["big"])
+                    draw.print("----", 104 - i, 7 + i * 11, Palette["gray"], Fonts["big"])
                 else:
                     draw.rect(103 - i, 11 * i, 25 + i, 10, Palette["bgblue"])
                     col = Palette["yellow"] if (team.team_number == constants.TEAM_NUMBER) else Palette["white"]
