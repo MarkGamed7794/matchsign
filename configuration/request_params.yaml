@@ -6,7 +6,7 @@ frc:
 
 tba:
   team_key: "frc4308"
-  event_key: "2024os752"
+  event_key: "2025onsca"
 
 nexus:
-  event_key: "2025nysu" # In most cases, this is the season prepended to the FRC event code.
+  event_key: "2025onsca" # In most cases, this is the season prepended to the FRC event code.

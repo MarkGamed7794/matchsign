@@ -30,7 +30,7 @@ NEXUS_REQUEST_PARAMS = {
 
 def make_request(source: str):
     # FRC path: https://frc-api.firstinspires.org/v3.0/{season}/schedule/{eventCode}?tournamentLevel={tournamentLevel}&teamNumber={teamNumber}&start={start}&end={end}
-    # TBA path: https://www.thebluealliance.com/api/v3/team/{team_key}/event/{event_key}/matches
+    # TBA path: https://www.thebluealliance.com/api/v3/event/{eventKey}/matches
     if source == "FRC":
         print("[HTTP] Attempting to make request to FRC servers...")
         print("[HTTP] Request Headers:", FRC_HEADERS)
@@ -61,11 +61,11 @@ def make_request(source: str):
         if(os.path.isfile(constants.TBA_CACHE_FILEPATH)):
             with open(constants.TBA_CACHE_FILEPATH, "r") as cache:
                 etag_value = cache.read()
-        TBA_HEADERS["If-None-Match"] = etag_value
+        if(etag_value != ""): TBA_HEADERS["If-None-Match"] = etag_value
 
         print("[HTTP] Attempting to make request to TBA servers...")
         print("[HTTP] Request Headers:", TBA_HEADERS)
-        resp = requests.get(f"https://www.thebluealliance.com/api/v3/team/{TBA_REQUEST_PARAMS['team_key']}/event/{TBA_REQUEST_PARAMS['event_key']}/matches", headers=TBA_HEADERS)
+        resp = requests.get(f"https://www.thebluealliance.com/api/v3/event/{TBA_REQUEST_PARAMS['event_key']}/matches", headers=TBA_HEADERS)
         print("[HTTP] Status code:", resp.status_code)
         print("[HTTP] Response Headers:", resp.headers)
         if(constants.SHOW_RESPONSE_BODY):
@@ -139,6 +139,8 @@ def attempt_request(source: str):
     print(f"[HTTP] [CRITICAL]: Request failed {constants.REQUEST_RETRY_LIMIT} times in a row. Check connections and try again.")
     raise RuntimeError(f"Request failed {constants.REQUEST_RETRY_LIMIT} times in a row. Check connections and try again.")
 
+LAST_TBA_DATA = "[]"
+
 def main(conn_send):
     if(constants.DISABLE_REQUESTS):
         print("[HTTP] Request module disabled. No requests will be made.")
@@ -168,12 +170,16 @@ def main(conn_send):
                     print("[HTTP] Querying TBA for additional match results...")
                     tba_data, code = attempt_request("TBA")
                     if(code == 304): # Not Modified
-                        print("[HTTP] Data was not modified since the last request, and thus has not been sent to the display.")
+                        print("[HTTP] Data was not modified since the last request.")
+                        print("[HTTP] Attempting to merge data...")
+                        data = data_process.merge(LAST_TBA_DATA, data)
+                        print("[HTTP] Success!")
                     if(code == 400): # Bad Request
                         print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
                     elif(code == 200):
                         print("[HTTP] Successful! Attempting to merge data...")
                         data = data_process.merge(tba_data, data)
+                        LAST_TBA_DATA = tba_data
                         print("[HTTP] Success!")
                 else:
                     print("[HTTP] Request OK! Data sent to draw process.")

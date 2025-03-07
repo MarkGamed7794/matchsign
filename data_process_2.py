@@ -23,6 +23,7 @@ class FilterType(Enum):
 class TeamColor(Enum):
     RED = 1
     BLUE = 2
+    TIE = 3 # Only used for the winning_team field.
 
 class Team():
     team_number: int
@@ -36,8 +37,9 @@ class Team():
 
 class Alliance():
     teams: list[Team]
-    color: TeamColor
     is_unknown: bool = False
+
+    final_score: int|None = None
 
     def __init__(self):
         self.teams = [Team(), Team(), Team()]
@@ -50,6 +52,8 @@ class Alliance():
             for team_n in range(3):
                 # TODO: All the key matching and stuff
                 self.teams[team_n].team_number = int(data["team_keys"][team_n][3:])
+
+            self.final_score = int(data["score"])
         elif(data_flavor == DataFlavor.NEXUS):
             if(data == None): return
             for team_n in range(3):
@@ -58,6 +62,12 @@ class Alliance():
                     self.teams[team_n].team_number = -1
                 else:
                     self.teams[team_n].team_number = int(data[team_n])
+
+    def inherit_from(self, other):
+        if(other.teams): self.teams = other.teams
+        if(other.is_unknown != None): self.is_unknown = other.is_unknown
+        if(other.final_score != None): self.final_score = other.final_score
+
             
 
 # ------------------ MATCH ------------------ #
@@ -83,6 +93,7 @@ class Match():
     actual_start_time:    time.struct_time = None
     result_posted_time:   time.struct_time = None
 
+    # General properties
 
     tournament_level:  TournamentLevel = None
     set_number:        int = None
@@ -94,7 +105,7 @@ class Match():
     red_alliance:  Alliance = None
     blue_alliance: Alliance = None
 
-    winning_alliance: TeamColor = None
+    winning_alliance: TeamColor|None = None
 
     def __init__(self):
         self.red_alliance = Alliance()
@@ -161,6 +172,19 @@ class Match():
             )
 
             # TODO: score breakdown (?)
+
+            if(self.blue_alliance.final_score not in [None, -1] and self.red_alliance.final_score not in [None, -1]):
+                red_score = self.red_alliance.final_score
+                blue_score = self.blue_alliance.final_score
+                print(f"Scores for {self.match_number}: {red_score}-{blue_score}")
+                if(blue_score > red_score):
+                    self.winning_alliance = TeamColor.BLUE
+                elif(red_score > blue_score):
+                    self.winning_alliance = TeamColor.RED
+                elif(blue_score == red_score):
+                    self.winning_alliance = TeamColor.TIE
+                print(f"Winner: {self.winning_alliance}")
+            
         elif(flavor == DataFlavor.NEXUS):
             # Nexus returns timestamps in milliseconds, not seconds
             self.predicted_queue_time = time.localtime(data["times"]["estimatedQueueTime"] / 1000)
@@ -224,9 +248,19 @@ class Match():
         if(other.match_number): self.match_number = other.match_number
         if(other.played_number): self.played_number = other.played_number
         if(other.field): self.field = other.field
-        if(other.red_alliance): self.red_alliance = other.red_alliance
-        if(other.blue_alliance): self.blue_alliance = other.blue_alliance
         if(other.winning_alliance): self.winning_alliance = other.winning_alliance
+
+        if(other.red_alliance):
+            if(self.red_alliance):
+                self.red_alliance.inherit_from(other.red_alliance)
+            else:
+                self.red_alliance = other.red_alliance
+        if(other.blue_alliance):
+            if(self.blue_alliance):
+                self.blue_alliance.inherit_from(other.blue_alliance)
+            else:
+                self.blue_alliance = other.blue_alliance
+        
         return self
     
     def get_tournament_level_name(self, short = False):
@@ -270,6 +304,16 @@ class Match():
         
     def get_status(self):
         return self.status or ""
+    
+    def get_final_result(self, long=False):
+        if(self.winning_alliance != None):
+            red, blue = self.red_alliance.final_score, self.blue_alliance.final_score
+            if(self.winning_alliance == TeamColor.RED):
+                return f"RED WON {red}-{blue}" if long else f"W {red}-{blue} L"
+            elif(self.winning_alliance == TeamColor.BLUE):
+                return f"BLUE WON {red}-{blue}" if long else f"L {red}-{blue} W"
+            else:
+                return f"TIE {red}-{blue}" if long else f"T {red}-{blue} T"
     
     def matches_filter(self, filter_type):
         bitfield = filter_type
@@ -323,30 +367,40 @@ def get_matches(data, flavor: str) -> dict:
 def merge(base, source):
 
     # Matches:
-    unused_matches = base["matches"]
+    unused_base = list(base["matches"])
+    unused_source = list(source["matches"])
     matches = []
-    for source_match in base["matches"]:
+    for source_match in source["matches"]:
         # Find the match with the same level and data, if it exists
         base_candidate = None
-        for base_match in source["matches"]:
+        for base_match in base["matches"]:
             if(
                 source_match.tournament_level == base_match.tournament_level and
                 source_match.match_number == base_match.match_number and
                 source_match.set_number == base_match.set_number
             ):
-                base_candidate = source_match
+                base_candidate = base_match
+                #print("viable candidate:")
+            #print(f"{source_match.tournament_level.value}-{source_match.match_number}-{source_match.set_number} / {base_match.tournament_level.value}-{base_match.match_number}-{base_match.set_number}")
 
         if(base_candidate == None):
             # No underlying match, just insert it directly
             matches.append(Match().inherit_from(source_match))
+            unused_source.remove(source_match)
+            print(f"Could not find suitable candidate for {source_match.get_match_name()}")
         else:
-            matches.append(Match().inherit_from(base_match).inherit_from(source_match))
-            unused_matches.remove(base_candidate)
+            matches.append(Match().inherit_from(base_candidate).inherit_from(source_match))
+            unused_base.remove(base_candidate)
+            unused_source.remove(source_match)
+            print(f"Merged {base_candidate.get_match_name()} onto {source_match.get_match_name()}")
+
+    # Add all the unmerged matches directly; might as well have something
+    matches.extend(unused_base)
+    matches.extend(unused_source)
     
-    print(matches)
     matches.sort()
     return {
         "matches": matches,
         "announcements": base.get("announcements", None) or source.get("announcements", None),
-        "last_update": base.get("last_update", None) or base.get("last_update", None)
+        "last_update": base.get("last_update", None) or source.get("last_update", None)
     }

@@ -153,7 +153,7 @@ def main(conn_recieve):
         nonlocal displayed_match
 
         if(len(match_data) == 0):
-            draw.print("Waiting for event to start...", 64, 30, Palette["white"], Fonts["small"], align="c")
+            draw.print("No matches found", 64, 30, Palette["white"], Fonts["small"], align="c")
             draw.print(f"as of {time.strftime('%I:%M %p', current_data['last_update'])} ({format_timediff(time.time() - time.mktime(current_data['last_update']))} ago)", 64, 38, Palette["gray"], Fonts["small"], align="c")
             return
         if(not 0 <= displayed_match < len(match_data)):
@@ -227,9 +227,21 @@ def main(conn_recieve):
 
         # top banner
         banner_width = 30 # Distance from center to each side
+        banner_col = Palette["dgray"]
+        if(current_match.winning_alliance == data_process.TeamColor.RED):
+            banner_col = Palette["bgred"]
+            banner_width += 5
+        if(current_match.winning_alliance == data_process.TeamColor.BLUE):
+            banner_col = Palette["bgblue"]
+            banner_width += 5
+        
         for y in range(7):
-            draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, Palette["dgray"])
-        draw.print(current_match.get_status().upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
+            draw.line(63 - banner_width + y, y, 65 + banner_width - y, y, banner_col)
+
+        if(current_match.winning_alliance != None):
+            draw.print(current_match.get_final_result(long=True), 64, 5, Palette["white"], Fonts["small"], align="c")
+        else:
+            draw.print(current_match.get_status().upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
 
         # filter popup
         nonlocal filter_popup_timer
@@ -266,6 +278,8 @@ def main(conn_recieve):
         shown_time = match.get_status() or "MATCH"
         if(match.get_status() == "Queuing soon"):
             shown_time = f"{(time.strftime('%I:%M %p', match.predicted_queue_time))}"
+        if(match.winning_alliance != None):
+            shown_time = match.get_final_result()
 
         draw.print(shown_time, 64, y + 5, Palette["white"], Fonts["small"], align='c')
 
