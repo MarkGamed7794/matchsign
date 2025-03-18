@@ -82,7 +82,7 @@ def make_request(source: str):
 
         try:
             if(constants.SAVE_RESPONSE):
-                with open("request_output.txt", "w") as file:
+                with open("request_output_tba.txt" if constants.TBA_ADDITIONAL_DATA else "request_output.txt", "w") as file:
                     file.write(resp.text)
                 print("[HTTP] Data saved successfully to request_output.txt.")
 
@@ -149,10 +149,20 @@ def main(conn_send):
 
     if(constants.USE_CACHED_DATA):
         print("[HTTP] Request module using cached data. No requests will be made.")
-        with open("request_output.txt") as file:
-            conn_send.send(data_process.get_matches(json.loads(file.read()), "TBA"))
-        while True:
-            time.sleep(1000)
+        if(constants.TBA_ADDITIONAL_DATA):
+            nexus_data, tba_data = [], []
+            with open("request_output.txt") as file: # NEXUS
+                nexus_data = data_process.get_matches(json.loads(file.read()), "NEXUS")
+            with open("request_output_tba.txt") as file: # TBA
+                tba_data = data_process.get_matches(json.loads(file.read()), "TBA")
+            conn_send.send(data_process.merge(tba_data, nexus_data))
+            while True:
+                time.sleep(1000)
+        else:
+            with open("request_output.txt") as file:
+                conn_send.send(data_process.get_matches(json.loads(file.read()), "TBA"))
+            while True:
+                time.sleep(1000)
 
     try:
         while True:
