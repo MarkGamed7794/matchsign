@@ -3,7 +3,7 @@ requests:
   request_source: NEXUS # Either TBA, FRC or NEXUS.
   tba_cache_filepath: "tba_cache.txt" # The file that the TBA ETag is stored in.
   request_timeout: 20 # The amount of time between requests, in seconds.
-  tba_additional_data: false # If true, tries to query TBA as well for match resuts. Experimental.
+  tba_additional_data: true # If true, tries to query TBA as well for match resuts. Experimental.
 
   response_cache:
     use_cache: false # If true, uses the cached response instead of making a new one.
@@ -12,7 +12,7 @@ requests:
 
   request_parameters:
     retry_limit: 5 # The maximum amount of times to retry a failed request.
-    print_response_body: true # If true, prints the entire response body to the console.
+    print_response_body: false # If true, prints the entire response body to the console.
 
 team_number: 1800 # The team number to highlight and filter by. Should ideally be your team.
 
