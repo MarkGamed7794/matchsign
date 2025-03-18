@@ -59,3 +59,6 @@ BUTTON_LEFT   = constants["keymap"]["button_left"]
 BUTTON_RIGHT  = constants["keymap"]["button_right"]
 BUTTON_UP     = constants["keymap"]["button_up"]
 BUTTON_DOWN   = constants["keymap"]["button_down"]
+
+TIMER_WARN = constants["timer"]["warn"]
+TIMER_FLASH = constants["timer"]["flash"]

@@ -112,9 +112,23 @@ class Match():
         self.blue_alliance = Alliance()
 
     def __gt__(self, other):
+        if(self.planned_start_time == None or other.planned_start_time == None):
+            if(self.tournament_level != other.tournament_level):
+                return self.tournament_level.value > other.tournament_level.value
+            elif(self.set_number != other.set_number):
+                return self.set_number > other.set_number
+            else:
+                return self.match_number > other.match_number
         return self.planned_start_time > other.planned_start_time
     
     def __lt__ (self, other):
+        if(self.planned_start_time == None or other.planned_start_time == None):
+            if(self.tournament_level != other.tournament_level):
+                return self.tournament_level.value < other.tournament_level.value
+            elif(self.set_number != other.set_number):
+                return self.set_number < other.set_number
+            else:
+                return self.match_number < other.match_number
         return self.planned_start_time < other.planned_start_time
     
     def inherit(self, data: dict, flavor: DataFlavor):
@@ -187,11 +201,12 @@ class Match():
             
         elif(flavor == DataFlavor.NEXUS):
             # Nexus returns timestamps in milliseconds, not seconds
-            self.predicted_queue_time = time.localtime(data["times"]["estimatedQueueTime"] / 1000)
-            self.predicted_deck_time  = time.localtime(data["times"]["estimatedOnDeckTime"] / 1000)
-            self.predicted_field_time = time.localtime(data["times"]["estimatedOnFieldTime"] / 1000)
-            self.predicted_start_time = time.localtime(data["times"]["estimatedStartTime"] / 1000)
-            self.planned_start_time = self.predicted_start_time
+            if("estimatedQueueTime" in data["times"]): self.predicted_queue_time = time.localtime(data["times"]["estimatedQueueTime"] / 1000)
+            if("estimatedOnDeckTime" in data["times"]): self.predicted_deck_time  = time.localtime(data["times"]["estimatedOnDeckTime"] / 1000)
+            if("estimatedOnFieldTime" in data["times"]): self.predicted_field_time = time.localtime(data["times"]["estimatedOnFieldTime"] / 1000)
+            if("estimatedStartTime" in data["times"]):
+                self.predicted_start_time = time.localtime(data["times"]["estimatedStartTime"] / 1000)
+                self.planned_start_time = self.predicted_start_time
             self.status = data["status"]
 
             # Extra status values, since Nexus stops at "On field"
@@ -317,8 +332,11 @@ class Match():
     
     def matches_filter(self, filter_type):
         bitfield = filter_type
-        if(bitfield & FilterType.HIDE_PAST.value and (time.mktime(self.predicted_start_time) + 3 * 60 < time.time())):
-            return False
+        if(bitfield & FilterType.HIDE_PAST.value):
+            # As a failsafe, matches with no predicted time are always counted as "future"
+            if(self.predicted_start_time != None):
+                if(time.mktime(self.predicted_start_time) + 3 * 60 < time.time()):
+                    return False
         if(bitfield & FilterType.HIDE_NOT_PLAYING.value):
             has_team = False
             for team in self.red_alliance.teams:

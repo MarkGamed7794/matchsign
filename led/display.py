@@ -6,7 +6,6 @@ import data_process_2 as data_process
 import constants
 
 DEBUG_MODE = constants.DEBUG_MODE
-
 def main(conn_recieve):
     draw: MatrixDraw = MatrixDraw()
     match_data: list[data_process.Match] = None
@@ -203,7 +202,7 @@ def main(conn_recieve):
             est_label = "EST."
             if(status == "Queuing soon"):
                 est_time = current_match.predicted_queue_time
-                est_label = "QUEUE"
+                est_label = "QUEUES"
             elif(status == "Now queuing"):
                 est_time = current_match.predicted_deck_time
                 est_label = "ON DECK"
@@ -212,17 +211,28 @@ def main(conn_recieve):
                 est_label = "ON FIELD"
             elif(status == "On field"):
                 est_time = current_match.predicted_start_time
-                est_label = "START"
+                est_label = "STARTS"
 
-            status_timer = format_timediff(time.mktime(est_time) - time.time())
-            
-            draw.print(est_label, 30, 27, Palette["gray"], Fonts["tiny"], align="l")
-            draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
-            draw.print(status_timer, 98, 30, Palette["white"], Fonts["big"], align="r")
+            if(est_time != None):
+                seconds_left = max(time.mktime(est_time) - time.time(), 0)
+                status_timer = format_timediff(seconds_left)
+
+                color = Palette["white"]
+                if(status == "Queuing soon"):
+                    # Alert if we need to queue
+                    if(seconds_left < constants.TIMER_FLASH):
+                        if(seconds_left % 1 < 0.5): color = Palette["red"]
+                    elif(seconds_left < constants.TIMER_WARN):
+                        color = Palette["yellow"]
+                
+                draw.print(est_label, 30, 27, Palette["gray"], Fonts["tiny"], align="l")
+                draw.print((time.strftime('%I:%M %p', est_time)).upper(), 30, 32, Palette["gray"], Fonts["tiny"], align="l")
+                draw.print(status_timer, 98, 30, color, Fonts["big"], align="r")
         else:
             draw.print("STARTED", 30, 29, Palette["gray"], Fonts["tiny"], align="l")
-            draw.print(time.strftime('%I:%M', current_match.predicted_start_time), 90, 30, Palette["white"], Fonts["big"], align="r")
-            draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 30, Palette["gray"], Fonts["tiny"], align="r")
+            if(current_match.predicted_start_time != None):
+                draw.print(time.strftime('%I:%M', current_match.predicted_start_time), 90, 30, Palette["white"], Fonts["big"], align="r")
+                draw.print(time.strftime('%p', current_match.predicted_start_time), 98, 30, Palette["gray"], Fonts["tiny"], align="r")
             
 
         # top banner
@@ -277,7 +287,10 @@ def main(conn_recieve):
         # Time, if match is yet to be queued
         shown_time = match.get_status() or "MATCH"
         if(match.get_status() == "Queuing soon"):
-            shown_time = f"{(time.strftime('%I:%M %p', match.predicted_queue_time))}"
+            if(match.predicted_queue_time != None):
+                shown_time = f"{(time.strftime('%I:%M %p', match.predicted_queue_time))}"
+            else:
+                shown_time = "Queuing soon"
         if(match.winning_alliance != None):
             shown_time = match.get_final_result()
 

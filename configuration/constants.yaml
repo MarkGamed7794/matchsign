@@ -14,7 +14,11 @@ requests:
     retry_limit: 5 # The maximum amount of times to retry a failed request.
     print_response_body: false # If true, prints the entire response body to the console.
 
-team_number: 1800 # The team number to highlight and filter by. Should ideally be your team.
+team_number: 4308 # The team number to highlight and filter by. Should ideally be your team.
+
+timer:
+  warn: 300 # The amount of time left, in seconds, until the timer warns (turns yellow).
+  flash: 60 # The amount of time left, in seconds, until the timer begins to flash.
 
 # Input is a 4x4 keypad. The top left key has ID 0, the one to its right ID 1,
 # and so on; e.g. third row, first column is ID 8.
