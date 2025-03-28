@@ -369,7 +369,7 @@ def get_matches(data, flavor: str) -> dict:
             matches.sort()
             return {
                 "matches": matches,
-                "announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
+                #"announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
                 "last_update": time.localtime(data["dataAsOfTime"] / 1000)
             }
         else:
