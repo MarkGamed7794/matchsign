@@ -342,12 +342,12 @@ class Match():
 
             if(self.red_alliance.teams == None): return False
             for team in self.red_alliance.teams:
-                if(team.team_number or team.team_number == None): continue
+                if(team.team_number == None): continue
                 if(team.team_number == constants.TEAM_NUMBER): has_team = True
 
             if(self.blue_alliance.teams == None): return False
             for team in self.blue_alliance.teams:
-                if(team.team_number or team.team_number == None): continue
+                if(team.team_number == None): continue
                 if(team.team_number == constants.TEAM_NUMBER): has_team = True
             if(not has_team): return False
         return True
