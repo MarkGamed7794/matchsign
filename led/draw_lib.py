@@ -275,7 +275,7 @@ class MatrixDraw():
         else:
             wait_time = time.monotonic() + 1/60
             self.alt_buffer = self.matrix.SwapOnVSync(self.alt_buffer)
-            time.sleep(wait_time - time.monotonic())
+            time.sleep(max(0, wait_time - time.monotonic()))
 
         self.detect_keypresses()
         self.clear()
