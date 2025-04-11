@@ -102,9 +102,9 @@ def main(request_pipe):
 
             # Scroll list with up/down
             if(draw.keys_down[constants.BUTTON_DOWN]):
-                list_scroll_frac -= 1/10
-            if(draw.keys_down[constants.BUTTON_UP]):
                 list_scroll_frac += 1/10
+            if(draw.keys_down[constants.BUTTON_UP]):
+                list_scroll_frac -= 1/10
 
             # Clamp scroll between list boundaries
             if(not (0 <= list_scroll_frac < 1)):
