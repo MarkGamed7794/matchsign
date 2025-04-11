@@ -2,9 +2,10 @@ import multiprocessing, os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide" # I shouldn't have to do this, and yet here we are
 
 import data_request, led.display, constants
+from led.draw_lib import MatrixDraw
 
 def main():
-    conn_recieve, conn_send = multiprocessing.Pipe(False)
+    conn_recieve, conn_send = multiprocessing.Pipe(True)
 
     # Remove any cached data
     if(os.path.isfile(constants.TBA_CACHE_FILEPATH)):

@@ -100,11 +100,65 @@ class UserInterface():
                 typed += charset[cursor_pos]
             if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):
                 typed = typed[:-1]
-            if(self.draw.key_just_pressed(15)):
+            if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
                 return typed
 
             framecount = ((framecount + 1) % 60)
             self.draw.flip()
+
+    def TextEntry(self, prompt: str) -> str:
+        self.FadeIn(prompt)
+
+        keyboard = [
+            "1234567890",
+            "qwertyuiop",
+            "asdfghjkl",
+            "zxcvbnm"
+        ]
+        actions = ["BKSP", "CAPS", "SPACE", "ENTER"]
+
+        framecount = 0
+        cursor = [0, 0]
+        typed = ""
+
+        while True:
+            self.draw.print(prompt, 1, 5, self.palette["white"], self.fonts["small"])
+            self.draw.print(typed + ("" if framecount <= 30 else "|"), 1, 13, self.palette["white"], self.fonts["small"])
+            for y, row in enumerate(keyboard):
+                self.draw.print(
+                    actions[y],
+                    10, 32 + y * 7,
+                    self.palette["yellow"] if [0, y] == cursor else self.palette["gray"],
+                    self.fonts["small"]
+                )
+                for x, char in enumerate(row):
+                    self.draw.print(
+                        char,
+                        35 + x * 8 + y * 2, 32 + y * 7,
+                        self.palette["yellow"] if [x+1, y] == cursor else self.palette["gray"],
+                        self.fonts["small"]
+                    )
+            
+            if(self.draw.key_just_pressed(constants.BUTTON_LEFT)):   cursor[0] = max(cursor[0] - 1, 0)
+            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[cursor[1]])+1)
+            if(self.draw.key_just_pressed(constants.BUTTON_UP)):     cursor[1] = max(cursor[1] - 1, 0)
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard))
+            if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
+                if(cursor[0] == 0):
+                    if(cursor[1] == 0): # BKSP
+                        typed = typed[:-1]
+                    elif(cursor[1] == 1): # CAPS
+                        pass # TODO
+                    elif(cursor[1] == 2): # SPACE
+                        typed += " "
+                    elif(cursor[1] == 3): # ENTER
+                        return typed
+                else:
+                    typed += keyboard[cursor[1]][cursor[0] - 1]
+
+            framecount = ((framecount + 1) % 60)
+            self.draw.flip()
+
 
     def NumberEntry(self, prompt: str) -> int|None:
         self.FadeIn(prompt)

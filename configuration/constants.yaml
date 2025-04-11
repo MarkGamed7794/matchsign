@@ -6,7 +6,7 @@ requests:
   tba_additional_data: true # If true, tries to query TBA as well for match resuts. Experimental.
 
   response_cache:
-    use_cache: true # If true, uses the cached response instead of making a new one.
+    use_cache: false # If true, uses the cached response instead of making a new one.
     save_response: true # If true, saves responses to the cache.
     cache_filepath: "request_output.txt" # Where the cached response is read from.
 
@@ -28,8 +28,8 @@ keymap:
   button_cancel: 11 # Used for a general "BACK" option.
   button_left:   12 # Next; scroll right.
   button_right:  15 # Previous; scroll left.
-  button_up:     13 # Scroll up.
-  button_down:   14 # Scroll down.
+  button_up:     14 # Scroll up.
+  button_down:   13 # Scroll down.
 
 input:
   rpi_keypad_rows: [38, 37, 36, 35] # The pins connected to each row of the keypad.

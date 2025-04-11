@@ -2,10 +2,12 @@ import requests, base64, json, time, os
 import data_process_2 as data_process
 import constants
 
+EVENT_KEY = constants.REQUEST_PARAMS["event_key"]
 
 FRC_HEADERS = {
     "Authorization": "Basic " + base64.b64encode(constants.FRC_AUTH.encode("ascii")).decode("ascii")
 }
+
 TBA_LAST_ETAG_VALUE = None
 TBA_HEADERS = {
     "X-TBA-Auth-Key": constants.TBA_AUTH
@@ -21,11 +23,10 @@ FRC_REQUEST_PARAMS = {
     "event_code": constants.REQUEST_PARAMS["event_code_frc"]
 }
 TBA_REQUEST_PARAMS = {
-    "team_key": constants.REQUEST_PARAMS["team_key_tba"],
-    "event_key": constants.REQUEST_PARAMS["event_key_tba"]
+    "team_key": constants.REQUEST_PARAMS["team_key_tba"]
 }
 NEXUS_REQUEST_PARAMS = {
-    "event_key": constants.REQUEST_PARAMS["event_key_nexus"]
+    
 }
 
 def make_request(source: str):
@@ -65,7 +66,7 @@ def make_request(source: str):
 
         print("[HTTP] Attempting to make request to TBA servers...")
         print("[HTTP] Request Headers:", TBA_HEADERS)
-        resp = requests.get(f"https://www.thebluealliance.com/api/v3/event/{TBA_REQUEST_PARAMS['event_key']}/matches", headers=TBA_HEADERS)
+        resp = requests.get(f"https://www.thebluealliance.com/api/v3/event/{EVENT_KEY}/matches", headers=TBA_HEADERS)
         print("[HTTP] Status code:", resp.status_code)
         print("[HTTP] Response Headers:", resp.headers)
         if(constants.SHOW_RESPONSE_BODY):
@@ -97,7 +98,7 @@ def make_request(source: str):
 
         print("[HTTP] Attempting to make request to Nexus servers...")
         print("[HTTP] Request Headers:", NEXUS_HEADERS)
-        resp = requests.get(f"https://frc.nexus/api/v1/event/{NEXUS_REQUEST_PARAMS['event_key']}", headers=NEXUS_HEADERS, params=NEXUS_REQUEST_PARAMS)
+        resp = requests.get(f"https://frc.nexus/api/v1/event/{EVENT_KEY}", headers=NEXUS_HEADERS, params=NEXUS_REQUEST_PARAMS)
         print("[HTTP] Status code:", resp.status_code)
         print("[HTTP] Response Headers:", resp.headers)
         if(constants.SHOW_RESPONSE_BODY):
@@ -141,13 +142,11 @@ def attempt_request(source: str):
 
 LAST_TBA_DATA = "[]"
 
-def main(conn_send):
-    if(constants.DISABLE_REQUESTS):
-        print("[HTTP] Request module disabled. No requests will be made.")
-        while True:
-            time.sleep(1000)
+def main(display_pipe):
+    # Wait until we recieve something from the pipe, which means the user selected what they want to happen.
+    data = display_pipe.recv()
 
-    if(constants.USE_CACHED_DATA):
+    if(data == False): # Use cache
         print("[HTTP] Request module using cached data. No requests will be made.")
         if(constants.TBA_ADDITIONAL_DATA):
             nexus_data, tba_data = [], []
@@ -155,14 +154,16 @@ def main(conn_send):
                 nexus_data = data_process.get_matches(json.loads(file.read()), "NEXUS")
             with open("request_output_tba.txt") as file: # TBA
                 tba_data = data_process.get_matches(json.loads(file.read()), "TBA")
-            conn_send.send(data_process.merge(tba_data, nexus_data))
+            display_pipe.send(data_process.merge(tba_data, nexus_data))
             while True:
                 time.sleep(1000)
         else:
             with open("request_output.txt") as file:
-                conn_send.send(data_process.get_matches(json.loads(file.read()), "TBA"))
+                display_pipe.send(data_process.get_matches(json.loads(file.read()), "TBA"))
             while True:
                 time.sleep(1000)
+
+    if(isinstance(data, str)): EVENT_KEY = data # just in case
 
     try:
         while True:
@@ -194,7 +195,7 @@ def main(conn_send):
                 else:
                     print("[HTTP] Request OK! Data sent to draw process.")
                 
-                conn_send.send(data)
+                display_pipe.send(data)
 
 
 

@@ -6,8 +6,9 @@ import data_process_2 as data_process
 import constants
 
 DEBUG_MODE = constants.DEBUG_MODE
-def main(conn_recieve):
+def main(request_pipe):
     draw: MatrixDraw = MatrixDraw()
+    ui: UserInterface = UserInterface(draw, Palette, Fonts)
     match_data: list[data_process.Match] = None
     current_data: dict = None
 
@@ -27,9 +28,18 @@ def main(conn_recieve):
     # 2: Show all matching in which the current team is playing
     # 3: Show all matches that haven't happened yet in which the current team is playing
 
-    def debug_menu():
-        ui = UserInterface(draw, Palette, Fonts)
+    def initial_setup():
+        if(ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"]) == 0):
+            request_pipe.send(False)
+            return
+        
+        event_key = constants.request_params["event_key"]
+        if(ui.MenuSelect(f"Use event key {event_key}?", ["Yes", "Enter other key..."]) == 1):
+            event_key = ui.TextEntry("Enter new event key:")
+        
+        request_pipe.send(event_key)
 
+    def debug_menu():
         action = ui.MenuSelect(
             "What would you like to do?",
             [
@@ -304,6 +314,7 @@ def main(conn_recieve):
             if(list_idx == displayed_match): color = Palette["dyellow"] # dark yellow if match is shown on upper half
             draw_match_entry(match, 34 - y_off + position * 7, color)
 
+    initial_setup()
     while not draw.aborted:
         try:
             draw.clear()
@@ -341,8 +352,8 @@ def main(conn_recieve):
                 draw.print(traceback_msg, 1, 16, Palette["white"], Fonts["small"])
                 draw.flip()
         
-        if(conn_recieve.poll()):
-            current_data = conn_recieve.recv()
+        if(request_pipe.poll()):
+            current_data = request_pipe.recv()
 
 if __name__ == "__main__":
     main(None)

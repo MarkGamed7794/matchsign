@@ -36,9 +36,8 @@ REQUEST_PARAMS = { # The parameters for each request.
     "tournament_level": request_params["frc"]["tournament_level"],
     
     "team_key_tba": request_params["tba"]["team_key"],
-    "event_key_tba": request_params["tba"]["event_key"],
 
-    "event_key_nexus": request_params["nexus"]["event_key"]
+    "event_key": request_params["event_key"] # No source-specific one
 }
 
 
