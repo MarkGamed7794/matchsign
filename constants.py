@@ -10,6 +10,7 @@ with open("configuration/request_params.yaml", 'r') as file:
 DEBUG_MODE = False
 
 TEAM_NUMBER = constants["team_number"]
+CURRENT_SEASON = request_params["current_year"]
 
 DISABLE_REQUESTS = constants["requests"]["disable_requests"]
 REQUEST_SOURCE = constants["requests"]["request_source"]
@@ -29,7 +30,7 @@ TBA_AUTH = env_config["TBA_AUTH"] if "TBA_AUTH" in env_config else ""
 NEXUS_AUTH = env_config["NEXUS_AUTH"] if "NEXUS_AUTH" in env_config else ""
 
 REQUEST_PARAMS = { # The parameters for each request.
-    "season": request_params["frc"]["season"],
+    "season": request_params["current_year"],
     
     "team_number_frc": request_params["frc"]["team_number"],
     "event_code_frc": request_params["frc"]["event_code"],

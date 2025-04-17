@@ -11,6 +11,19 @@ class UserInterface():
         self.palette = palette
         self.fonts = fonts
 
+    def WaitForRecieve(self, message, pipe):
+        leftx = (self.draw.width - self.draw.width_of_text(message + "...", self.fonts["small"])) // 2
+        y = (self.draw.height - 6) // 2
+        dotsx = leftx + self.draw.width_of_text(message, self.fonts["small"]) + 2
+        timer = 0
+        while(not pipe.poll()):
+            self.draw.print(message, leftx, y, self.palette["white"], self.fonts["small"])
+            self.draw.print("".join([" " if (timer // 10) == i else "." for i in range(3)]), dotsx, y, self.palette["white"], self.fonts["small"])
+            self.draw.flip()
+            timer = (timer + 1) % 30
+        return pipe.recv()
+
+
     def FadeIn(self, header: str = ""):
         # fade in animation
         for box_position in range(self.draw.height, 0, -2):

@@ -1,8 +1,8 @@
 event_key: "2025onham"
+current_year: 2025
 
 frc:
   team_number: 4308
-  season: "2025"
   event_code: "ONTOR"
   tournament_level: Qualification
 

@@ -3,6 +3,7 @@ import time, math
 from led.draw_lib import MatrixDraw, Palette, Fonts
 from led.ui import UserInterface
 import data_process_2 as data_process
+from data_request import Action
 import constants
 
 DEBUG_MODE = constants.DEBUG_MODE
@@ -30,13 +31,21 @@ def main(request_pipe):
 
     def initial_setup():
         if(ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"]) == 0):
-            request_pipe.send(False)
+            request_pipe.send(Action.USE_CACHE)
             return
         
-        event_key = constants.request_params["event_key"]
-        if(ui.MenuSelect(f"Use event key {event_key}?", ["Yes", "Enter other key..."]) == 1):
-            event_key = ui.TextEntry("Enter new event key:")
+        # Attempt to grab list of event keys from The Blue Alliance
+        team_key = constants.REQUEST_PARAMS["team_key_tba"]
+        request_pipe.send(Action.SEND_EVENT_LIST)
+        event_list = ui.WaitForRecieve("Fetching events", request_pipe)
         
+        selected_key = ui.MenuSelect(f"Use which event key?", ["[Enter manually...]"] + event_list)
+        if(selected_key == 0):
+            event_key = ui.TextEntry("Enter new event key:")
+        else:
+            event_key = event_list[selected_key - 1]
+        
+        request_pipe.send(Action.BEGIN_REQUESTS)
         request_pipe.send(event_key)
 
     def debug_menu():
@@ -327,7 +336,8 @@ def main(request_pipe):
                 
             else:
                 if(current_data == None):
-                    draw.print("Attempting request...", 64, 32, Palette["white"], Fonts["small"], align="c")
+                    #draw.print("Attempting request...", 64, 32, Palette["white"], Fonts["small"], align="c")
+                    current_data = ui.WaitForRecieve("Attempting request", request_pipe)
                 else:
                     match_data = [match for match in current_data["matches"] if match.matches_filter(filter_mode)]
                     
