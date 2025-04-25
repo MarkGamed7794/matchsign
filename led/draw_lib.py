@@ -30,6 +30,14 @@ class MatrixDraw():
             self.screen = pygame.display.set_mode((WIDTH_PIXELS * 8, HEIGHT_PIXELS * 8))
             self.clock = pygame.time.Clock()
         else:
+            # input
+            GPIO.setwarnings(False)
+            GPIO.setmode(GPIO.BOARD)
+            for row_pin in constants.RPI_KEYPAD_ROWS:
+                GPIO.setup(row_pin, GPIO.OUT)
+            for col_pin in constants.RPI_KEYPAD_COLS:
+                GPIO.setup(col_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+            
             # Configuration for the matrix
             options = RGBMatrixOptions()
             options.rows = 32
@@ -50,13 +58,6 @@ class MatrixDraw():
             self.matrix = matrix
             self.alt_buffer = matrix.CreateFrameCanvas()
 
-            # input
-            GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BOARD)
-            for row_pin in constants.RPI_KEYPAD_ROWS:
-                GPIO.setup(row_pin, GPIO.OUT)
-            for col_pin in constants.RPI_KEYPAD_COLS:
-                GPIO.setup(col_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
         self.keys_down = [False] * 16
         self.keys_down_last = [False] * 16
