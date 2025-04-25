@@ -319,9 +319,19 @@ def main(request_pipe):
         y_off = math.floor(list_scroll_frac * 7)
         for position, match in enumerate(match_data[list_scroll:list_scroll+5]):
             list_idx = position + list_scroll
-            color = Palette["dgray"] if list_idx % 2 == 0 else Palette["black"] # default alternating list colour
-            if(list_idx == displayed_match): color = Palette["dyellow"] # dark yellow if match is shown on upper half
-            draw_match_entry(match, 34 - y_off + position * 7, color)
+            
+            state = "waiting"
+            if(match.winning_alliance != None):
+                if(match.winning_alliance == data_process.TeamColor.RED): state = "red_win"
+                if(match.winning_alliance == data_process.TeamColor.BLUE): state = "blue_win"
+                if(match.winning_alliance == data_process.TeamColor.TIE): state = "finished"
+            elif(match.get_status() == "Finished"):
+                state = "finished"
+            elif(match.get_status() != "Queueing soon"):
+                state = "queueing"
+
+            if(list_idx == displayed_match): state = "selected"
+            draw_match_entry(match, 34 - y_off + position * 7, Palette[state][(list_idx + 1) % 2])
 
     initial_setup()
     while not draw.aborted:
@@ -336,7 +346,6 @@ def main(request_pipe):
                 
             else:
                 if(current_data == None):
-                    #draw.print("Attempting request...", 64, 32, Palette["white"], Fonts["small"], align="c")
                     current_data = ui.WaitForRecieve("Attempting request", request_pipe)
                 else:
                     match_data = [match for match in current_data["matches"] if match.matches_filter(filter_mode)]
