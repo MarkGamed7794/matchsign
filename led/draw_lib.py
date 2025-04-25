@@ -309,9 +309,9 @@ Palette = {
     "dyellow": MatrixDraw.newColor( 80,  80,   0),
 
     # These colours are used for match statuses. These are two-entry arrays; the first is the dark colour, the second is the light.
-    "blue_win": [MatrixDraw.newColor(0, 0, 64), MatrixDraw.newColor(16, 16, 80)],
-    "red_win": [MatrixDraw.newColor(64, 0, 0), MatrixDraw.newColor(80, 16, 16)],
-    "queueing": [MatrixDraw.newColor(64, 64, 0), MatrixDraw.newColor(80, 80, 16)], # Used for any status other than "completed" or "queueing soon".
+    "blue_win": [MatrixDraw.newColor(0, 0, 48), MatrixDraw.newColor(16, 16, 80)],
+    "red_win": [MatrixDraw.newColor(48, 0, 0), MatrixDraw.newColor(80, 16, 16)],
+    "queueing": [MatrixDraw.newColor(48, 48, 0), MatrixDraw.newColor(80, 80, 16)], # Used for any status other than "completed" or "queueing soon".
     "finished": [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)], # Also used for ties.
     "waiting": [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)],
     "selected": [MatrixDraw.newColor(80, 80, 0), MatrixDraw.newColor(80, 80, 0)]
