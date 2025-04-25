@@ -3,11 +3,13 @@
 from enum import Enum
 import time
 import constants
+import statbotics
 
 class DataFlavor(Enum):
     FRC = 0
     TBA = 1
     NEXUS = 2
+    STATBOTICS = 3
 
 # ------------------ UTILITY ------------------ #
 
@@ -34,6 +36,12 @@ class Team():
     station:      int
     surrogate:    bool
     is_unknown:   bool = False
+
+    # Statbotics Exclusive
+    norm_epa_current: float
+    norm_epa_recent: float
+    norm_epa_mean: float
+    norm_epa_max: float
 
 class Alliance():
     teams: list[Team]
@@ -92,6 +100,10 @@ class Match():
     predicted_start_time: time.struct_time = None
     actual_start_time:    time.struct_time = None
     result_posted_time:   time.struct_time = None
+
+    # Statbotics exclusive properties
+    predicted_winner: TeamColor|None = None
+    red_win_probability: float = None # Statbotics only returns Red's probability, but Blue's is simply the inverse.
 
     # General properties
 
@@ -247,6 +259,10 @@ class Match():
             else:
                 self.blue_alliance.is_unknown = True
         
+        elif(flavor == DataFlavor.STATBOTICS):
+            pass
+
+
         return self
     
     def inherit_from(self, other):
