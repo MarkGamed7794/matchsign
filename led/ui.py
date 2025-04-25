@@ -122,13 +122,23 @@ class UserInterface():
     def TextEntry(self, prompt: str) -> str:
         self.FadeIn(prompt)
 
-        keyboard = [
-            "1234567890",
-            "qwertyuiop",
-            "asdfghjkl",
-            "zxcvbnm"
-        ]
-        actions = ["BKSP", "CAPS", "SPACE", "ENTER"]
+        keyboard = {
+            False: [
+                "1234567890-=",
+                "qwertyuiop[]",
+                "asdfghjkl;'`",
+                "zxcvbnm,./\\"
+            ],
+            True: [
+                "!@#$%^&*()_+",
+                "QWERTYUIOP{}",
+                "ASDFGHJKL:\"~",
+                "ZXCVBNM<>?|"
+            ]
+        }
+
+        shifted = False
+        actions = ["BKSP", "SHIFT", "SPACE", "ENTER"]
 
         framecount = 0
         cursor = [0, 0]
@@ -137,37 +147,37 @@ class UserInterface():
         while True:
             self.draw.print(prompt, 1, 5, self.palette["white"], self.fonts["small"])
             self.draw.print(typed + ("" if framecount <= 30 else "|"), 1, 13, self.palette["white"], self.fonts["small"])
-            for y, row in enumerate(keyboard):
+            for y, row in enumerate(keyboard[shifted]):
                 self.draw.print(
                     actions[y],
-                    10, 32 + y * 7,
+                    5, 32 + y * 7,
                     self.palette["yellow"] if [0, y] == cursor else self.palette["gray"],
                     self.fonts["small"]
                 )
                 for x, char in enumerate(row):
                     self.draw.print(
                         char,
-                        35 + x * 8 + y * 2, 32 + y * 7,
+                        27 + x * 8 + y * 2, 32 + y * 7,
                         self.palette["yellow"] if [x+1, y] == cursor else self.palette["gray"],
                         self.fonts["small"]
                     )
             
             if(self.draw.key_just_pressed(constants.BUTTON_LEFT)):   cursor[0] = max(cursor[0] - 1, 0)
-            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[cursor[1]])+1)
+            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[shifted][cursor[1]])+1)
             if(self.draw.key_just_pressed(constants.BUTTON_UP)):     cursor[1] = max(cursor[1] - 1, 0)
-            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard))
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard[shifted]))
             if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
                 if(cursor[0] == 0):
                     if(cursor[1] == 0): # BKSP
                         typed = typed[:-1]
                     elif(cursor[1] == 1): # CAPS
-                        pass # TODO
+                        shifted = not shifted
                     elif(cursor[1] == 2): # SPACE
                         typed += " "
                     elif(cursor[1] == 3): # ENTER
                         return typed
                 else:
-                    typed += keyboard[cursor[1]][cursor[0] - 1]
+                    typed += keyboard[shifted][cursor[1]][cursor[0] - 1]
 
             framecount = ((framecount + 1) % 60)
             self.draw.flip()

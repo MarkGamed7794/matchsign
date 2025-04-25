@@ -2,3 +2,4 @@ pyyaml
 pygame
 requests
 python-dotenv
+statbotics==3.0.0
