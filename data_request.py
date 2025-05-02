@@ -33,107 +33,83 @@ TBA_REQUEST_PARAMS = {
 }
 NEXUS_REQUEST_PARAMS = {}
 
+# Stores the full response text of each individual source, in case it returns Not Modified.
+previous_responses = {
+    "FRC": "",
+    "TBA": "",
+    "NEXUS": ""
+}
+
 def make_request(source: str):
+    global TBA_LAST_ETAG_VALUE
     # FRC path: https://frc-api.firstinspires.org/v3.0/{season}/schedule/{eventCode}?tournamentLevel={tournamentLevel}&teamNumber={teamNumber}&start={start}&end={end}
     # TBA path: https://www.thebluealliance.com/api/v3/event/{eventKey}/matches
+
+    request_url = ""
+    request_headers = None
+    request_params = None
+
     if source == "FRC":
-        print("[HTTP] Attempting to make request to FRC servers...")
-        print("[HTTP] Request Headers:", FRC_HEADERS)
-        resp = requests.get(f"https://frc-api.firstinspires.org/v3.0/{FRC_REQUEST_PARAMS['season']}/schedule/{FRC_REQUEST_PARAMS['event_code']}?teamNumber={FRC_REQUEST_PARAMS['team_number']}", headers=FRC_HEADERS, params=FRC_REQUEST_PARAMS)
-        print("[HTTP] Status code:", resp.status_code)
-        print("[HTTP] Response Headers:", resp.headers)
-        if(constants.SHOW_RESPONSE_BODY):
-            print("[HTTP] Response Body:")
-            print(resp.text)
-        else:
-            print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
-
-        try:
-            if(constants.SAVE_RESPONSE):
-                with open("request_output.txt", "w") as file:
-                    file.write(resp.text)
-                print("[HTTP] Data saved successfully to request_output.txt.")
-
-            return data_process.get_matches(json.loads(resp.text), "FRC"), resp.status_code
-        except json.decoder.JSONDecodeError as e:
-            print(f"[HTTP] [ERROR] Error! Failed to decode JSON response, with error: {e}")
-            print("[HTTP] Raw data:")
-            print(resp.text)
-            return None, resp.status_code
-
+        request_url = f"https://frc-api.firstinspires.org/v3.0/{FRC_REQUEST_PARAMS['season']}/schedule/{FRC_REQUEST_PARAMS['event_code']}?teamNumber={FRC_REQUEST_PARAMS['team_number']}"
+        request_headers = FRC_HEADERS
+        request_params = FRC_REQUEST_PARAMS
+    
     elif source == "TBA":
-        etag_value = ""
-        if(os.path.isfile(constants.TBA_CACHE_FILEPATH)):
-            with open(constants.TBA_CACHE_FILEPATH, "r") as cache:
-                etag_value = cache.read()
-        if(etag_value != ""): TBA_HEADERS["If-None-Match"] = etag_value
+        if(TBA_LAST_ETAG_VALUE != ""): TBA_HEADERS["If-None-Match"] = TBA_LAST_ETAG_VALUE
 
-        print("[HTTP] Attempting to make request to TBA servers...")
-        print("[HTTP] Request Headers:", TBA_HEADERS)
-        resp = requests.get(f"https://www.thebluealliance.com/api/v3/event/{EVENT_KEY}/matches", headers=TBA_HEADERS)
-        print("[HTTP] Status code:", resp.status_code)
-        print("[HTTP] Response Headers:", resp.headers)
-        if(constants.SHOW_RESPONSE_BODY):
-            print("[HTTP] Response Body:")
-            print(resp.text)
-        else:
-            print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
+        request_url = f"https://www.thebluealliance.com/api/v3/event/{EVENT_KEY}/matches"
+        request_headers = TBA_HEADERS
 
-        if(resp.status_code == 304): # Not Modified
-            return None, resp.status_code
-
-        with open(constants.TBA_CACHE_FILEPATH, "w") as cache:
-            cache.write(resp.headers["ETag"])
-
-        try:
-            if(constants.SAVE_RESPONSE):
-                with open("request_output_tba.txt" if constants.TBA_ADDITIONAL_DATA else "request_output.txt", "w") as file:
-                    file.write(resp.text)
-                print("[HTTP] Data saved successfully to request_output.txt.")
-
-            return data_process.get_matches(json.loads(resp.text), "TBA"), resp.status_code
-        except json.decoder.JSONDecodeError as e:
-            print(f"[HTTP] [ERROR] Error! Failed to decode JSON response, with error: {e}")
-            print("[HTTP] Raw data:")
-            print(resp.text)
-            return None, resp.status_code
-        
     elif source == "NEXUS":
+        request_url = f"https://frc.nexus/api/v1/event/{EVENT_KEY}"
+        request_headers = NEXUS_HEADERS
+        request_params = NEXUS_REQUEST_PARAMS
 
-        print("[HTTP] Attempting to make request to Nexus servers...")
-        print("[HTTP] Request Headers:", NEXUS_HEADERS)
-        resp = requests.get(f"https://frc.nexus/api/v1/event/{EVENT_KEY}", headers=NEXUS_HEADERS, params=NEXUS_REQUEST_PARAMS)
-        print("[HTTP] Status code:", resp.status_code)
-        print("[HTTP] Response Headers:", resp.headers)
-        if(constants.SHOW_RESPONSE_BODY):
-            print("[HTTP] Response Body:")
-            print(resp.text)
-        else:
-            print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
+    print(f"[HTTP] Attempting to make request to {source}...")
+    print("[HTTP] Request Headers:", request_headers)
 
-        try:
-            if(constants.SAVE_RESPONSE):
-                with open("request_output.txt", "w") as file:
-                    file.write(resp.text)
-                print("[HTTP] Data saved successfully to request_output.txt.")
+    resp = requests.get(request_url, headers=request_headers, params=request_params)
 
-            return data_process.get_matches(json.loads(resp.text), "NEXUS"), resp.status_code
-        except json.decoder.JSONDecodeError as e:
-            print(f"[HTTP] [ERROR] Error! Failed to decode JSON response, with error: {e}")
-            print("[HTTP] Raw data:")
-            print(resp.text)
-            return None, resp.status_code
-
+    print("[HTTP] Status code:", resp.status_code)
+    print("[HTTP] Response Headers:", resp.headers)
+    if(constants.SHOW_RESPONSE_BODY):
+        print("[HTTP] Response Body:")
+        print(resp.text)
     else:
-        print(f"[HTTP] [CRITICAL] Illegal source {source}")
+        print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
 
-def attempt_request(source: str):    
+    if(constants.SAVE_RESPONSE):
+        with open(f"cache/{source}.txt", "w") as file:
+            file.write(resp.text)
+        print("[HTTP] Data saved successfully to request_output.txt.")
+    
+    if source == "TBA":
+        # Save TBA eTag value
+        TBA_LAST_ETAG_VALUE = resp.headers["ETag"]
+
+    return resp.text, resp.status_code
+
+def attempt_request(source: str) -> tuple[str, int]:
     attempts = 0
     while attempts < constants.REQUEST_RETRY_LIMIT:
         try:
-            result = make_request(source)
+            data, code = make_request(source)
             print("[HTTP] Success!")
-            return result
+
+            if(code == 400):
+                print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
+                return "", 400
+
+            elif(code == 304):
+                print("[HTTP] Data was not modified since the last request. Using previously known data.")
+                return previous_responses[source], 304
+
+            elif(code == 200):
+                # Save response for later
+                previous_responses[source] = data
+                return data, code
+
+            raise RuntimeError(f"Unexpected HTTP code from request (code {code})")
         except requests.ConnectionError:
             print("[HTTP] [WARNING] Failed to connect. Ensure Wi-Fi link is stable.")
 
@@ -185,46 +161,29 @@ def main(display_pipe):
                         display_pipe.send(data_process.get_matches(json.loads(file.read()), "TBA"))
                     while True:
                         time.sleep(1000)
+            
             elif(command == Action.BEGIN_REQUESTS):
                 # Read a team key, and then use it [final]
+                global EVENT_KEY
                 event_key = display_pipe.recv()
                 if(isinstance(event_key, str)): EVENT_KEY = event_key
                 break
 
         while True:
-            print("[HTTP] Attempting request...")
-            data, code = attempt_request(constants.REQUEST_SOURCE)
-            print("[HTTP] Request successful.")
+            print("[HTTP] Attempting request(s)...")
 
-            if(code == 304): # Not Modified
-                print("[HTTP] Data was not modified since the last request, and thus has not been sent to the display.")
-            if(code == 400): # Bad Request
-                print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
-            elif(code == 200): # OK
+            cumulative_data = []
+
+            for source in ["FRC", "TBA", "NEXUS"]:
+                if(constants.USE_SOURCE[source]):
+                    body, code = attempt_request(source)
+                    if(code == 200 or code == 304):
+                        provided_data = data_process.get_matches(json.loads(body), source)
+                        cumulative_data = data_process.merge(cumulative_data, provided_data)
                 
-                if(constants.TBA_ADDITIONAL_DATA):
-                    print("[HTTP] Querying TBA for additional match results...")
-                    tba_data, code = attempt_request("TBA")
-                    if(code == 304): # Not Modified
-                        print("[HTTP] Data was not modified since the last request.")
-                        print("[HTTP] Attempting to merge data...")
-                        data = data_process.merge(LAST_TBA_DATA, data)
-                        print("[HTTP] Success!")
-                    if(code == 400): # Bad Request
-                        print("[HTTP] [ERROR] Request could not be read by servers. Ensure settings are formatted properly.")
-                    elif(code == 200):
-                        print("[HTTP] Successful! Attempting to merge data...")
-                        data = data_process.merge(tba_data, data)
-                        LAST_TBA_DATA = tba_data
-                        print("[HTTP] Success!")
-                else:
-                    print("[HTTP] Request OK! Data sent to draw process.")
-                
-                display_pipe.send(data)
+            display_pipe.send(cumulative_data)
 
-
-
-            print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request...")
+            print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request batch...")
             time.sleep(constants.REQUEST_TIMEOUT)
         
     except BaseException as excpt:

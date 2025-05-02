@@ -376,44 +376,34 @@ def get_matches(data, flavor: str) -> dict:
             # TBA flavor
             matches = [Match().inherit(match_json, DataFlavor.TBA) for match_json in data]
             matches.sort()
-            return {
-                "matches": matches
-            }
+            return matches
         elif(flavor == "FRC"):
             # FRC flavor
             matches = [Match().inherit(match_json, DataFlavor.FRC) for match_json in data["Schedule"]]
             matches.sort()
-            return {
-                "matches": matches,
-            }
+            return matches
         elif(flavor == "NEXUS"):
             matches = [Match().inherit(match_json, DataFlavor.NEXUS) for match_json in data["matches"]]
             matches.sort()
-            return {
-                "matches": matches,
-                #"announcements": [{"data": announcement["announcement"], "time": time.localtime(announcement["postedTime"])} for announcement in data["announcements"]],
-                "last_update": time.localtime(data["dataAsOfTime"] / 1000)
-            }
+            return matches
         else:
             raise ValueError(f"Illegal data flavor {flavor}")
     except Exception as e:
         print("Something went wrong when trying to parse the data. Exception to follow:")
         print(e)
-        return {
-            matches: []
-        }
+        return []
 
 # Attempts to merge two sources. If data exists in both, source is prioritized.
-def merge(base, source):
-
+def merge(base: list[Match], source: list[Match]):
+    print(base, source)
     # Matches:
-    unused_base = list(base["matches"])
-    unused_source = list(source["matches"])
+    unused_base = list(base)
+    unused_source = list(source)
     matches = []
-    for source_match in source["matches"]:
+    for source_match in source:
         # Find the match with the same level and data, if it exists
         base_candidate = None
-        for base_match in base["matches"]:
+        for base_match in base:
             if(
                 source_match.tournament_level == base_match.tournament_level and
                 source_match.match_number == base_match.match_number and
@@ -427,20 +417,16 @@ def merge(base, source):
             # No underlying match, just insert it directly
             matches.append(Match().inherit_from(source_match))
             unused_source.remove(source_match)
-            print(f"Could not find suitable candidate for {source_match.get_match_name()}")
+            #print(f"Could not find suitable candidate for {source_match.get_match_name()}")
         else:
             matches.append(Match().inherit_from(base_candidate).inherit_from(source_match))
             unused_base.remove(base_candidate)
             unused_source.remove(source_match)
-            print(f"Merged {base_candidate.get_match_name()} onto {source_match.get_match_name()}")
+            #print(f"Merged {base_candidate.get_match_name()} onto {source_match.get_match_name()}")
 
     # Add all the unmerged matches directly; might as well have something
     matches.extend(unused_base)
     matches.extend(unused_source)
     
     matches.sort()
-    return {
-        "matches": matches,
-        "announcements": base.get("announcements", None) or source.get("announcements", None),
-        "last_update": base.get("last_update", None) or source.get("last_update", None)
-    }
+    return matches

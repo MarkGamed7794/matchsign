@@ -4,3 +4,4 @@ request_output*
 .env
 **.save
 venv/**
+cache/*

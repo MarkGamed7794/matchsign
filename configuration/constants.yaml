@@ -1,10 +1,14 @@
 requests:
   disable_requests: false # If true, disables all outgoing API requests.
-  request_source: NEXUS # Either TBA, FRC or NEXUS.
   tba_cache_filepath: "tba_cache.txt" # The file that the TBA ETag is stored in.
   request_timeout: 20 # The amount of time between requests, in seconds.
-  tba_additional_data: true # If true, tries to query TBA as well for match resuts. Experimental.
-  statbotics_additional_data: true # If true, tries to query Statbotics as well for additional match information. Experimental.
+
+  # Whether or not to query each individual source for data.
+  used_sources:
+    frc: false
+    tba: false
+    nexus: true
+    statbotics: false
 
   response_cache:
     use_cache: false # If true, uses the cached response instead of making a new one.

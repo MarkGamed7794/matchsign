@@ -13,17 +13,21 @@ TEAM_NUMBER = constants["team_number"]
 CURRENT_SEASON = request_params["current_year"]
 
 DISABLE_REQUESTS = constants["requests"]["disable_requests"]
-REQUEST_SOURCE = constants["requests"]["request_source"]
 TBA_CACHE_FILEPATH = constants["requests"]["tba_cache_filepath"]
 REQUEST_TIMEOUT = constants["requests"]["request_timeout"]
-TBA_ADDITIONAL_DATA = constants["requests"]["tba_additional_data"]
-STATBOTICS_ADDITIONAL_DATA = constants["requests"]["statbotics_additional_data"]
 
 USE_CACHED_DATA = constants["requests"]["response_cache"]["use_cache"]
 SAVE_RESPONSE = constants["requests"]["response_cache"]["save_response"]
 
 REQUEST_RETRY_LIMIT = constants["requests"]["request_parameters"]["retry_limit"]
 SHOW_RESPONSE_BODY = constants["requests"]["request_parameters"]["print_response_body"]
+
+USE_SOURCE = {
+    "FRC": constants["requests"]["used_sources"]["frc"],
+    "TBA": constants["requests"]["used_sources"]["tba"],
+    "NEXUS": constants["requests"]["used_sources"]["nexus"],
+    "STATBOTICS": constants["requests"]["used_sources"]["statbotics"]
+}
 
 env_config = dotenv.dotenv_values()
 FRC_AUTH = env_config["FRC_AUTH"] if "FRC_AUTH" in env_config else ""

@@ -172,7 +172,7 @@ def main(request_pipe):
 
         if(len(match_data) == 0):
             draw.print("No matches found", 64, 30, Palette["white"], Fonts["small"], align="c")
-            draw.print(f"as of {time.strftime('%I:%M %p', current_data['last_update'])} ({format_timediff(time.time() - time.mktime(current_data['last_update']))} ago)", 64, 38, Palette["gray"], Fonts["small"], align="c")
+            draw.print(f"(waiting for event to start?)", 64, 38, Palette["gray"], Fonts["small"], align="c")
             return
         if(not 0 <= displayed_match < len(match_data)):
             return
@@ -348,7 +348,7 @@ def main(request_pipe):
                 if(current_data == None):
                     current_data = ui.WaitForRecieve("Attempting request", request_pipe)
                 else:
-                    match_data = [match for match in current_data["matches"] if match.matches_filter(filter_mode)]
+                    match_data = [match for match in current_data if match.matches_filter(filter_mode)]
                     
                     draw_match_list() # Draw this first so that it gets cut off by the main area
                     draw_main_area()
