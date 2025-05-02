@@ -315,7 +315,7 @@ Palette = {
     "queueing": [MatrixDraw.newColor(48, 48, 0), MatrixDraw.newColor(80, 80, 16)], # Used for any status other than "completed" or "queueing soon".
     "finished": [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)], # Also used for ties.
     "waiting": [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)],
-    "selected": [MatrixDraw.newColor(80, 80, 0), MatrixDraw.newColor(80, 80, 0)]
+    "selected": [MatrixDraw.newColor(24, 80, 0), MatrixDraw.newColor(24, 80, 0)]
 }
 
 Fonts = {

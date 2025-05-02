@@ -327,7 +327,7 @@ def main(request_pipe):
                 if(match.winning_alliance == data_process.TeamColor.TIE): state = "finished"
             elif(match.get_status() == "Finished"):
                 state = "finished"
-            elif(match.get_status() != "Queueing soon"):
+            elif(match.get_status() != "Queuing soon"):
                 state = "queueing"
 
             if(list_idx == displayed_match): state = "selected"
