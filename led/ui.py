@@ -64,7 +64,8 @@ class UserInterface():
         while not self.draw.key_just_pressed(constants.BUTTON_SELECT):
             self.draw.print(header, 1, 5, self.palette["white"], self.fonts["small"])
             for i, option in enumerate(options):
-                self.draw.print(("> " if i == selected_option else "  ") + option, 7, 12 + i * 6, self.palette["white"], self.fonts["small"])
+                selected = (i == selected_option)
+                self.draw.print(("> " if selected else "  ") + option, 7, 12 + i * 6, self.palette["yellow" if selected else "white"], self.fonts["small"])
 
 
             if(self.draw.key_just_pressed(constants.BUTTON_UP)):
@@ -74,6 +75,32 @@ class UserInterface():
             self.draw.flip()
 
         return selected_option
+    
+    def CheckboxSelect(self, header: str, options: list[str], initial_states: list[bool]):
+        self.FadeIn(header)
+
+        states = list(initial_states) # copy
+        selected_option = 0
+        while True:
+            self.draw.print(header, 1, 5, self.palette["white"], self.fonts["small"])
+            for i, option in enumerate(options):
+                selected = (i == selected_option)
+                self.draw.print(f"{'>' if selected else ' '} {'[O]' if states[i] else '[ ]'} {option}", 7, 12 + i * 6, self.palette["yellow" if selected else "white"], self.fonts["small"])
+            
+            selected = (selected_option == len(options))
+            self.draw.print(f"{'>' if selected else ' '} Confirm", 7, 12 + len(options) * 6, self.palette["yellow" if selected else "white"], self.fonts["small"])
+
+            if(self.draw.key_just_pressed(constants.BUTTON_UP)):
+                selected_option = (selected_option - 1) % (len(options) + 1)
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):
+                selected_option = (selected_option + 1) % (len(options) + 1)
+            if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
+                if(selected_option == len(options)):
+                    return states
+                else:
+                    states[selected_option] = not states[selected_option]
+            self.draw.flip()
+
     
     def TextEntryPrimitive(self, prompt: str, charset: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 ") -> str:
         self.FadeIn(prompt)
@@ -163,9 +190,9 @@ class UserInterface():
                     )
             
             if(self.draw.key_just_pressed(constants.BUTTON_LEFT)):   cursor[0] = max(cursor[0] - 1, 0)
-            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[shifted][cursor[1]])+1)
+            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[shifted][cursor[1]]))
             if(self.draw.key_just_pressed(constants.BUTTON_UP)):     cursor[1] = max(cursor[1] - 1, 0)
-            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard[shifted]))
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard[shifted]) - 1)
             if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
                 if(cursor[0] == 0):
                     if(cursor[1] == 0): # BKSP
