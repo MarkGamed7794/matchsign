@@ -202,14 +202,12 @@ class Match():
             if(self.blue_alliance.final_score not in [None, -1] and self.red_alliance.final_score not in [None, -1]):
                 red_score = self.red_alliance.final_score
                 blue_score = self.blue_alliance.final_score
-                print(f"Scores for {self.match_number}: {red_score}-{blue_score}")
                 if(blue_score > red_score):
                     self.winning_alliance = TeamColor.BLUE
                 elif(red_score > blue_score):
                     self.winning_alliance = TeamColor.RED
                 elif(blue_score == red_score):
                     self.winning_alliance = TeamColor.TIE
-                print(f"Winner: {self.winning_alliance}")
             
         elif(flavor == DataFlavor.NEXUS):
             # Nexus returns timestamps in milliseconds, not seconds
@@ -395,7 +393,6 @@ def get_matches(data, flavor: str) -> dict:
 
 # Attempts to merge two sources. If data exists in both, source is prioritized.
 def merge(base: list[Match], source: list[Match]):
-    print(base, source)
     # Matches:
     unused_base = list(base)
     unused_source = list(source)
