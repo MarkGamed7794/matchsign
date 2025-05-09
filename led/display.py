@@ -38,9 +38,14 @@ def main(request_pipe):
         source_str = '+'.join([source for source in sources if constants.USE_SOURCE[source]])
         if(ui.MenuSelect("Use which sources?", [f"Default ({source_str})", "Custom"]) == 1):
             source_states = ui.CheckboxSelect("Pick sources to use:", sources, [constants.USE_SOURCE[source] for source in sources])
-            constants.USE_SOURCE["FRC"] = source_states[0]
-            constants.USE_SOURCE["TBA"] = source_states[1]
-            constants.USE_SOURCE["NEXUS"] = source_states[2]
+
+            use_source = {}
+            use_source["FRC"] = source_states[0]
+            use_source["TBA"] = source_states[1]
+            use_source["NEXUS"] = source_states[2]
+
+            request_pipe.send(Action.SEND_USED_SOURCES)
+            request_pipe.send(use_source)
         
         # Attempt to grab list of event keys from The Blue Alliance
         team_key = constants.REQUEST_PARAMS["team_key_tba"]

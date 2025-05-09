@@ -7,6 +7,7 @@ class Action(Enum):
     BEGIN_REQUESTS = 0
     USE_CACHE = 1
     SEND_EVENT_LIST = 2
+    SEND_USED_SOURCES = 3
 
 EVENT_KEY = constants.REQUEST_PARAMS["event_key"]
 
@@ -39,6 +40,8 @@ previous_responses = {
     "TBA": "",
     "NEXUS": ""
 }
+
+used_sources = constants.USE_SOURCE
 
 def make_request(source: str):
     global TBA_LAST_ETAG_VALUE
@@ -79,10 +82,9 @@ def make_request(source: str):
         print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
 
     if(constants.SAVE_RESPONSE):
-        
         with open(f"cache/{source}.txt", "w+") as file:
             file.write(resp.text)
-        print("[HTTP] Data saved successfully to request_output.txt.")
+        print("[HTTP] Data saved successfully to cache.")
     
     if source == "TBA":
         # Save TBA eTag value
@@ -148,20 +150,32 @@ def main(display_pipe):
             elif(command == Action.USE_CACHE):
                 # Use cache [final]
                 print("[HTTP] Request module using cached data. No requests will be made.")
-                if(constants.TBA_ADDITIONAL_DATA):
-                    nexus_data, tba_data = [], []
-                    with open("request_output.txt") as file: # NEXUS
+                used_sources = []
+                with open("cache/used_sources.txt") as file:
+                    used_sources = file.read().split(",")
+                
+                nexus_data, tba_data, frc_data = [], [], []
+
+                if("NEXUS" in used_sources):
+                    with open("cache/NEXUS.txt") as file: # NEXUS
                         nexus_data = data_process.get_matches(json.loads(file.read()), "NEXUS")
-                    with open("request_output_tba.txt") as file: # TBA
+                    
+                if("TBA" in used_sources):
+                    with open("cache/TBA.txt") as file: # TBA
                         tba_data = data_process.get_matches(json.loads(file.read()), "TBA")
-                    display_pipe.send(data_process.merge(tba_data, nexus_data))
-                    while True:
-                        time.sleep(1000)
-                else:
-                    with open("request_output.txt") as file:
-                        display_pipe.send(data_process.get_matches(json.loads(file.read()), "TBA"))
-                    while True:
-                        time.sleep(1000)
+
+                if("FRC" in used_sources):
+                    with open("cache/FRC.txt") as file: # FRC
+                        tba_data = data_process.get_matches(json.loads(file.read()), "FRC")
+
+                display_pipe.send(data_process.merge(frc_data, data_process.merge(tba_data, nexus_data)))
+                while True:
+                    time.sleep(1000)
+
+            elif(command == Action.SEND_USED_SOURCES):
+                # Use a custom list of sources
+
+                used_sources = display_pipe.recv()
             
             elif(command == Action.BEGIN_REQUESTS):
                 # Read a team key, and then use it [final]
@@ -170,13 +184,22 @@ def main(display_pipe):
                 if(isinstance(event_key, str)): EVENT_KEY = event_key
                 break
 
+        if(constants.SAVE_RESPONSE):
+            source_list = []
+            for source in ["FRC", "TBA", "NEXUS"]:
+                if(used_sources[source]):
+                    source_list.append(source)
+
+            with open("cache/used_sources.txt", "w+") as file:
+                file.write(",".join(source_list))
+
         while True:
             print("[HTTP] Attempting request(s)...")
 
             cumulative_data = []
 
             for source in ["FRC", "TBA", "NEXUS"]:
-                if(constants.USE_SOURCE[source]):
+                if(used_sources[source]):
                     body, code = attempt_request(source)
                     if(code == 200 or code == 304):
                         provided_data = data_process.get_matches(json.loads(body), source)

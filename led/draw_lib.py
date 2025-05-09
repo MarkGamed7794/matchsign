@@ -226,19 +226,19 @@ class MatrixDraw():
                     pygame.K_1,         # 0
                     pygame.K_2,         # 1
                     pygame.K_3,         # 2
-                    pygame.K_4,   # 3
+                    pygame.K_4,         # 3
                     pygame.K_q,         # 4
                     pygame.K_w,         # 5
                     pygame.K_e,         # 6
-                    pygame.K_r, # 7
+                    pygame.K_r,         # 7
                     pygame.K_a,         # 8
                     pygame.K_s,         # 9
                     pygame.K_d,         # A
-                    pygame.K_f,    # B
-                    pygame.K_z,   # C
+                    pygame.K_f,         # B
+                    pygame.K_z,         # C
                     pygame.K_x,         # D
-                    pygame.K_c,    # E
-                    pygame.K_v,     # F
+                    pygame.K_c,         # E
+                    pygame.K_v,         # F
                 ]
             ]
         else:
@@ -282,6 +282,40 @@ class MatrixDraw():
         self.clear()
 
 # Colours, fonts, etc
+
+class Palette():
+    red =     MatrixDraw.newColor(255,   0,   0)
+    orange =  MatrixDraw.newColor(255, 127,   0)
+    yellow =  MatrixDraw.newColor(255, 255,   0)
+    lime =    MatrixDraw.newColor(127, 255,   0)
+    green =   MatrixDraw.newColor(  0, 255,   0)
+    seafoam = MatrixDraw.newColor(  0, 255, 127)
+    cyan =    MatrixDraw.newColor(  0, 255, 255)
+    ocean =   MatrixDraw.newColor(  0, 127, 255)
+    blue =    MatrixDraw.newColor(  0,   0, 255)
+    purple =  MatrixDraw.newColor(127,   0, 255)
+    magenta = MatrixDraw.newColor(255,   0, 255)
+    pink =    MatrixDraw.newColor(255,   0, 127)
+
+    # The other colours are very bright on the actual display;
+    # these are for darker versions meant to have text drawn on them
+    bgred =   MatrixDraw.newColor( 96,   0,   0)
+    bgblue =  MatrixDraw.newColor(  0,   0,  96)
+
+    white =   MatrixDraw.newColor(255, 255, 255)
+    gray =    MatrixDraw.newColor(127, 127, 127)
+    dgray =   MatrixDraw.newColor( 48,  48,  48)
+    black =   MatrixDraw.newColor(  0,   0,   0)
+
+    dyellow = MatrixDraw.newColor( 80,  80,   0)
+
+    # These colours are used for match statuses. These are two-entry arrays; the first is the dark colour, the second is the light.
+    blue_win = [MatrixDraw.newColor(0, 0, 48), MatrixDraw.newColor(16, 16, 80)],
+    red_win =  [MatrixDraw.newColor(48, 0, 0), MatrixDraw.newColor(80, 16, 16)],
+    queueing = [MatrixDraw.newColor(48, 48, 0), MatrixDraw.newColor(80, 80, 16)], # Used for any status other than "completed" or "queueing soon".
+    finished = [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)], # Also used for ties.
+    waiting =  [MatrixDraw.newColor(16, 16, 16), MatrixDraw.newColor(48, 48, 48)],
+    selected = [MatrixDraw.newColor(24, 80, 0), MatrixDraw.newColor(24, 80, 0)]
 
 Palette = {
     "red":     MatrixDraw.newColor(255,   0,   0),
