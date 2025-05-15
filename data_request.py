@@ -9,6 +9,8 @@ class Action(Enum):
     SEND_EVENT_LIST = 2
     SEND_USED_SOURCES = 3
 
+    RESTART = -9999
+
 EVENT_KEY = constants.REQUEST_PARAMS["event_key"]
 
 FRC_HEADERS = {
@@ -171,7 +173,11 @@ def main(display_pipe):
 
                 display_pipe.send(data_process.merge(frc_data, data_process.merge(tba_data, nexus_data)))
                 while True:
-                    time.sleep(1000)
+                    time.sleep(3)
+                    if(display_pipe.poll()):
+                        if(display_pipe.recv() == Action.RESTART):
+                            display_pipe.send(0) # Send a message to signal the setup process again
+                            break
 
             elif(command == Action.SEND_USED_SOURCES):
                 # Use a custom list of sources
@@ -183,33 +189,39 @@ def main(display_pipe):
                 global EVENT_KEY
                 event_key = display_pipe.recv()
                 if(isinstance(event_key, str)): EVENT_KEY = event_key
-                break
 
-        if(constants.SAVE_RESPONSE):
-            source_list = []
-            for source in ["FRC", "TBA", "NEXUS"]:
-                if(used_sources[source]):
-                    source_list.append(source)
+                if(constants.SAVE_RESPONSE):
+                    source_list = []
+                    for source in ["FRC", "TBA", "NEXUS"]:
+                        if(used_sources[source]):
+                            source_list.append(source)
 
-            with open("cache/used_sources.txt", "w+") as file:
-                file.write(",".join(source_list))
+                    with open("cache/used_sources.txt", "w+") as file:
+                        file.write(",".join(source_list))
 
-        while True:
-            print("[HTTP] Attempting request(s)...")
+                while True:
+                    print("[HTTP] Attempting request(s)...")
 
-            cumulative_data = []
+                    cumulative_data = []
 
-            for source in ["FRC", "TBA", "NEXUS"]:
-                if(used_sources[source]):
-                    body, code = attempt_request(source)
-                    if(code == 200 or code == 304):
-                        provided_data = data_process.get_matches(json.loads(body), source)
-                        cumulative_data = data_process.merge(cumulative_data, provided_data)
-                
-            display_pipe.send(cumulative_data)
+                    for source in ["FRC", "TBA", "NEXUS"]:
+                        if(used_sources[source]):
+                            body, code = attempt_request(source)
+                            if(code == 200 or code == 304):
+                                provided_data = data_process.get_matches(json.loads(body), source)
+                                cumulative_data = data_process.merge(cumulative_data, provided_data)
+                        
+                    display_pipe.send(cumulative_data)
 
-            print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request batch...")
-            time.sleep(constants.REQUEST_TIMEOUT)
+                    print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request batch...")
+                    start = time.monotonic()
+                    while(start + constants.REQUEST_TIMEOUT < time.monotonic()):
+                        # Wait for however much time is left, but a maximum of 2 seconds
+                        time.sleep(max(0, min(time.monotonic - (start + constants.REQUEST_TIMEOUT), 2)))
+                        if(display_pipe.poll()):
+                            if(display_pipe.recv() == Action.RESTART):
+                                display_pipe.send(0) # Send a message to signal the setup process again
+                                break
         
     except BaseException as excpt:
         print("[HTTP] [CRITICAL] Request failed! Ensure Wi-Fi link is stable.")

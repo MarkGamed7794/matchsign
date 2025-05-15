@@ -75,8 +75,7 @@ def main(request_pipe):
                 "Modify what?",
                 [
                     "Team Number",
-                    "Event",
-                    "Change Source",
+                    "Restart Setup",
                     "(return)"
                 ]
             )
@@ -86,6 +85,12 @@ def main(request_pipe):
                     ui.Notification("Illegal team number.")
                 else:
                     constants.TEAM_NUMBER = entered
+            if(modification == 1):
+                request_pipe.send(Action.RESTART)
+                nonlocal current_data, match_data
+                current_data, match_data = None, None
+                ui.WaitForRecieve("Halting requests", request_pipe)
+                initial_setup()
 
         elif(action == 1):
 
@@ -170,6 +175,15 @@ def main(request_pipe):
         else: 
             return f"{'-' if sec < 0 else ''}{minutes}:{'0' if seconds < 10 else ''}{seconds}"
         
+    def draw_filter_popup():
+        # filter popup
+        nonlocal filter_popup_timer
+        if(filter_popup_timer > 0):
+            y = min(filter_popup_timer, 8) - 8
+            draw.rect(0, y, 128, 8, Palette["black"])
+            draw.print(filter_popup_text, 1, y + 5, Palette["white"], Fonts["small"])
+            filter_popup_timer -= 1
+    
     # GRAPHICS #
 
     def draw_main_area():
@@ -184,8 +198,11 @@ def main(request_pipe):
         nonlocal displayed_match
 
         if(len(match_data) == 0):
-            draw.print("No matches found", 64, 30, Palette["white"], Fonts["small"], align="c")
-            draw.print(f"(waiting for event to start?)", 64, 38, Palette["gray"], Fonts["small"], align="c")
+            draw.print("No matches found!", 64, 22, Palette["white"], Fonts["small"], align="c")
+            draw.print(f"Either the event has not started", 64, 34, Palette["gray"], Fonts["small"], align="c")
+            draw.print(f"or nothing matches your filter.", 64, 41, Palette["gray"], Fonts["small"], align="c")
+            
+            draw_filter_popup()
             return
         if(not 0 <= displayed_match < len(match_data)):
             return
@@ -285,13 +302,7 @@ def main(request_pipe):
         else:
             draw.print(current_match.get_status().upper(), 64, 5, Palette["white"], Fonts["small"], align="c")
 
-        # filter popup
-        nonlocal filter_popup_timer
-        if(filter_popup_timer > 0):
-            y = min(filter_popup_timer, 8) - 8
-            draw.rect(0, y, 128, 8, Palette["black"])
-            draw.print(filter_popup_text, 1, y + 5, Palette["white"], Fonts["small"])
-            filter_popup_timer -= 1
+        draw_filter_popup()
 
     def draw_match_entry(match: data_process.Match, y: int, bg_color):
         draw.rect(0, y, draw.width, 7, bg_color)

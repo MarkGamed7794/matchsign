@@ -192,7 +192,10 @@ class UserInterface():
             if(self.draw.key_just_pressed(constants.BUTTON_LEFT)):   cursor[0] = max(cursor[0] - 1, 0)
             if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)):  cursor[0] = min(cursor[0] + 1, len(keyboard[shifted][cursor[1]]))
             if(self.draw.key_just_pressed(constants.BUTTON_UP)):     cursor[1] = max(cursor[1] - 1, 0)
-            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):   cursor[1] = min(cursor[1] + 1, len(keyboard[shifted]) - 1)
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)):
+                cursor[1] = min(cursor[1] + 1, len(keyboard[shifted]) - 1)
+                cursor[0] = max(cursor[0], len(keyboard[shifted][cursor[1]])) # Edge case for fourth row
+            
             if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
                 if(cursor[0] == 0):
                     if(cursor[1] == 0): # BKSP
@@ -207,6 +210,8 @@ class UserInterface():
                     typed += keyboard[shifted][cursor[1]][cursor[0] - 1]
 
             framecount = ((framecount + 1) % 60)
+
+            self.draw.print("  [ARROWS] MOVE     [A] SELECT  ", 1, 63, self.palette["white"], self.fonts["small"])
             self.draw.flip()
 
 
