@@ -85,7 +85,7 @@ def make_request(source: str):
     else:
         print("[HTTP] Response Body:", f"({len(resp.text)} characters)")
 
-    if(constants.SAVE_RESPONSE):
+    if(constants.SAVE_RESPONSE and resp.text != ""):
         with open(f"cache/{source}.txt", "w+") as file:
             file.write(resp.text)
         print("[HTTP] Data saved successfully to cache.")
