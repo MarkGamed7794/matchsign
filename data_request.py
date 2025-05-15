@@ -8,10 +8,12 @@ class Action(Enum):
     USE_CACHE = 1
     SEND_EVENT_LIST = 2
     SEND_USED_SOURCES = 3
+    CHANGE_TIMEOUT = 4
 
     RESTART = -9999
 
 EVENT_KEY = constants.REQUEST_PARAMS["event_key"]
+REQUEST_TIMEOUT = constants.REQUEST_TIMEOUT
 
 FRC_HEADERS = {
     "Authorization": "Basic " + base64.b64encode(constants.FRC_AUTH.encode("ascii")).decode("ascii")
@@ -129,9 +131,9 @@ LAST_TBA_DATA = "[]"
 
 def main(display_pipe):
     # Wait until we recieve something from the pipe, which means the user selected what they want to happen.
-
     try:
         # Initial configuration
+        global REQUEST_TIMEOUT
         global used_sources
         while True:
             command = display_pipe.recv()
@@ -213,13 +215,21 @@ def main(display_pipe):
                         
                     display_pipe.send(cumulative_data)
 
-                    print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request batch...")
+                    print(f"[HTTP] Waiting {REQUEST_TIMEOUT} seconds until next request batch...")
                     start = time.monotonic()
-                    while(start + constants.REQUEST_TIMEOUT > time.monotonic()):
+                    while(start + REQUEST_TIMEOUT > time.monotonic()):
                         # Wait for however much time is left, but a maximum of 2 seconds
-                        time.sleep(max(0, min((start + constants.REQUEST_TIMEOUT) - time.monotonic(), 2)))
+                        time.sleep(max(0, min((start + REQUEST_TIMEOUT) - time.monotonic(), 2)))
                         if(display_pipe.poll()):
-                            if(display_pipe.recv() == Action.RESTART):
+                            command = display_pipe.recv()
+                            if(command == Action.CHANGE_TIMEOUT):
+                                # Change the interval between requests
+
+                                interval = display_pipe.recv()
+                                REQUEST_TIMEOUT = interval
+                                print(f"[HTTP] Request interval changed to {REQUEST_TIMEOUT} seconds.")
+
+                            elif(command == Action.RESTART):
                                 display_pipe.send(0) # Send a message to signal the setup process again
                                 break
         

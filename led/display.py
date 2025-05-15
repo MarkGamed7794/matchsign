@@ -75,6 +75,7 @@ def main(request_pipe):
                 "Modify what?",
                 [
                     "Team Number",
+                    "Request Interval",
                     "Restart Setup",
                     "(return)"
                 ]
@@ -85,7 +86,13 @@ def main(request_pipe):
                     ui.Notification("Illegal team number.")
                 else:
                     constants.TEAM_NUMBER = entered
-            if(modification == 1):
+
+            elif(modification == 1):
+                interval = ui.NumberChange("How many seconds between\neach request?", 10, 600, 10, constants.REQUEST_TIMEOUT)
+                request_pipe.send(Action.CHANGE_TIMEOUT)
+                request_pipe.send(interval)
+            
+            elif(modification == 2):
                 request_pipe.send(Action.RESTART)
                 nonlocal current_data, match_data
                 current_data, match_data = None, None
