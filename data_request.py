@@ -130,6 +130,7 @@ def main(display_pipe):
 
     try:
         # Initial configuration
+        global used_sources
         while True:
             command = display_pipe.recv()
 
