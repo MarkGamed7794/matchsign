@@ -13,7 +13,6 @@ requests:
   response_cache:
     use_cache: false # If true, uses the cached response instead of making a new one.
     save_response: true # If true, saves responses to the cache.
-    cache_filepath: "request_output.txt" # Where the cached response is read from.
 
   request_parameters:
     retry_limit: 5 # The maximum amount of times to retry a failed request.

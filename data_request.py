@@ -215,9 +215,9 @@ def main(display_pipe):
 
                     print(f"[HTTP] Waiting {constants.REQUEST_TIMEOUT} seconds until next request batch...")
                     start = time.monotonic()
-                    while(start + constants.REQUEST_TIMEOUT < time.monotonic()):
+                    while(start + constants.REQUEST_TIMEOUT > time.monotonic()):
                         # Wait for however much time is left, but a maximum of 2 seconds
-                        time.sleep(max(0, min(time.monotonic - (start + constants.REQUEST_TIMEOUT), 2)))
+                        time.sleep(max(0, min((start + constants.REQUEST_TIMEOUT) - time.monotonic(), 2)))
                         if(display_pipe.poll()):
                             if(display_pipe.recv() == Action.RESTART):
                                 display_pipe.send(0) # Send a message to signal the setup process again
