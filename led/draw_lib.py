@@ -176,7 +176,7 @@ class MatrixDraw():
             if("\n" in text):
                 # TODO: Check height instead of hardcoding it to 6
                 for n, line in enumerate(text.split("\n")):
-                    graphics.DrawText(self.alt_buffer, line, x - align_offset, y + 1 + line * 7, color, text)
+                    graphics.DrawText(self.alt_buffer, line, x - align_offset, y + 1 + n * 7, color, text)
             else:
                 graphics.DrawText(self.alt_buffer, font, x - align_offset, y + 1, color, text)
 
