@@ -64,9 +64,9 @@ class UserInterface():
         while not self.draw.key_just_pressed(constants.BUTTON_SELECT):
             self.draw.print(header, 1, 5, self.palette["white"], self.fonts["small"])
             if(help):
-                self.draw.print("[^v] SELECT [A] CONFIRM [9] HELP", 1, 30, self.palette["white"], self.fonts["small"])
+                self.draw.print("[^v] SELECT [A] CONFIRM [9] HELP", 1, 63, self.palette["white"], self.fonts["small"])
             else:
-                self.draw.print("  [^v] SELECT      [A] CONFIRM  ", 1, 30, self.palette["white"], self.fonts["small"])
+                self.draw.print("  [^v] SELECT      [A] CONFIRM  ", 1, 63, self.palette["white"], self.fonts["small"])
             for i, option in enumerate(options):
                 selected = (i == selected_option)
                 self.draw.print(("> " if selected else "  ") + option, 7, 12 + i * 6, self.palette["yellow" if selected else "white"], self.fonts["small"])
