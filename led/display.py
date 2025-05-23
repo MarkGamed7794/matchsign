@@ -30,9 +30,14 @@ def main(request_pipe):
     # 3: Show all matches that haven't happened yet in which the current team is playing
 
     def initial_setup():
-        if(ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"]) == 0):
-            request_pipe.send(Action.USE_CACHE)
-            return
+        while True:
+            selection = ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"], help=True)
+
+            if(selection == -1): ui.Notification("Match Sign\nprogrammed by Mark M\nSee ~/README.txt for details")
+            if(selection == 0):
+                request_pipe.send(Action.USE_CACHE)
+                return
+            if(selection == 1): break
         
         sources = ["FRC", "TBA", "NEXUS"]
         source_str = '+'.join([source for source in sources if constants.USE_SOURCE[source]])
