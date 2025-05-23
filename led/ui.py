@@ -251,7 +251,7 @@ class UserInterface():
         self.FadeIn(prompt)
 
         while True:
-            self.draw.print(prompt, 1, 1, self.palette["white"], self.fonts["small"])
+            self.draw.print(prompt, 1, 5, self.palette["white"], self.fonts["small"])
             self.draw.print("             [A] OK            ", 1, 63, self.palette["white"], self.fonts["small"])
             if(self.draw.key_just_pressed(constants.BUTTON_SELECT)):
                 break
