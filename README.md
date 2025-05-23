@@ -1,8 +1,10 @@
 # Match Sign
 
-NOTE: This project is highly specific, and is unlikely to be of use to many people.
+NOTE: This project is highly specific, and is unlikely to be of use to many people. This is for use during FIRST robotics competitions as a means of displaying scheduling information
 
 It's also not written very well; this is a Python project to get data from an API and asynchronously update a display connected to a Raspberry Pi -- written by someone who's not sure how to do any of those things.
+
+Full specifications will be written later: you need a Raspberry Pi 4 (3B+ or lower does work, albiet slower), a 4x4 keypad, and four 64x32 LED panels (Waveshare ones work well). See `wiring_diagram.txt` for wiring details.
 
 ---
 
