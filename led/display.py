@@ -33,7 +33,8 @@ def main(request_pipe):
         while True:
             selection = ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"], help=True)
 
-            if(selection == -1): ui.Notification("Match Sign\nprogrammed by Mark M\nSee ~/README.txt for details")
+            if(selection == -1):
+                ui.Notification("Match Sign\nprogrammed by Mark M\nSee ~/README.txt for details")
             if(selection == 0):
                 request_pipe.send(Action.USE_CACHE)
                 return
