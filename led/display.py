@@ -34,7 +34,7 @@ def main(request_pipe):
             selection = ui.MenuSelect("Use cache or live data?", ["Cache", "Live Data"], help=True)
 
             if(selection == -1):
-                ui.Stopwatch() # for event
+                # ui.Stopwatch() # for event
                 ui.Notification("Match Sign\nprogrammed by Mark Metcalfe\n(c) Team 4308, 2024-25\nSee ~/README.txt for details")
             if(selection == 0):
                 request_pipe.send(Action.USE_CACHE)
