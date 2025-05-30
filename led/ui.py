@@ -1,4 +1,5 @@
 from led.draw_lib import MatrixDraw
+import time, math
 import constants
 
 class UserInterface():
@@ -10,6 +11,64 @@ class UserInterface():
         self.draw = draw
         self.palette = palette
         self.fonts = fonts
+
+    def Stopwatch(self):
+        starttime = -1
+        lasttime = 0
+        record = 60
+        record_timer = 0
+
+        def format_time(s):
+            return str(math.floor(s / 60)) + ":" + ("%02d" % (s % 60) + "." + ("%02d" % ((s % 1) * 100)))
+
+        while True:
+            if(self.draw.key_just_pressed(0)):
+                if(starttime <= 0):
+                    # Start
+                    starttime = time.time() + 4 # 4 second delay
+                    record_timer = 0 # cut off record animation
+                else:
+                    # Stop
+                    finish_time = time.time() - starttime
+                    starttime = -1
+                    if(finish_time > 0):
+                        lasttime = finish_time
+
+                        if(finish_time < record):
+                            record = finish_time
+                            record_timer = 10 * 60
+
+            # Manual record adjustment
+            if(self.draw.key_just_pressed(constants.BUTTON_LEFT)): record -= 0.01
+            if(self.draw.key_just_pressed(constants.BUTTON_RIGHT)): record += 0.01
+            if(self.draw.key_just_pressed(constants.BUTTON_UP)): record -= 1
+            if(self.draw.key_just_pressed(constants.BUTTON_DOWN)): record += 1
+            
+
+            self.draw.print("YOUR TIME", 63, 12, self.palette["white"], self.fonts["small"], align="c")
+            if(starttime > 0):
+                current_time = time.time() - starttime
+                if(current_time < 0):
+                    s = "ON YOUR MARKS"
+                    if(current_time < -2): s = "ON YOUR MARKS"
+                    elif(current_time < -1): s = "READY..."
+                    elif(current_time < 0): s = "GET SET..."
+                    self.draw.print(s, 63, 22, self.palette["white"], self.fonts["small"], align="c")
+                else:
+                    self.draw.print(format_time(current_time), 63, 22, self.palette["white"], self.fonts["big"], align="c")
+            else:
+                self.draw.print(format_time(lasttime), 63, 22, self.palette["white"], self.fonts["big"], align="c")
+
+            if(record_timer > 0):
+                c = (record_timer % 4 <= 1) and self.palette["yellow"] or self.palette["white"]
+                self.draw.print("NEW RECORD!!!!", 63, 42, c, self.fonts["small"], align="c")
+                self.draw.print(format_time(record), 63, 52, c, self.fonts["big"], align="c")
+                record_timer -= 1
+            else:
+                self.draw.print("CURRENT RECORD", 63, 42, self.palette["white"], self.fonts["small"], align="c")
+                self.draw.print(format_time(record), 63, 52, self.palette["white"], self.fonts["big"], align="c")
+            
+            self.draw.flip()
 
     def WaitForRecieve(self, message, pipe):
         leftx = (self.draw.width - self.draw.width_of_text(message + "...", self.fonts["small"])) // 2
